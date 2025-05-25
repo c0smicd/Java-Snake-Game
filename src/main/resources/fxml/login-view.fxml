@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="300" prefWidth="400" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosmic.snakegamecraft.controller.LoginController">
+    <VBox alignment="CENTER" layoutX="100" layoutY="80" spacing="15" />
+     <TextField fx:id="nameField" layoutX="126.0" layoutY="138.0" promptText="Username" />
+     <Button layoutX="168.0" layoutY="172.0" onAction="#handleContinue" text="Continue" />
+     <Label layoutX="155.0" layoutY="115.0" text="Enter your name:" />
+</AnchorPane>

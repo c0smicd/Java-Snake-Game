@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="300" prefWidth="400" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosmic.snakegamecraft.controller.SettingsController">
+    <children>
+        <VBox alignment="CENTER" layoutX="100" layoutY="50" spacing="15">
+            <Label text="Settings" />
+            <HBox spacing="10">
+                <Label text="Grid Size:" />
+                <TextField fx:id="gridField" promptText="e.g. 50" />
+            </HBox>
+            <HBox spacing="10">
+                <Label text="Speed Multiplier:" />
+                <Slider fx:id="speedSlider" blockIncrement="0.1" max="10.0" min="0.5" showTickLabels="true" showTickMarks="true" value="1.0" />
+            </HBox>
+            <Label fx:id="speedValueLabel" text="1.0" />
+            <Button onAction="#handleSave" text="Save" />
+            <Button onAction="#handleBack" text="Back" />
+        </VBox>
+    </children>
+</AnchorPane>

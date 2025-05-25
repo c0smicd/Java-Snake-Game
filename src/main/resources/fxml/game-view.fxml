@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="800" prefWidth="800" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosmic.snakegamecraft.controller.GameController">
+
+    <top>
+        <HBox>
+        <Label text="Score:" />
+            <Label fx:id="scoreLabel" text="0" />
+            <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
+        </HBox>
+    </top>
+
+    <center>
+        <AnchorPane>
+            <Canvas fx:id="gameCanvas" height="800" width="800" />
+        </AnchorPane>
+    </center>
+
+</BorderPane>

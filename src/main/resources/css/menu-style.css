@@ -1,0 +1,19 @@
+.root {
+    -fx-background-image: url("../images/background.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+#settingsButton {
+    -fx-background-image: url("../images/settings_button.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-min-width: 64px;
+    -fx-min-height: 64px;
+    -fx-pref-width: 64px;
+    -fx-pref-height: 64px;
+}
