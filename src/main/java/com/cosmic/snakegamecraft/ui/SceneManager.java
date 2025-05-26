@@ -22,8 +22,6 @@ public class SceneManager {
 
     public void showMenu(String username){
         switchScene("menu-view.fxml", "Main Menu");
-
-        //TODO: Pass username to controller
     }
 
     public void showSettings(){

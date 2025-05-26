@@ -19,6 +19,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 
+import static com.cosmic.snakegamecraft.util.Constants.GRID_SIZE;
+import static com.cosmic.snakegamecraft.util.Constants.TILE_SIZE;
+
 public class GameController {
 
     @FXML
@@ -42,12 +45,13 @@ public class GameController {
         SpriteManager.loadSprites();
 
         // Load ItemManager
-        itemManager = new ItemManager(settings.getGridSize());
+        itemManager = new ItemManager(GRID_SIZE);
 
-        player = new Snake_Player(5,5);
+        player = new Snake_Player(5,5, 3);
 
 
         gameLoop = new GameLoop(settings.getSpeedMultiplier()) {
+
             @Override
             public void update() {
                 player.update();
@@ -65,11 +69,13 @@ public class GameController {
                             player.grow(); // Golden apple gives two segments
                         }
                     }
+                    itemManager.removeItem(collectedItem);
+                    scoreLabel.setText(""+player.getHighscore());
                 }
                 // Render items
                 itemManager.spawnItem(ItemType.APPLE, player.getOccupiedPoints());
 
-                boolean isDead = (!player.isInvulnerable() && player.checkSelfCollision() || player.checkWallCollision(640));
+                boolean isDead = (!player.isInvulnerable() && player.checkSelfCollision() || player.checkWallCollision(GRID_SIZE));
 
                 if(isDead){
                     gameLoop.stop();
@@ -105,8 +111,18 @@ public class GameController {
         gc.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
 
 
+        // TODO: Background Manager for background tiles, and maps
+        for (int x = 0; x < GRID_SIZE; x++) {
+            for (int y = 0; y < GRID_SIZE; y++) {
+                gc.drawImage(SpriteManager.getBgTile1(), x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            }
+        }
+
+
         player.render(gc);
-        itemManager.render(gc, 64);
+
+        System.out.println("Render item");
+        itemManager.render(gc);
     }
 
     private void showGameOverDialog() {

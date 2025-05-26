@@ -52,4 +52,10 @@ public abstract class Entity {
     public Direction getDirection() {
         return direction;
     }
+
+    public boolean checkHit(Entity other) {
+        // TODO: Implement hitscan logic for collision detection
+
+        return false;
+    }
 }

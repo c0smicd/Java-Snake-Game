@@ -1,15 +1,20 @@
 package com.cosmic.snakegamecraft.entity;
 
+import com.cosmic.snakegamecraft.util.Constants;
 import com.cosmic.snakegamecraft.util.Point;
 import com.cosmic.snakegamecraft.util.SpriteManager;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+
+import static com.cosmic.snakegamecraft.util.Constants.TILE_SIZE;
 
 public class Snake_Player extends Entity {
 
@@ -24,11 +29,16 @@ public class Snake_Player extends Entity {
     private int invurnabilityTicks = 0; // Timer for invincibility effect
     private int highscore;
 
-    public Snake_Player(int startX, int startY){
+    public Snake_Player(int startX, int startY, int initialLength) {
         this.x = startX;
         this.y = startY;
         this.direction = Direction.RIGHT;
-        body.add(new Segment(startX, startY));
+
+        // Initialize the snake body with the specified initial length
+        for (int i = 0; i < initialLength; i++) {
+            body.add(new Segment(startX - i, startY));
+        }
+
         headSprite = SpriteManager.getSnakeHead();
         bodySprite = SpriteManager.getSnakeBody();
         tailSprite = SpriteManager.getSnakeTail();
@@ -81,6 +91,7 @@ public class Snake_Player extends Entity {
             body.get(i).x = body.get(i - 1).x;
             body.get(i).y = body.get(i - 1).y;
         }
+        System.out.println("Snake head position: " + body.getFirst().x + ", " + body.getFirst().y);
 
         Segment head = body.getFirst();
         switch (direction) {
@@ -92,7 +103,7 @@ public class Snake_Player extends Entity {
 
     }
 
-    private double TILE_SIZE = 32;
+
     @Override
     public void render(GraphicsContext gc) {
 
@@ -101,14 +112,34 @@ public class Snake_Player extends Entity {
             Segment curr = body.get(i);
             Image spriteToDraw = null;
 
+            SnapshotParameters params = new SnapshotParameters();
+            params.setFill(Color.TRANSPARENT);
+
+
+            ImageView rotatedImage = null;
+
             if(i==0){
                 // Draw head
-                spriteToDraw = headSprite;
+                rotatedImage = new ImageView(headSprite);
+
+                spriteToDraw = rotateImage(params, rotatedImage);
+
             }
             else if(i == body.size()-1){
                 // Draw tail
-                spriteToDraw = tailSprite;
+
+                rotatedImage = new ImageView(tailSprite);
+
+                assert (rotatedImage != new ImageView(headSprite));
+
+                spriteToDraw = rotateImage(params, rotatedImage);
+
+
+
+
             }else{
+
+                rotatedImage = new ImageView(rotatedSprite);
 
                 Segment prev = body.get(i - 1);
                 Segment next = body.get(i + 1);
@@ -126,22 +157,21 @@ public class Snake_Player extends Entity {
                     spriteToDraw = bodySprite;
                 }
                 else{
-                    ImageView rotatedImage = new ImageView(rotatedSprite);
 
                     if(turnRightDown){
-                        rotatedImage.setRotate(-45); // Right Down (└)
-                        spriteToDraw = rotatedImage.getImage();
+                        rotatedImage.setRotate(-90); // Right Down (└)
+                        spriteToDraw = rotatedImage.snapshot(params, null);
                     }
                     else if(turnRightUp){
                         spriteToDraw = rotatedSprite; // Right Up, already in correct orientation (┌)
                     }
                     else if(turnLeftDown){
                         rotatedImage.setRotate(90); // Left Down (┘)
-                        spriteToDraw = rotatedImage.getImage();
+                        spriteToDraw = rotatedImage.snapshot(params, null);
 
                     }else if(turnLeftUp){
-                        rotatedImage.setRotate(45); // Left Up (┐)
-                        spriteToDraw = rotatedImage.getImage();
+                        rotatedImage.setRotate(90); // Left Up (┐)
+                        spriteToDraw = rotatedImage.snapshot(params, null);
                     }
                 }
             }
@@ -150,6 +180,33 @@ public class Snake_Player extends Entity {
         }
 
 
+    }
+
+    private Image rotateImage(SnapshotParameters params, ImageView rotatedImage) {
+        Image spriteToDraw = null;
+        switch(direction){
+            case UP -> {
+                System.out.println("Drawing UP");
+                rotatedImage.setRotate(-90); // Up
+                spriteToDraw = rotatedImage.snapshot(params, null);
+            }
+            case DOWN -> {
+                System.out.println("Drawing DOWN");
+                rotatedImage.setRotate(90); // Down
+                spriteToDraw = rotatedImage.snapshot(params, null);
+            }
+            case LEFT -> {
+                System.out.println("Drawing LEFT");
+                rotatedImage.setRotate(180); // Left
+                spriteToDraw = rotatedImage.snapshot(params, null);
+            }
+            case RIGHT -> {
+                System.out.println("Drawing  RIGHT");
+                spriteToDraw = rotatedImage.snapshot(params, null);
+            }
+
+        }
+        return spriteToDraw;
     }
 
     private void increaseHighscore(int amount) {
