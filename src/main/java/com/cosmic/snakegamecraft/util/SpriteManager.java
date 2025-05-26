@@ -30,7 +30,7 @@ public class SpriteManager {
         snakeRotate = load("snakes/player/rotated_snake.png");
 
         // Loading items sprite
-        apple = load("items/apple.png");
+        apple = load("items/apple_snake.png");
 
         // Loading background sprites
         bgTile1 = load("playground/grass-tile.png");
@@ -38,7 +38,7 @@ public class SpriteManager {
         bgGrassLeft = load("playground/grass_left.png");
         bgGrassRight = load("playground/grass_right.png");
         bgGrassTop = load("playground/grass_top.png");
-        bgGrassBottom = load("playground/grass_bottom.png");
+        bgGrassBottom = load("playground/grass_bot.png");
 
     }
 

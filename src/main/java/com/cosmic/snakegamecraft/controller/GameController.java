@@ -4,15 +4,19 @@ import com.cosmic.snakegamecraft.AppContext;
 import com.cosmic.snakegamecraft.core.GameLoop;
 import com.cosmic.snakegamecraft.entity.Entity;
 import com.cosmic.snakegamecraft.entity.Snake_Player;
+import com.cosmic.snakegamecraft.logic.HighscoreManager;
 import com.cosmic.snakegamecraft.logic.Item;
 import com.cosmic.snakegamecraft.logic.ItemManager;
+import com.cosmic.snakegamecraft.logic.ItemType;
 import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.ui.SceneManager;
 import com.cosmic.snakegamecraft.util.SettingsLoader;
 import com.cosmic.snakegamecraft.util.SpriteManager;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 
 public class GameController {
@@ -62,6 +66,16 @@ public class GameController {
                         }
                     }
                 }
+                // Render items
+                itemManager.spawnItem(ItemType.APPLE, player.getOccupiedPoints());
+
+                boolean isDead = (!player.isInvulnerable() && player.checkSelfCollision() || player.checkWallCollision(640));
+
+                if(isDead){
+                    gameLoop.stop();
+                    showGameOverDialog();
+                    return;
+                }
 
 
                 drawFrame();
@@ -70,14 +84,19 @@ public class GameController {
 
         gameLoop.start();
 
-        gameCanvas.getScene().setOnKeyPressed(event -> {
-            switch (event.getCode()) {
-                case UP -> player.setDirection(Entity.Direction.UP);
-                case DOWN -> player.setDirection(Entity.Direction.DOWN);
-                case LEFT -> player.setDirection(Entity.Direction.LEFT);
-                case RIGHT -> player.setDirection(Entity.Direction.RIGHT);
-            }
+
+        // Directional input handling
+        Platform.runLater(() -> {
+            gameCanvas.getScene().setOnKeyPressed(event -> {
+                switch (event.getCode()) {
+                    case UP, W    -> player.setDirection(Entity.Direction.UP);
+                    case DOWN, S  -> player.setDirection(Entity.Direction.DOWN);
+                    case LEFT, A  -> player.setDirection(Entity.Direction.LEFT);
+                    case RIGHT, D -> player.setDirection(Entity.Direction.RIGHT);
+                }
+            });
         });
+
     }
 
     private void drawFrame() {
@@ -87,6 +106,19 @@ public class GameController {
 
 
         player.render(gc);
+        itemManager.render(gc, 64);
+    }
+
+    private void showGameOverDialog() {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game Over");
+            alert.setHeaderText("You have died!");
+            alert.setContentText("Press Restart to play again or Exit to quit.");
+            HighscoreManager.saveScore(AppContext.getUsername(), player.getHighscore());
+            alert.setOnHidden(e -> sceneManager.showMenu(AppContext.getUsername()));
+            alert.show();
+        });
     }
 
 

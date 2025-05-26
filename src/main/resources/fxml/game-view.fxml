@@ -16,7 +16,7 @@
 
     <center>
         <AnchorPane>
-            <Canvas fx:id="gameCanvas" height="800" width="800" />
+            <Canvas fx:id="gameCanvas" height="640" width="640" />
         </AnchorPane>
     </center>
 

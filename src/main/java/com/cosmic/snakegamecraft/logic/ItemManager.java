@@ -1,5 +1,6 @@
 package com.cosmic.snakegamecraft.logic;
 
+import com.cosmic.snakegamecraft.util.Point;
 import com.cosmic.snakegamecraft.util.SpriteManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -16,13 +17,22 @@ public class ItemManager {
 
     public ItemManager(int gridSize) {
         this.gridSize = gridSize;
-        spawnItem(ItemType.APPLE);
+
     }
 
-    public void spawnItem(ItemType type){
+    public void spawnItem(ItemType type, List<Point> occupied){
 
-        int x = rand.nextInt(gridSize);
-        int y = rand.nextInt(gridSize);
+        if(exitsItem(type)){
+            return; // Item of this type already exists, do not spawn again
+        }
+
+        int  x, y;
+        do{
+            x = rand.nextInt(gridSize);
+            y = rand.nextInt(gridSize);
+        } while(isOccupied(x, y, occupied));
+
+
         Image sprite = switch(type) {
             case APPLE -> SpriteManager.getApple();
             case BAD_APPLE -> null;
@@ -31,6 +41,10 @@ public class ItemManager {
         };
 
         items.add(new Item(type, x, y, sprite));
+    }
+
+    private boolean isOccupied(int x, int y, List<Point> occupied) {
+        return occupied.stream().anyMatch(p -> p.x() == x && p.y() == y);
     }
 
     public void render(GraphicsContext gc, double tileSize){
@@ -52,6 +66,10 @@ public class ItemManager {
 
     public void removeItem(Item item){
         items.remove(item);
+    }
+
+    private boolean exitsItem(ItemType type) {
+        return items.stream().anyMatch(item -> item.getType() == type);
     }
 
 

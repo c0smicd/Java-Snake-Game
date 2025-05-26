@@ -12,6 +12,7 @@ module com.cosmic.snakegamecraft {
     requires com.almasb.fxgl.all;
     requires atlantafx.base;
     requires java.desktop;
+    requires annotations;
 
     opens com.cosmic.snakegamecraft to javafx.fxml;
     exports com.cosmic.snakegamecraft;

@@ -1,4 +1,4 @@
 package com.cosmic.snakegamecraft.util;
 
-public class Point {
+public record Point(int x, int y){
 }

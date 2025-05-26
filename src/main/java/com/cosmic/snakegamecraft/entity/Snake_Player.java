@@ -1,11 +1,14 @@
 package com.cosmic.snakegamecraft.entity;
 
+import com.cosmic.snakegamecraft.util.Point;
 import com.cosmic.snakegamecraft.util.SpriteManager;
 import javafx.scene.canvas.GraphicsContext;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 public class Snake_Player extends Entity {
@@ -19,6 +22,7 @@ public class Snake_Player extends Entity {
     private final LinkedList<Segment> body = new LinkedList<>();
     private Image headSprite, bodySprite, tailSprite, rotatedSprite;
     private int invurnabilityTicks = 0; // Timer for invincibility effect
+    private int highscore;
 
     public Snake_Player(int startX, int startY){
         this.x = startX;
@@ -37,6 +41,8 @@ public class Snake_Player extends Entity {
     public void grow(){
         Segment last = body.getLast();
         body.add(new Segment(last.x,last.y));
+
+        increaseHighscore(10);
     }
 
     /**
@@ -46,6 +52,8 @@ public class Snake_Player extends Entity {
         if(body.size() > 1) {
             body.removeLast(); // Remove the last segment to shrink the snake
         }
+
+        increaseHighscore(-5);
     }
 
     /**
@@ -144,11 +152,44 @@ public class Snake_Player extends Entity {
 
     }
 
+    private void increaseHighscore(int amount) {
+        highscore += amount;
+    }
+
+
+    public boolean checkSelfCollision(){
+        Segment head = body.getFirst();
+
+        for (int i = 1; i < body.size(); i++) {
+            Segment segment = body.get(i);
+            if (segment.x == head.x && segment.y == head.y) {
+                return true; // Collision with itself
+            }
+        }
+
+        return false;
+    }
+
+    public boolean checkWallCollision(int gridSize) {
+        Segment head = body.getFirst();
+        return head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize;
+    }
+
     public int getHeadX() {
         return body.getFirst().x;
     }
 
     public int getHeadY() {
         return body.getFirst().y;
+    }
+
+    public List<Point> getOccupiedPoints() {
+        return body.stream()
+                .map(segment -> new Point(segment.x, segment.y))
+                .toList();
+    }
+
+    public int getHighscore() {
+        return highscore;
     }
 }
