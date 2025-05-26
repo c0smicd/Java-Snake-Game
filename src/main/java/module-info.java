@@ -11,6 +11,7 @@ module com.cosmic.snakegamecraft {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires atlantafx.base;
+    requires java.desktop;
 
     opens com.cosmic.snakegamecraft to javafx.fxml;
     exports com.cosmic.snakegamecraft;
