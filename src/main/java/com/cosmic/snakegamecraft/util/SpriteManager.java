@@ -20,6 +20,7 @@ public class SpriteManager {
     private static Image bgGrassRight;
     private static Image bgGrassTop;
     private static Image bgGrassBottom;
+    private static Image bgScore;
 
 
     public static void loadSprites(){
@@ -39,6 +40,7 @@ public class SpriteManager {
         bgGrassRight = load("playground/grass_right.png");
         bgGrassTop = load("playground/grass_top.png");
         bgGrassBottom = load("playground/grass_bot.png");
+        bgScore = load("playground/background-score.png");
 
     }
 
@@ -63,6 +65,9 @@ public class SpriteManager {
     }
     public static Image getBgTile1() {
         return bgTile1;
+    }
+    public static Image getBgScore() {
+        return bgScore;
     }
     public static Image getBgTile2() {
         return bgTile2;

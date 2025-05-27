@@ -3,20 +3,23 @@
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="640" prefWidth="640" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosmic.snakegamecraft.controller.GameController">
+<BorderPane prefHeight="704" prefWidth="640" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosmic.snakegamecraft.controller.GameController">
 
     <top>
         <HBox>
-        <Label text="Score:" />
-            <Label fx:id="scoreLabel" text="0" />
             <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
         </HBox>
     </top>
 
     <center>
         <AnchorPane>
-            <Canvas fx:id="gameCanvas" height="640" width="640" />
+            <Canvas fx:id="gameCanvas" height="704.0" width="640" />
+            <Label fx:id="scoreLabel" layoutX="14.0" layoutY="654.0" text="Score: 0" textFill="WHITE" textOverrun="CLIP">
+            <font>
+               <Font name="Lucida Console" size="25.0" />
+            </font></Label>
         </AnchorPane>
     </center>
 

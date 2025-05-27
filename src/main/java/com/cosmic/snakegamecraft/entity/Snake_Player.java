@@ -122,13 +122,13 @@ public class Snake_Player extends Entity {
 
         for (int i = 0; i < body.size(); i++) {
             Segment curr = body.get(i);
-            Image spriteToDraw = null;
+            Image spriteToDraw;
 
             SnapshotParameters params = new SnapshotParameters();
             params.setFill(Color.TRANSPARENT);
 
 
-            ImageView rotatedImage = null;
+            ImageView rotatedImage;
 
             if(i==0){
                 // Draw head

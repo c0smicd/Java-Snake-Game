@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.cosmic.snakegamecraft.util.Constants.GRID_SIZE;
 import static com.cosmic.snakegamecraft.util.Constants.TILE_SIZE;
 
 public class ItemManager {

@@ -17,7 +17,11 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+
+import java.util.Optional;
 
 import static com.cosmic.snakegamecraft.util.Constants.GRID_SIZE;
 import static com.cosmic.snakegamecraft.util.Constants.TILE_SIZE;
@@ -50,48 +54,11 @@ public class GameController {
         player = new Snake_Player(5,5, 3, settings.getSpeedMultiplier());
 
 
-        gameLoop = new GameLoop(settings.getSpeedMultiplier()) {
-
-            @Override
-            public void update() {
-                player.update();
-
-                // Check for item collection
-                Item collectedItem = itemManager.checkCollision(player.getHeadX(), player.getHeadY());
-
-                if(collectedItem != null) {
-                    switch(collectedItem.getType()) {
-                        case APPLE -> player.grow();
-                        case BAD_APPLE -> player.shrink();
-                        case RAINBOW_APPLE -> player.rainbowApple();
-                        case GOLDEN_APPLE -> {
-                            player.grow();
-                            player.grow(); // Golden apple gives two segments
-                        }
-                    }
-                    itemManager.removeItem(collectedItem);
-                    scoreLabel.setText(""+player.getHighscore());
-                }
-                // Render items
-                itemManager.spawnItem(ItemType.APPLE, player.getOccupiedPoints());
-
-                boolean isDead = (!player.isInvulnerable() && player.checkSelfCollision() || player.checkWallCollision(GRID_SIZE));
-
-                if(isDead){
-                    gameLoop.stop();
-                    showGameOverDialog();
-                    return;
-                }
-
-
-                drawFrame();
-            }
-        };
-
-        gameLoop.start();
+        gameLoopMethod(settings);
 
 
         // Directional input handling
+        // TODO: Has problems with multiple key presses, needs to be fixed
         Platform.runLater(() -> {
             gameCanvas.getScene().setOnKeyPressed(event -> {
                 switch (event.getCode()) {
@@ -117,6 +84,9 @@ public class GameController {
                 gc.drawImage(SpriteManager.getBgTile1(), x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
             }
         }
+        for(int x = 0; x < GRID_SIZE; x++) {
+            gc.drawImage(SpriteManager.getBgScore(), x * 64, 640, 64, 64);
+        }
 
 
         player.render(gc);
@@ -127,16 +97,92 @@ public class GameController {
 
     private void showGameOverDialog() {
         Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Game Over");
             alert.setHeaderText("You have died!");
-            alert.setContentText("Press Restart to play again or Exit to quit.");
+            alert.setContentText("Press Restart to play again or go Back to the Menu");
+
+            ButtonType restartButton = new ButtonType("Restart");
+            ButtonType menuButton = new ButtonType("Back to Menu");
+
+            alert.getButtonTypes().setAll(restartButton, menuButton);
+
             HighscoreManager.saveScore(AppContext.getUsername(), player.getHighscore());
-            alert.setOnHidden(e -> sceneManager.showMenu(AppContext.getUsername()));
-            alert.show();
+
+            Optional<ButtonType> result = alert.showAndWait();
+            result.ifPresent(button ->{
+                if (button == restartButton){
+                    restartGame();
+
+                } else if (button == menuButton) {
+                    // Go back to the menu
+                    sceneManager.showMenu(AppContext.getUsername());
+                }
+            });
+
         });
     }
 
+    private void restartGame(){
+        GameSettings settings = SettingsLoader.loadSettings(AppContext.getUsername());
+
+        player = new Snake_Player(5,5, 3, settings.getSpeedMultiplier());
+
+        itemManager = new ItemManager(GRID_SIZE);
+
+        // Restart game loop
+        gameLoopMethod(settings);
+
+    }
+
+    private void gameLoopMethod(GameSettings settings) {
+        gameLoop = new GameLoop(settings.getSpeedMultiplier()) {
+
+            @Override
+            public void update() {
+                player.update();
+
+                // Check for item collection
+                Item collectedItem = itemManager.checkCollision(player.getHeadX(), player.getHeadY());
+
+                if(collectedItem != null) {
+                    typeCheck(collectedItem);
+                    scoreLabel.setText("Score: "+player.getHighscore());
+                }
+                // Render items
+                itemManager.spawnItem(ItemType.APPLE, player.getOccupiedPoints());
+
+                boolean isDead = (!player.isInvulnerable() && player.checkSelfCollision() || player.checkWallCollision(GRID_SIZE));
+
+                if(isDead){
+                    System.out.println("Player is dead, stopping game loop.");
+                    gameLoop.stop();
+                    showGameOverDialog();
+                    return;
+                }
+
+
+                drawFrame();
+            }
+        };
+
+        gameLoop.start();
+    }
+
+    private void typeCheck(Item collidedItem) {
+        switch (collidedItem.getType()) {
+            case APPLE -> player.grow();
+            case BAD_APPLE -> player.shrink();
+            case RAINBOW_APPLE -> player.rainbowApple();
+            case GOLDEN_APPLE -> {
+
+                player.grow();
+                player.grow(); // Golden apple gives two segments
+            }
+        }
+        itemManager.removeItem(collidedItem);
+    }
 
 
 }
