@@ -12,7 +12,7 @@ public abstract class Entity {
         UP,
         DOWN,
         LEFT,
-        RIGHT;
+        RIGHT
     }
 
 

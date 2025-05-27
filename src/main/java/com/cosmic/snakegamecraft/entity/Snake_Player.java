@@ -1,6 +1,6 @@
 package com.cosmic.snakegamecraft.entity;
 
-import com.cosmic.snakegamecraft.util.Constants;
+
 import com.cosmic.snakegamecraft.util.Point;
 import com.cosmic.snakegamecraft.util.SpriteManager;
 import javafx.scene.SnapshotParameters;
@@ -25,14 +25,19 @@ public class Snake_Player extends Entity {
     }
 
     private final LinkedList<Segment> body = new LinkedList<>();
-    private Image headSprite, bodySprite, tailSprite, rotatedSprite;
+    private final Image headSprite;
+    private final Image bodySprite;
+    private final Image tailSprite;
+    private final Image rotatedSprite;
     private int invurnabilityTicks = 0; // Timer for invincibility effect
     private int highscore;
+    private final double speedMultiplier;
 
-    public Snake_Player(int startX, int startY, int initialLength) {
+    public Snake_Player(int startX, int startY, int initialLength, double speedMultiplier) {
         this.x = startX;
         this.y = startY;
         this.direction = Direction.RIGHT;
+        this.speedMultiplier = speedMultiplier;
 
         // Initialize the snake body with the specified initial length
         for (int i = 0; i < initialLength; i++) {
@@ -52,7 +57,7 @@ public class Snake_Player extends Entity {
         Segment last = body.getLast();
         body.add(new Segment(last.x,last.y));
 
-        increaseHighscore(10);
+        increaseHighscore((int) (10 * speedMultiplier)); // Increase score based on speed multiplier
     }
 
     /**

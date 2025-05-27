@@ -47,7 +47,7 @@ public class GameController {
         // Load ItemManager
         itemManager = new ItemManager(GRID_SIZE);
 
-        player = new Snake_Player(5,5, 3);
+        player = new Snake_Player(5,5, 3, settings.getSpeedMultiplier());
 
 
         gameLoop = new GameLoop(settings.getSpeedMultiplier()) {

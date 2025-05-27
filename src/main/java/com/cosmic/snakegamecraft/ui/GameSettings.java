@@ -1,8 +1,8 @@
 package com.cosmic.snakegamecraft.ui;
 
 public class GameSettings {
-    private int gridSize;
-    private double speedMultiplier;
+    private final int gridSize;
+    private final double speedMultiplier;
 
 
     public GameSettings(int gridSize, double speedMultiplier) {

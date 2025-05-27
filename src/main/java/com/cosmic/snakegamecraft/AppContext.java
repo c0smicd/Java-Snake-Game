@@ -6,6 +6,7 @@ public class AppContext {
 
     private static Stage stage;
     private static String username;
+    private static double multiplier = 1.0;
 
     public static void setStage(Stage s){
         stage = s;
@@ -21,5 +22,12 @@ public class AppContext {
 
     public static String getUsername(){
         return username;
+    }
+
+    public static void setMultiplier(double m) {
+        multiplier = m;
+    }
+    public static double getMultiplier() {
+        return multiplier;
     }
 }
