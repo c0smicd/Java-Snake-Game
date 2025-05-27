@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <settings>
+                        
+    
+    
+    
+    
+    <user grid="50" name="cosmic" speed="7.020845285905528"/>
                     
     
     
     
-    <user grid="50" name="cosmic" speed="1.6031746031746041"/>
-                
-    
-    
     
     <user grid="50" name="mario" speed="5.222222222222222"/>
-            
+                
+
 
 
 </settings>

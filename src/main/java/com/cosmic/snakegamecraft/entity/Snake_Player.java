@@ -140,16 +140,14 @@ public class Snake_Player extends Entity {
             else if(i == body.size()-1){
                 // Draw tail
 
+                //TODO: Draw tail based on the i-2 body direction
                 rotatedImage = new ImageView(tailSprite);
-
-                assert (rotatedImage != new ImageView(headSprite));
 
                 spriteToDraw = rotateImage(params, rotatedImage);
 
-
-
-
             }else{
+
+                //TODO: Maybe not needed, body tiles on turn looks also good
 
                 rotatedImage = new ImageView(rotatedSprite);
 
@@ -164,10 +162,13 @@ public class Snake_Player extends Entity {
                 boolean horizontal = prev.y == curr.y && next.y == curr.y;
                 boolean vertical = prev.x == curr.x && next.x == curr.x;
 
-                if(horizontal || vertical) {
+               if (horizontal || vertical) {
                     // Draw body
                     spriteToDraw = bodySprite;
-                }
+                }else{
+                   spriteToDraw = bodySprite;
+               }
+                /*
                 else{
 
                     if(turnRightDown){
@@ -186,8 +187,14 @@ public class Snake_Player extends Entity {
                         spriteToDraw = rotatedImage.snapshot(params, null);
                     }
                 }
+
+                 */
             }
+            //spriteToDraw = rotateImage(params, rotatedImage);
+
             gc.drawImage(Objects.requireNonNull(spriteToDraw), curr.x * TILE_SIZE, curr.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+
+
 
         }
 
@@ -198,22 +205,18 @@ public class Snake_Player extends Entity {
         Image spriteToDraw = null;
         switch(direction){
             case UP -> {
-                System.out.println("Drawing UP");
                 rotatedImage.setRotate(-90); // Up
                 spriteToDraw = rotatedImage.snapshot(params, null);
             }
             case DOWN -> {
-                System.out.println("Drawing DOWN");
                 rotatedImage.setRotate(90); // Down
                 spriteToDraw = rotatedImage.snapshot(params, null);
             }
             case LEFT -> {
-                System.out.println("Drawing LEFT");
                 rotatedImage.setRotate(180); // Left
                 spriteToDraw = rotatedImage.snapshot(params, null);
             }
             case RIGHT -> {
-                System.out.println("Drawing  RIGHT");
                 spriteToDraw = rotatedImage.snapshot(params, null);
             }
 
