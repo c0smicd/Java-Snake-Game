@@ -29,7 +29,7 @@ public class Snake_Player extends Entity {
     private final Image bodySprite;
     private final Image tailSprite;
     private final Image rotatedSprite;
-    private int invurnabilityTicks = 0; // Timer for invincibility effect
+    private int invulnerabilityTicks = 0; // Timer for invincibility effect
     private int highscore;
     private final double speedMultiplier;
 
@@ -75,11 +75,18 @@ public class Snake_Player extends Entity {
      * Activates invincibility for a short duration.
      */
     public void rainbowApple(){
-        invurnabilityTicks = 20;
+        invulnerabilityTicks = (int) (20 * speedMultiplier);
+        /* Speed multiplier speeds up the game internal update, thus
+        the invincibility effect lasts shorter in real time. Hence, multiplying by speedMultiplier.
+
+
+         */
+
+
     }
 
     public boolean isInvulnerable() {
-        return invurnabilityTicks > 0;
+        return invulnerabilityTicks > 0;
     }
 
 
@@ -88,7 +95,7 @@ public class Snake_Player extends Entity {
     public void update() {
 
         // Handle invincibility effect
-        if(invurnabilityTicks > 0) invurnabilityTicks--;
+        if(invulnerabilityTicks > 0) invulnerabilityTicks--;
 
         // Shift body segments
 
