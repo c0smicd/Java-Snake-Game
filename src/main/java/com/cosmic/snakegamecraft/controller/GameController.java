@@ -62,10 +62,10 @@ public class GameController {
         Platform.runLater(() -> {
             gameCanvas.getScene().setOnKeyPressed(event -> {
                 switch (event.getCode()) {
-                    case UP, W    -> player.setDirection(Entity.Direction.UP);
-                    case DOWN, S  -> player.setDirection(Entity.Direction.DOWN);
-                    case LEFT, A  -> player.setDirection(Entity.Direction.LEFT);
-                    case RIGHT, D -> player.setDirection(Entity.Direction.RIGHT);
+                    case UP, W    -> player.queuedDirection(Entity.Direction.UP);
+                    case DOWN, S  -> player.queuedDirection(Entity.Direction.DOWN);
+                    case LEFT, A  -> player.queuedDirection(Entity.Direction.LEFT);
+                    case RIGHT, D -> player.queuedDirection(Entity.Direction.RIGHT);
                 }
             });
         });

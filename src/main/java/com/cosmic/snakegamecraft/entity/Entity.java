@@ -1,12 +1,19 @@
 package com.cosmic.snakegamecraft.entity;
 
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 
 public abstract class Entity {
 
     protected int x, y;
     protected Direction direction;
+    protected Direction queuedDirection = null;
+
+
 
     public enum Direction {
         UP,
@@ -48,6 +55,76 @@ public abstract class Entity {
             this.direction = newDirection;
         }
     }
+
+    /**
+     * Queues a new direction for the entity, especially for the player snake, since the keyhandler runs
+     * concurrently with the game loop.
+     * @param newDirection
+     */
+
+    public void queuedDirection(Direction newDirection) {
+        // Prevent the snake from reversing direction directly
+        if((this.direction == Direction.UP && newDirection != Direction.DOWN) ||
+                (this.direction == Direction.DOWN && newDirection != Direction.UP) ||
+                (this.direction == Direction.LEFT && newDirection != Direction.RIGHT) ||
+                (this.direction == Direction.RIGHT && newDirection != Direction.LEFT)){
+
+            this.queuedDirection = newDirection;
+        }
+
+    }
+
+    protected Image rotateImage (ImageView rotatedImage) {
+        SnapshotParameters params = new SnapshotParameters();
+        params.setFill(Color.TRANSPARENT);
+        Image spriteToDraw = null;
+        switch(direction){
+            case UP -> {
+                rotatedImage.setRotate(-90); // Up
+                spriteToDraw = rotatedImage.snapshot(params, null);
+            }
+            case DOWN -> {
+                rotatedImage.setRotate(90); // Down
+                spriteToDraw = rotatedImage.snapshot(params, null);
+            }
+            case LEFT -> {
+                rotatedImage.setRotate(180); // Left
+                spriteToDraw = rotatedImage.snapshot(params, null);
+            }
+            case RIGHT -> {
+                spriteToDraw = rotatedImage.snapshot(params, null);
+            }
+
+        }
+        return spriteToDraw;
+    }
+
+    protected Image rotateImage (ImageView rotatedImage, Direction tailDirection) {
+        SnapshotParameters params = new SnapshotParameters();
+        params.setFill(Color.TRANSPARENT);
+        Image spriteToDraw = null;
+        switch(direction){
+            case UP -> {
+                rotatedImage.setRotate(-90); // Up
+                spriteToDraw = rotatedImage.snapshot(params, null);
+            }
+            case DOWN -> {
+                rotatedImage.setRotate(90); // Down
+                spriteToDraw = rotatedImage.snapshot(params, null);
+            }
+            case LEFT -> {
+                rotatedImage.setRotate(180); // Left
+                spriteToDraw = rotatedImage.snapshot(params, null);
+            }
+            case RIGHT -> {
+                spriteToDraw = rotatedImage.snapshot(params, null);
+            }
+
+        }
+        return spriteToDraw;
+    }
+
+
 
     public Direction getDirection() {
         return direction;

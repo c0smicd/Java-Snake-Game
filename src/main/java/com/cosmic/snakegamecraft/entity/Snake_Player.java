@@ -94,6 +94,11 @@ public class Snake_Player extends Entity {
     @Override
     public void update() {
 
+        if(queuedDirection != null){
+            this.direction = queuedDirection;
+            queuedDirection = null; // Reset queued direction after applying it
+        }
+
         // Handle invincibility effect
         if(invulnerabilityTicks > 0) invulnerabilityTicks--;
 
@@ -124,26 +129,44 @@ public class Snake_Player extends Entity {
             Segment curr = body.get(i);
             Image spriteToDraw;
 
-            SnapshotParameters params = new SnapshotParameters();
-            params.setFill(Color.TRANSPARENT);
-
-
             ImageView rotatedImage;
 
             if(i==0){
                 // Draw head
                 rotatedImage = new ImageView(headSprite);
 
-                spriteToDraw = rotateImage(params, rotatedImage);
+                spriteToDraw = rotateImage(rotatedImage);
 
             }
             else if(i == body.size()-1){
                 // Draw tail
 
-                //TODO: Draw tail based on the i-2 body direction
+                //FIXME: This is not working properly, tail direction is not correct
+                Segment tail = body.get(i);
+                Segment beforeTail = body.get(i - 1);
+
+                Direction tailDirection;
+
+
+                if(beforeTail.x < tail.x) {
+                    tailDirection = Direction.LEFT; // Tail is facing left
+                } else if(beforeTail.x > tail.x) {
+                    tailDirection = Direction.RIGHT; // Tail is facing right
+                } else if(beforeTail.y < tail.y) {
+                    tailDirection = Direction.UP; // Tail is facing up
+                } else {
+                    tailDirection = Direction.DOWN; // Tail is facing down
+                }
+
+                System.out.println("Tail direction: " + tailDirection);
+
+
+
                 rotatedImage = new ImageView(tailSprite);
 
-                spriteToDraw = rotateImage(params, rotatedImage);
+                spriteToDraw = rotateImage(rotatedImage, tailDirection);
+
+
 
             }else{
 
@@ -201,28 +224,7 @@ public class Snake_Player extends Entity {
 
     }
 
-    private Image rotateImage(SnapshotParameters params, ImageView rotatedImage) {
-        Image spriteToDraw = null;
-        switch(direction){
-            case UP -> {
-                rotatedImage.setRotate(-90); // Up
-                spriteToDraw = rotatedImage.snapshot(params, null);
-            }
-            case DOWN -> {
-                rotatedImage.setRotate(90); // Down
-                spriteToDraw = rotatedImage.snapshot(params, null);
-            }
-            case LEFT -> {
-                rotatedImage.setRotate(180); // Left
-                spriteToDraw = rotatedImage.snapshot(params, null);
-            }
-            case RIGHT -> {
-                spriteToDraw = rotatedImage.snapshot(params, null);
-            }
 
-        }
-        return spriteToDraw;
-    }
 
     private void increaseHighscore(int amount) {
         highscore += amount;
