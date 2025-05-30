@@ -23,8 +23,7 @@ import javafx.scene.control.Label;
 
 import java.util.Optional;
 
-import static com.cosmic.snakegamecraft.util.Constants.GRID_SIZE;
-import static com.cosmic.snakegamecraft.util.Constants.TILE_SIZE;
+import static com.cosmic.snakegamecraft.util.Constants.*;
 
 public class GameController {
 
@@ -137,7 +136,7 @@ public class GameController {
     }
 
     private void gameLoopMethod(GameSettings settings) {
-        gameLoop = new GameLoop(settings.getSpeedMultiplier()) {
+        gameLoop = new GameLoop(settings.getSpeedMultiplier() * STANDARD_SPEED) {
 
             @Override
             public void update() {
