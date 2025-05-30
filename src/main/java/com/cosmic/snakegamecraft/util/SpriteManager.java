@@ -23,6 +23,7 @@ public class SpriteManager {
     private static Image bgScore;
 
 
+
     public static void loadSprites(){
         // Loading snake sprites from the resources folder
         snakeHead = load("snakes/player/head_snake.png");

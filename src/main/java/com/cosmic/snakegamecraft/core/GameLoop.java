@@ -5,7 +5,7 @@ import javafx.animation.AnimationTimer;
 public abstract class GameLoop extends AnimationTimer {
 
     private long lastUpdate = 0;
-    private final long interval;
+    private  long interval;
 
     public GameLoop(double tps) {
         this.interval = (long) (1_000_000_000 / tps); // Convert TPS to nanoseconds
@@ -20,4 +20,9 @@ public abstract class GameLoop extends AnimationTimer {
     }
 
     public abstract void update();
+
+    public void setTicksPerSecond(double tps) {
+        this.lastUpdate = 0; // Reset last update time
+        this.interval = (long) (1_000_000_000 / tps); // Recalculate interval
+    }
 }

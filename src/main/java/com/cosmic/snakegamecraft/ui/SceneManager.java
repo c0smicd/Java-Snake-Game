@@ -20,7 +20,7 @@ public class SceneManager {
         switchScene("login-view.fxml", "Login");
     }
 
-    public void showMenu(String username){
+    public void showMenu(){
         switchScene("menu-view.fxml", "Main Menu");
     }
 

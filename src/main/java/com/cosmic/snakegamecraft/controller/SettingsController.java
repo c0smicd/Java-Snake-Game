@@ -37,14 +37,19 @@ public class SettingsController {
 
     @FXML
     private void handleSave(){
+
+        if(AppContext.getUsername() == "guest") {
+            return;
+        }
+
         int grid = Integer.parseInt(gridField.getText());
         double speed = (speedSlider.getValue() * 10) / 10; // truncate to one decimal place
         SettingsLoader.saveSettings(new GameSettings(grid, speed), AppContext.getUsername());
-        sceneManager.showMenu(AppContext.getUsername());
+        sceneManager.showMenu();
     }
 
     @FXML
     private void handleBack() {
-        sceneManager.showMenu(AppContext.getUsername());
+        sceneManager.showMenu();
     }
 }

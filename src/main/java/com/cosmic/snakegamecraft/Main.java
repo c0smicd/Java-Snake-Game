@@ -12,7 +12,7 @@ public class Main extends Application {
 
          AppContext.setStage(primaryStage);
          primaryStage.setResizable(false);
-         new SceneManager(primaryStage).showLogin();
+         new SceneManager(primaryStage).showMenu();
     }
 
     public static void main(String[] args) {

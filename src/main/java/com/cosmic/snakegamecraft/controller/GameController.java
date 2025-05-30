@@ -116,7 +116,7 @@ public class GameController {
 
                 } else if (button == menuButton) {
                     // Go back to the menu
-                    sceneManager.showMenu(AppContext.getUsername());
+                    sceneManager.showMenu();
                 }
             });
 

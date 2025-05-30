@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 public class AppContext {
 
     private static Stage stage;
-    private static String username;
+    private static String username = "guest";
     private static double multiplier = 1.0;
 
     public static void setStage(Stage s){
@@ -29,5 +29,8 @@ public class AppContext {
     }
     public static double getMultiplier() {
         return multiplier;
+    }
+    public static boolean isLoggedIn() {
+        return !username.equals("guest");
     }
 }

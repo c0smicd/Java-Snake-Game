@@ -16,7 +16,7 @@ public class LoginController {
         if(!username.isEmpty()){
             SceneManager sceneManger = new SceneManager(AppContext.getStage());
             AppContext.setUsername(username);
-            sceneManger.showMenu(username);
+            sceneManger.showMenu();
         }
     }
 
