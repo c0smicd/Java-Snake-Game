@@ -41,4 +41,24 @@
         </VBox>
     </AnchorPane>
 
+
+    <!-- Settings Overlay -->
+    <AnchorPane fx:id="settingsOverlay" visible="false" prefWidth="640" prefHeight="640"
+                style="-fx-background-color: rgba(0,0,0,0.6);">
+        <VBox layoutX="150" layoutY="150" spacing="10"
+              style="-fx-background-color: white; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10;"
+              alignment="CENTER">
+            <Label text="Settings" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+            <HBox spacing="10" alignment="CENTER">
+                <Label fx:id="speedValueLabel" text="Speed: 3"/>
+                <Slider fx:id="speedSlider" min="1" max="10" value="3" blockIncrement="0.1" />
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER">
+                <Button fx:id="saveButton" text="Save" onAction="#saveSettings"/>
+                <Button fx:id="disgardButton" text="Cancel" onAction="#cancelSettings"/>
+            </HBox>
+        </VBox>
+    </AnchorPane>
 </StackPane>

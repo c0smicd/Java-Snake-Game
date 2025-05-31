@@ -18,7 +18,7 @@ public class SettingsLoader {
     public static GameSettings loadSettings(String username) {
         try {
             File file = new File(FILE_PATH);
-            if (!file.exists()) return new GameSettings(50, 1.0);
+            if (!file.exists()) return new GameSettings(3.0);
 
 
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -28,15 +28,14 @@ public class SettingsLoader {
             for (int i = 0; i < users.getLength(); i++) {
                 Element user = (Element) users.item(i);
                 if (user.getAttribute("name").equals(username)) {
-                    int grid = Integer.parseInt(user.getAttribute("grid"));
                     double speed = Double.parseDouble(user.getAttribute("speed"));
-                    return new GameSettings(grid, speed);
+                    return new GameSettings(speed);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new GameSettings(50, 1.0);
+        return new GameSettings(3.0);
     }
 
     public static void saveSettings(GameSettings settings, String username) {
@@ -72,7 +71,6 @@ public class SettingsLoader {
                 root.appendChild(userElem);
             }
 
-            userElem.setAttribute("grid", String.valueOf(settings.getGridSize()));
             userElem.setAttribute("speed", String.valueOf(settings.getSpeedMultiplier()));
 
             Transformer transformer = TransformerFactory.newInstance().newTransformer();

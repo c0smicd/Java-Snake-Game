@@ -2,6 +2,7 @@ package com.cosmic.snakegamecraft.controller;
 
 import com.cosmic.snakegamecraft.AppContext;
 import com.cosmic.snakegamecraft.ui.GameMode;
+import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.ui.SceneManager;
 import com.cosmic.snakegamecraft.util.SettingsLoader;
 import javafx.animation.KeyFrame;
@@ -22,6 +23,8 @@ public class MenuController {
 
     private final SceneManager sceneManager = new SceneManager(AppContext.getStage());
 
+    private GameSettings settings;
+
     @FXML
     private Button loginButton;
     @FXML
@@ -30,16 +33,28 @@ public class MenuController {
     private TextField usernameField;
     @FXML
     private Label tipBox;
+    @FXML
+    private AnchorPane settingsOverlay;
+    @FXML
+    private Slider speedSlider;
+    @FXML
+    private Label speedValueLabel;
 
 
+    private Random rand = new Random();
+
+
+    //TODO: Outsource the random tip function into TIPS
     @FXML
     public void initialize() {
 
-        Random rand = new Random();
+
 
         String tip = TIPS.get(rand.nextInt(TIPS.size()));
         if(AppContext.isLoggedIn()){
             loginButton.setTooltip(new Tooltip("You are logged in as " + AppContext.getUsername()));
+            speedSlider.setValue(settings.getSpeedMultiplier());
+            speedValueLabel.setText("Speed: " + settings.getSpeedMultiplier());
             tipBox.setText(tip);
         }else{
             loginButton.setTooltip(new Tooltip("You are not logged in. Click to log in."));
@@ -62,7 +77,9 @@ public class MenuController {
         tipCycle.setCycleCount(Timeline.INDEFINITE);
         tipCycle.play();
 
-
+        speedSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            speedValueLabel.setText( "Speed: " + String.format("%.1f", newVal.doubleValue())); // format to one decimal place
+        });
 
     }
 
@@ -83,7 +100,7 @@ public class MenuController {
 
     @FXML
     public void handleSettings() {
-        sceneManager.showSettings();
+        settingsOverlay.setVisible(true);
     }
 
     @FXML
@@ -105,7 +122,10 @@ public class MenuController {
             AppContext.setUsername(username);
             loginOverlay.setVisible(false);
             loginButton.setTooltip(new Tooltip("You are logged in as " + AppContext.getUsername()));
-            SettingsLoader.loadSettings(AppContext.getUsername());
+            settings = SettingsLoader.loadSettings(AppContext.getUsername());
+            speedSlider.setValue(settings.getSpeedMultiplier());
+            speedValueLabel.setText("Speed: " + String.format("%.1f", settings.getSpeedMultiplier()));
+            tipBox.setText(TIPS.get(rand.nextInt(TIPS.size())));
         }
     }
 
@@ -119,6 +139,24 @@ public class MenuController {
         String newTip = TIPS.get(new Random().nextInt(TIPS.size()));
 
         tipBox.setText(newTip);
+    }
+
+    @FXML
+    private void saveSettings(){
+        if(AppContext.getUsername() == "guest") {
+            settingsOverlay.setVisible(false);
+            return;
+        }
+
+        double speed = (double) Math.round((speedSlider.getValue() * 10)) / 10; // truncate to one decimal place
+        System.out.println(speed);
+        SettingsLoader.saveSettings(new GameSettings(speed), AppContext.getUsername());
+        settingsOverlay.setVisible(false);
+    }
+
+    @FXML
+    private void cancelSettings(){
+        settingsOverlay.setVisible(false);
     }
 
 }

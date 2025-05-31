@@ -2,6 +2,7 @@ package com.cosmic.snakegamecraft;
 
 import com.cosmic.snakegamecraft.ui.GameMode;
 import javafx.stage.Stage;
+import org.jetbrains.annotations.NotNull;
 
 public class AppContext {
 
@@ -22,6 +23,7 @@ public class AppContext {
         username = name;
     }
 
+    @NotNull
     public static String getUsername(){
         return username;
     }

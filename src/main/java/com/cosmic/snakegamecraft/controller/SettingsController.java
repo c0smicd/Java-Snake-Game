@@ -26,7 +26,6 @@ public class SettingsController {
     public void initialize() {
         // Load current settings
         GameSettings settings = SettingsLoader.loadSettings(AppContext.getUsername());
-        gridField.setText(String.valueOf(settings.getGridSize()));
         speedSlider.setValue(settings.getSpeedMultiplier());
 
         speedSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
@@ -44,7 +43,7 @@ public class SettingsController {
 
         int grid = Integer.parseInt(gridField.getText());
         double speed = (speedSlider.getValue() * 10) / 10; // truncate to one decimal place
-        SettingsLoader.saveSettings(new GameSettings(grid, speed), AppContext.getUsername());
+        SettingsLoader.saveSettings(new GameSettings(speed), AppContext.getUsername());
         sceneManager.showMenu();
     }
 
