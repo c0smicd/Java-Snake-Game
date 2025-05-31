@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.cosmic.snakegamecraft.util.Constants.INVULNERABILITY_DURATION;
 import static com.cosmic.snakegamecraft.util.Constants.TILE_SIZE;
 
 public class Snake_Player extends Entity {
@@ -75,7 +76,7 @@ public class Snake_Player extends Entity {
      * Activates invincibility for a short duration.
      */
     public void rainbowApple(){
-        invulnerabilityTicks = (int) (20 * speedMultiplier);
+        invulnerabilityTicks = (int) (INVULNERABILITY_DURATION * speedMultiplier);
         /* Speed multiplier speeds up the game internal update, thus
         the invincibility effect lasts shorter in real time. Hence, multiplying by speedMultiplier.
 

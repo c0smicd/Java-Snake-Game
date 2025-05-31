@@ -1,5 +1,6 @@
 package com.cosmic.snakegamecraft;
 
+import com.cosmic.snakegamecraft.ui.GameMode;
 import javafx.stage.Stage;
 
 public class AppContext {
@@ -7,6 +8,7 @@ public class AppContext {
     private static Stage stage;
     private static String username = "guest";
     private static double multiplier = 1.0;
+    private static GameMode gameMode = GameMode.CLASSIC;
 
     public static void setStage(Stage s){
         stage = s;
@@ -32,5 +34,13 @@ public class AppContext {
     }
     public static boolean isLoggedIn() {
         return !username.equals("guest");
+    }
+
+    public static void setGameMode(GameMode mode) {
+        gameMode = mode;
+    }
+
+    public static GameMode getGameMode() {
+        return gameMode;
     }
 }

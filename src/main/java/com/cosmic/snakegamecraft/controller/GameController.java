@@ -8,6 +8,7 @@ import com.cosmic.snakegamecraft.logic.HighscoreManager;
 import com.cosmic.snakegamecraft.logic.Item;
 import com.cosmic.snakegamecraft.logic.ItemManager;
 import com.cosmic.snakegamecraft.logic.ItemType;
+import com.cosmic.snakegamecraft.ui.GameMode;
 import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.ui.SceneManager;
 import com.cosmic.snakegamecraft.util.SettingsLoader;
@@ -35,6 +36,8 @@ public class GameController {
 
     private final SceneManager sceneManager = new SceneManager(AppContext.getStage());
 
+    private GameMode gameMode = AppContext.getGameMode();
+
     private GameLoop gameLoop;
     private Snake_Player player;
     private ItemManager itemManager;
@@ -50,14 +53,13 @@ public class GameController {
         // Load ItemManager
         itemManager = new ItemManager(GRID_SIZE);
 
-        player = new Snake_Player(5,5, 3, settings.getSpeedMultiplier());
+        player = new Snake_Player(5,5, INITIAL_SNAKE_LENGTH, settings.getSpeedMultiplier());
 
 
         gameLoopMethod(settings);
 
 
-        // Directional input handling
-        // TODO: Has problems with multiple key presses, needs to be fixed
+        // Directional input handling, handled via a queue to prevent asynchronous issues
         Platform.runLater(() -> {
             gameCanvas.getScene().setOnKeyPressed(event -> {
                 switch (event.getCode()) {
@@ -147,10 +149,11 @@ public class GameController {
 
                 if(collectedItem != null) {
                     typeCheck(collectedItem);
-                    scoreLabel.setText("Score: "+player.getHighscore());
+                    scoreLabel.setText("Score: " + player.getHighscore());
                 }
                 // Render items
-                itemManager.spawnItem(ItemType.APPLE, player.getOccupiedPoints());
+
+                spawnItems();
 
                 boolean isDead = (!player.isInvulnerable() && player.checkSelfCollision() || player.checkWallCollision(GRID_SIZE));
 
@@ -181,6 +184,19 @@ public class GameController {
             }
         }
         itemManager.removeItem(collidedItem);
+    }
+
+    private void spawnItems(){
+        switch(gameMode){
+            case CLASSIC -> itemManager.spawnItem(ItemType.APPLE, player.getOccupiedPoints());
+            //TODO: Implement different item spawning logic for each game mode
+            case MODERN, CRAZY -> {
+                itemManager.spawnItem(ItemType.APPLE, player.getOccupiedPoints());
+                itemManager.spawnItem(ItemType.BAD_APPLE, player.getOccupiedPoints());
+                itemManager.spawnItem(ItemType.GOLDEN_APPLE, player.getOccupiedPoints());
+                itemManager.spawnItem(ItemType.RAINBOW_APPLE, player.getOccupiedPoints());
+            }
+        }
     }
 
 

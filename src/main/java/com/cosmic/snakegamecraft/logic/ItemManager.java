@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.cosmic.snakegamecraft.util.Constants.TILE_SIZE;
+import static com.cosmic.snakegamecraft.util.Constants.*;
 
 public class ItemManager {
     private final List<Item> items = new ArrayList<>();
@@ -27,6 +27,15 @@ public class ItemManager {
         if(exitsItem(type)){
             System.out.println("Item of type " + type + " already exists, not spawning again." + items.get(0).getType() + " " + items.get(0).getX() + " " + items.get(0).getY());
             return; // Item of this type already exists, do not spawn again
+        }
+
+        if(type == ItemType.BAD_APPLE && rand.nextInt(100) < BAD_APPLE_CHANCE) {
+            System.out.println("Bad apple not spawned due to random chance.");
+            return;
+
+        }else if(type == ItemType.RAINBOW_APPLE && rand.nextInt(100) < RAINBOW_APPLE_CHANCE) {
+            System.out.println("Rainbow apple not spawned due to random chance.");
+            return;
         }
 
         int  x, y;

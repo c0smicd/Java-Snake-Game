@@ -1,5 +1,6 @@
 package com.cosmic.snakegamecraft.ui;
 
+import com.cosmic.snakegamecraft.AppContext;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,9 +17,6 @@ public class SceneManager {
         this.stage = stage;
     }
 
-    public void showLogin(){
-        switchScene("login-view.fxml", "Login");
-    }
 
     public void showMenu(){
         switchScene("menu-view.fxml", "Main Menu");
@@ -29,7 +27,14 @@ public class SceneManager {
     }
 
     public void startGame(GameMode mode){
-        switchScene("game-view.fxml", "Game - " + mode.toString());
+
+        switch (mode){
+            case CLASSIC -> switchScene("game-view.fxml", "Game - Classic Mode");
+            case MODERN -> switchScene("game-modern-view.fxml", "Game - Modern Mode");
+            case CRAZY -> switchScene("game-crazy-view.fxml", "Game - Crazy Mode");
+        }
+
+        AppContext.setGameMode(mode);
     }
 
     public void showHighscores(){

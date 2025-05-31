@@ -4,43 +4,41 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane xmlns="http://javafx.com/javafx/17.0.12"
-           xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.cosmic.snakegamecraft.controller.MenuController"
-           stylesheets="@../css/menu-style.css"
-           prefWidth="640" prefHeight="640">
+<StackPane prefHeight="640" prefWidth="640" stylesheets="@../css/menu-style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosmic.snakegamecraft.controller.MenuController">
 
     <!-- Main Menu Layer -->
-    <AnchorPane fx:id="menuPane" prefWidth="640" prefHeight="640">
+    <AnchorPane fx:id="menuPane" prefHeight="643.0" prefWidth="640">
         <children>
-            <VBox alignment="CENTER" layoutX="88.0" layoutY="60.0" spacing="12"/>
+            <VBox alignment="CENTER" layoutX="88.0" layoutY="60.0" spacing="12" />
             <Label layoutX="246.0" layoutY="96.0" prefHeight="41.0" prefWidth="149.0" text="Snake Game">
                 <font>
-                    <Font name="System Bold" size="23.0"/>
+                    <Font name="System Bold" size="23.0" />
                 </font>
             </Label>
-            <Button fx:id="classicModeButton" layoutX="45.0" layoutY="221.0" onAction="#handleClassicMode" text="Classic Mode"/>
-            <Button fx:id="modernModeButton" layoutX="246.0" layoutY="221.0" onAction="#handleModernMode" text="Modern Mode"/>
-            <Button fx:id="crazyModeButton" layoutX="457.0" layoutY="221.0" onAction="#handleCrazyMode" text="Crazy Mode"/>
-            <Button fx:id="highscoreButton" layoutX="264.0" layoutY="365.0" onAction="#handleHighscores" text="Highscores"/>
-            <Button fx:id="settingsButton" layoutX="537.0" layoutY="544.0" onAction="#handleSettings"/>
-            <Button fx:id="loginButton" layoutX="45.0" layoutY="544.0" onAction="#handleLogin" text="Login"/>
+            <Button fx:id="classicModeButton" layoutX="45.0" layoutY="221.0" onAction="#handleClassicMode" text="Classic Mode" />
+            <Button fx:id="modernModeButton" layoutX="246.0" layoutY="221.0" onAction="#handleModernMode" text="Modern Mode" />
+            <Button fx:id="crazyModeButton" layoutX="457.0" layoutY="221.0" onAction="#handleCrazyMode" text="Crazy Mode" />
+            <Button fx:id="highscoreButton" layoutX="264.0" layoutY="365.0" onAction="#handleHighscores" text="Highscores" />
+            <Button fx:id="settingsButton" layoutX="537.0" layoutY="544.0" onAction="#handleSettings" />
+            <Button fx:id="loginButton" layoutX="45.0" layoutY="544.0" onAction="#handleLogin" text="Login" />
+
+            <Label fx:id="tipBox" textAlignment="CENTER" wrapText="true" layoutX="139.0" layoutY="19.0" onMouseClicked="#handleTipClick">
+            <font>
+               <Font size="15.0" />
+            </font></Label>
         </children>
     </AnchorPane>
 
     <!-- Login Overlay -->
-    <AnchorPane fx:id="loginOverlay" visible="false" prefWidth="640" prefHeight="640"
-                style="-fx-background-color: rgba(0,0,0,0.6);">
-        <VBox alignment="CENTER" spacing="12" layoutX="200" layoutY="200"
-              style="-fx-background-color: white; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10;">
-            <Label text="Login" style="-fx-font-size: 18px;"/>
+    <AnchorPane fx:id="loginOverlay" prefHeight="640" prefWidth="640" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
+        <VBox alignment="CENTER" layoutX="200" layoutY="200" spacing="12" style="-fx-background-color: white; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10;">
+            <Label style="-fx-font-size: 18px;" text="Login" />
             <TextField fx:id="usernameField" promptText="Enter your name" />
-            <HBox spacing="10" alignment="CENTER">
-                <Button text="OK" onAction="#submitLogin"/>
-                <Button text="Cancel" onAction="#cancelLogin"/>
+            <HBox alignment="CENTER" spacing="10">
+                <Button fx:id="submitButton" onAction="#submitLogin" text="OK" />
+                <Button fx:id="cancelButton" onAction="#cancelLogin" text="Cancel" />
             </HBox>
         </VBox>
     </AnchorPane>
 
 </StackPane>
-
