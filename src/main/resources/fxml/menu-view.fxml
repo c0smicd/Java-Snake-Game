@@ -10,7 +10,7 @@
     <AnchorPane fx:id="menuPane" prefHeight="643.0" prefWidth="640">
         <children>
             <VBox alignment="CENTER" layoutX="88.0" layoutY="60.0" spacing="12" />
-            <Label layoutX="246.0" layoutY="96.0" prefHeight="41.0" prefWidth="149.0" text="Snake Game">
+            <Label layoutX="259.0" layoutY="104.0" prefHeight="41.0" prefWidth="149.0" text="Snake Game">
                 <font>
                     <Font name="System Bold" size="23.0" />
                 </font>
@@ -22,7 +22,7 @@
             <Button fx:id="settingsButton" layoutX="537.0" layoutY="544.0" onAction="#handleSettings" />
             <Button fx:id="loginButton" layoutX="45.0" layoutY="544.0" onAction="#handleLogin" text="Login" />
 
-            <Label fx:id="tipBox" textAlignment="CENTER" wrapText="true" layoutX="139.0" layoutY="19.0" onMouseClicked="#handleTipClick">
+            <Label fx:id="tipBox" layoutX="139.0" layoutY="19.0" onMouseClicked="#handleTipClick" textAlignment="CENTER" wrapText="true">
             <font>
                <Font size="15.0" />
             </font></Label>
@@ -43,21 +43,18 @@
 
 
     <!-- Settings Overlay -->
-    <AnchorPane fx:id="settingsOverlay" visible="false" prefWidth="640" prefHeight="640"
-                style="-fx-background-color: rgba(0,0,0,0.6);">
-        <VBox layoutX="150" layoutY="150" spacing="10"
-              style="-fx-background-color: white; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10;"
-              alignment="CENTER">
-            <Label text="Settings" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+    <AnchorPane fx:id="settingsOverlay" prefHeight="640" prefWidth="640" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
+        <VBox alignment="CENTER" layoutX="200" layoutY="200" prefWidth="258.0" spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10;">
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Settings" />
 
-            <HBox spacing="10" alignment="CENTER">
-                <Label fx:id="speedValueLabel" text="Speed: 3"/>
-                <Slider fx:id="speedSlider" min="1" max="10" value="3" blockIncrement="0.1" />
+            <HBox alignment="CENTER" spacing="10">
+                <Label fx:id="speedValueLabel" text="Speed: 1.5" />
+                <Slider fx:id="speedSlider" blockIncrement="0.1" max="10" min="1" value="1.5" />
             </HBox>
 
-            <HBox spacing="10" alignment="CENTER">
-                <Button fx:id="saveButton" text="Save" onAction="#saveSettings"/>
-                <Button fx:id="disgardButton" text="Cancel" onAction="#cancelSettings"/>
+            <HBox alignment="CENTER" spacing="10">
+                <Button fx:id="saveButton" onAction="#saveSettings" text="Save" />
+                <Button fx:id="disgardButton" onAction="#cancelSettings" text="Cancel" />
             </HBox>
         </VBox>
     </AnchorPane>

@@ -18,7 +18,7 @@ public class SettingsLoader {
     public static GameSettings loadSettings(String username) {
         try {
             File file = new File(FILE_PATH);
-            if (!file.exists()) return new GameSettings(3.0);
+            if (!file.exists()) return new GameSettings(1.0);
 
 
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -35,7 +35,7 @@ public class SettingsLoader {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new GameSettings(3.0);
+        return new GameSettings(1.0);
     }
 
     public static void saveSettings(GameSettings settings, String username) {
