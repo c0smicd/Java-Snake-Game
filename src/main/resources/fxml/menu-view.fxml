@@ -22,7 +22,7 @@
             <Button fx:id="settingsButton" layoutX="537.0" layoutY="544.0" onAction="#handleSettings" />
             <Button fx:id="loginButton" layoutX="45.0" layoutY="544.0" onAction="#handleLogin" text="Login" />
 
-            <Label fx:id="tipBox" layoutX="139.0" layoutY="19.0" onMouseClicked="#handleTipClick" textAlignment="CENTER" wrapText="true">
+            <Label fx:id="tipBox" layoutX="150.0" layoutY="19.0" onMouseClicked="#handleTipClick" textAlignment="CENTER" wrapText="true">
             <font>
                <Font size="15.0" />
             </font></Label>

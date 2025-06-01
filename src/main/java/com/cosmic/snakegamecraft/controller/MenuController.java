@@ -5,8 +5,10 @@ import com.cosmic.snakegamecraft.ui.GameMode;
 import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.ui.SceneManager;
 import com.cosmic.snakegamecraft.util.SettingsLoader;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -64,7 +66,7 @@ public class MenuController {
 
 
         Timeline tipCycle = new Timeline(
-                new KeyFrame(Duration.minutes(3), e -> {
+                new KeyFrame(Duration.seconds(15), e -> {
                     String newTip = TIPS.get(rand.nextInt(TIPS.size()));
                     if(!AppContext.isLoggedIn()){
                         tipBox.setText(TIPS.getLast());
@@ -73,6 +75,10 @@ public class MenuController {
                     }
                 })
         );
+
+        maybeStartBuzzingTipBox();
+
+
 
         tipCycle.setCycleCount(Timeline.INDEFINITE);
         tipCycle.play();
@@ -136,6 +142,8 @@ public class MenuController {
 
     @FXML
     private void handleTipClick(){
+
+        if(!AppContext.isLoggedIn()) return;
         String newTip = TIPS.get(new Random().nextInt(TIPS.size()));
 
         tipBox.setText(newTip);
@@ -157,6 +165,23 @@ public class MenuController {
     @FXML
     private void cancelSettings(){
         settingsOverlay.setVisible(false);
+    }
+
+    private void maybeStartBuzzingTipBox() {
+        if (!AppContext.isLoggedIn()) {
+            TranslateTransition buzz = new TranslateTransition(Duration.millis(100), tipBox);
+            buzz.setFromX(-3);
+            buzz.setToX(3);
+            buzz.setAutoReverse(true);
+            buzz.setCycleCount(6); // back and forth 3 times
+
+            Timeline repeat = new Timeline(
+                    new KeyFrame(Duration.seconds(0), e -> buzz.play()),
+                    new KeyFrame(Duration.seconds(6)) // repeat every 6 seconds
+            );
+            repeat.setCycleCount(Animation.INDEFINITE);
+            repeat.play();
+        }
     }
 
 }
