@@ -9,6 +9,7 @@ public class Tips {
             "🍏 Modern Mode has bonus apples and difficulty scaling.",
             "💡 Play Crazy Mode for AI enemies and weapons!",
             "🔄 Your snake gets faster as it grows in Modern Mode.",
+            "💡 The Highscore scales with your speed multiplier.",
             "💾 Login to save highscores and custom settings."
     );
 
