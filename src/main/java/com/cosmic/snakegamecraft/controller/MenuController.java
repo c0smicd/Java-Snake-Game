@@ -52,6 +52,8 @@ public class MenuController {
 
         String tip = TIPS.get(rand.nextInt(TIPS.size()));
         if(AppContext.isLoggedIn()){
+            // For restart
+            settings = AppContext.getSettings();
             loginButton.setTooltip(new Tooltip("You are logged in as " + AppContext.getUsername()));
             speedSlider.setValue(settings.getSpeedMultiplier());
             speedValueLabel.setText("Speed: " + settings.getSpeedMultiplier());
@@ -126,6 +128,8 @@ public class MenuController {
             speedSlider.setValue(settings.getSpeedMultiplier());
             speedValueLabel.setText("Speed: " + String.format("%.1f", settings.getSpeedMultiplier()));
             tipBox.setText(TIPS.get(rand.nextInt(TIPS.size())));
+
+            AppContext.setSettings(settings);
         }
     }
 

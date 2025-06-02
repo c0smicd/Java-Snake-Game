@@ -3,11 +3,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?size = "740" ?>
 
 <StackPane prefHeight="640" prefWidth="640" stylesheets="@../css/menu-style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosmic.snakegamecraft.controller.MenuController">
 
     <!-- Main Menu Layer -->
-    <AnchorPane fx:id="menuPane" prefHeight="643.0" prefWidth="640">
+    <AnchorPane fx:id="menuPane" prefHeight="640" prefWidth="640">
         <children>
             <VBox alignment="CENTER" layoutX="88.0" layoutY="60.0" spacing="12" />
             <Label layoutX="259.0" layoutY="104.0" prefHeight="41.0" prefWidth="149.0" text="Snake Game">

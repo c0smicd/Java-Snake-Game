@@ -1,6 +1,7 @@
 package com.cosmic.snakegamecraft;
 
 import com.cosmic.snakegamecraft.ui.GameMode;
+import com.cosmic.snakegamecraft.ui.GameSettings;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,6 +11,7 @@ public class AppContext {
     private static String username = "guest";
     private static double multiplier = 1.0;
     private static GameMode gameMode = GameMode.CLASSIC;
+    private static GameSettings settings;
 
     public static void setStage(Stage s){
         stage = s;
@@ -28,12 +30,6 @@ public class AppContext {
         return username;
     }
 
-    public static void setMultiplier(double m) {
-        multiplier = m;
-    }
-    public static double getMultiplier() {
-        return multiplier;
-    }
     public static boolean isLoggedIn() {
         return !username.equals("guest");
     }
@@ -45,4 +41,13 @@ public class AppContext {
     public static GameMode getGameMode() {
         return gameMode;
     }
+
+    public static void setSettings(GameSettings settings) {
+        AppContext.settings = settings;
+    }
+    public static GameSettings getSettings() {
+        assert(settings != null) : "Settings have not been initialized!";
+        return settings;
+    }
 }
+

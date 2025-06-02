@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <settings>
-            
+                        
     
     
-    <user name="cosmic" speed="4.4"/>
-        
+    
+    
+    
+    <user name="cosmic" speed="10.0"/>
+                    
+
+
+
 
 </settings>
