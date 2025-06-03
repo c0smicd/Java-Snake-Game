@@ -43,7 +43,7 @@ public class MenuController {
     private Label speedValueLabel;
 
 
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
 
     //TODO: Outsource the random tip function into TIPS

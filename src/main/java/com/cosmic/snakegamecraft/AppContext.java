@@ -9,7 +9,7 @@ public class AppContext {
 
     private static Stage stage;
     private static String username = "guest";
-    private static double multiplier = 1.0;
+    private static final double multiplier = 1.0;
     private static GameMode gameMode = GameMode.CLASSIC;
     private static GameSettings settings;
 
