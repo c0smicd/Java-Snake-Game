@@ -52,9 +52,17 @@ public class MenuController {
 
 
 
-        String tip = TIPS.get(rand.nextInt(TIPS.size()));
+
+
+        speedSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            speedValueLabel.setText( "Speed: " + String.format("%.1f", newVal.doubleValue())); // format to one decimal place
+        });
+
         if(AppContext.isLoggedIn()){
             // For restart
+
+            String tip = TIPS.get(rand.nextInt(TIPS.size() - 1)); // Last tip is for not logged in
+
             settings = AppContext.getSettings();
             loginButton.setTooltip(new Tooltip("You are logged in as " + AppContext.getUsername()));
             speedSlider.setValue(settings.getSpeedMultiplier());
@@ -81,9 +89,7 @@ public class MenuController {
         tipCycle.setCycleCount(Timeline.INDEFINITE);
         tipCycle.play();
 
-        speedSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
-            speedValueLabel.setText( "Speed: " + String.format("%.1f", newVal.doubleValue())); // format to one decimal place
-        });
+
 
         maybeStartBuzzingTipBox();
 
@@ -146,7 +152,7 @@ public class MenuController {
     private void handleTipClick(){
 
         if(!AppContext.isLoggedIn()) return;
-        String newTip = TIPS.get(new Random().nextInt(TIPS.size()));
+        String newTip = TIPS.get(new Random().nextInt(TIPS.size() - 1));
 
         tipBox.setText(newTip);
     }
@@ -160,8 +166,12 @@ public class MenuController {
 
         double speed = (double) Math.round((speedSlider.getValue() * 10)) / 10; // truncate to one decimal place
         System.out.println(speed);
+        settings = new GameSettings(speed);
+
         SettingsLoader.saveSettings(new GameSettings(speed), AppContext.getUsername());
         settingsOverlay.setVisible(false);
+
+        AppContext.setSettings(settings);
     }
 
     @FXML
