@@ -15,7 +15,7 @@ import javafx.scene.control.Label;
 
 import static com.cosmic.snakegamecraft.util.Constants.*;
 
-public class GameController extends AbstractGameController {
+public class ClassicGameModeController extends AbstractGameController {
 
     @FXML
     private Canvas gameCanvas;

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="704" prefWidth="640" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosmic.snakegamecraft.controller.GameController">
+<BorderPane prefHeight="704" prefWidth="640" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosmic.snakegamecraft.controller.ClassicGameModeController">
 
     <top>
         <HBox>
