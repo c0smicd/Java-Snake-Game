@@ -22,7 +22,7 @@ import java.util.Optional;
 
 import static com.cosmic.snakegamecraft.util.Constants.GRID_SIZE;
 import static com.cosmic.snakegamecraft.util.Constants.TILE_SIZE;
-
+@SuppressWarnings("all")
 public abstract class AbstractGameController {
 
     protected Snake_Player player;
