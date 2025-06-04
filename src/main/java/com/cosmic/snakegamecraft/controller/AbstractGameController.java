@@ -36,13 +36,19 @@ abstract class AbstractGameController {
 
     private final SceneManager sceneManager = new SceneManager(AppContext.getStage());
 
+    /**
+     * Draws the game background and renders the player and items.
+     *
+     * @param gameCanvas The canvas to draw on.
+     *
+     * FIXME: This method should eventually call the corresponding Background Manager
+     */
+
     protected void drawBackground(Canvas gameCanvas) {
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
 
         gc.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
 
-
-        // TODO: Background Manager for background tiles, and maps
         for (int x = 0; x < GRID_SIZE; x++) {
             for (int y = 0; y < GRID_SIZE; y++) {
                 gc.drawImage(SpriteManager.getBgTile1(), x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
@@ -60,6 +66,9 @@ abstract class AbstractGameController {
 
     }
 
+    /**
+     * Displays a game over dialog with options to restart or go back to the menu.
+     */
     protected void showGameOverDialog() {
         Platform.runLater(() -> {
 
@@ -89,6 +98,9 @@ abstract class AbstractGameController {
         });
     }
 
+    /**
+     * Restarts the game by resetting the player and item manager, and reinitializing the game loop.
+     */
     private void restartGame() {
         GameSettings settings = SettingsLoader.loadSettings(AppContext.getUsername());
 
@@ -101,6 +113,11 @@ abstract class AbstractGameController {
 
     }
 
+    /**
+     * Checks the type of the collided item and updates the player's state accordingly.
+     *
+     * @param collidedItem The item that was collected by the player.
+     */
     protected void typeCheck(Item collidedItem) {
         switch (collidedItem.getType()) {
             case APPLE -> player.grow();
@@ -112,9 +129,15 @@ abstract class AbstractGameController {
                 player.grow(); // Golden apple gives two segments
             }
         }
-        itemManager.removeItem(collidedItem);
+        itemManager.removeItem(collidedItem); // Remove item s.t. the next item can be spawned
     }
 
+    /**
+     * Starts the key handler for player movement.
+     *
+     * @param gameCanvas The canvas where the game is rendered.
+     * ? Runs asynchronously due to JavaFX initializaition constraints.
+     */
     protected void startKeyHandler(Canvas gameCanvas) {
         // Directional input handling, handled via a queue to prevent asynchronous issues
         Platform.runLater(() -> {
@@ -129,10 +152,27 @@ abstract class AbstractGameController {
         });
     }
 
+    /**
+     * Abstract method to be implemented by subclasses to define the game loop logic.
+     *
+     * @param settings The game settings to be used in the game loop.
+     *
+     * ? In this method a new GameLoop instance is created, which runs the game logic.
+     */
     protected abstract void gameLoopMethod(GameSettings settings);
 
+    /**
+     * Abstract method to spawn items in the game.
+     * This method should be implemented by subclasses to define what items are spawned.
+     */
     protected abstract void spawnItems();
 
+    /**
+     * Initializes the game controller.
+     * This method should be implemented by subclasses to set up the game state.
+     *
+     * ? Loads settings, sprites, initializes player and item manager, and starts the game loop.
+     */
     public abstract void initialize();
 
 }

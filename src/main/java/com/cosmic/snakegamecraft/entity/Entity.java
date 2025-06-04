@@ -58,10 +58,10 @@ public abstract class Entity {
 
     /**
      * Queues a new direction for the entity, especially for the player snake, since the keyhandler runs
-     * concurrently with the game loop.
-     * @param newDirection
+     * asynchronously with the game loop.
+     *
+     * @param newDirection The new direction to queue.
      */
-
     public void queuedDirection(Direction newDirection) {
         // Prevent the snake from reversing direction directly
         if((this.direction == Direction.UP && newDirection != Direction.DOWN) ||

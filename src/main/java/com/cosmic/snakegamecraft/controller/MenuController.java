@@ -77,7 +77,7 @@ public class MenuController {
 
         Timeline tipCycle = new Timeline(
                 new KeyFrame(Duration.minutes(3), e -> {
-                    String newTip = TIPS.get(rand.nextInt(TIPS.size()));
+                    String newTip = TIPS.get(rand.nextInt(TIPS.size() - 1));
                     if(!AppContext.isLoggedIn()){
                         tipBox.setText(TIPS.getLast());
                     }else{

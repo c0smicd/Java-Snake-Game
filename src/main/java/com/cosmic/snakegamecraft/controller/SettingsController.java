@@ -37,7 +37,7 @@ public class SettingsController {
     @FXML
     private void handleSave(){
 
-        if(AppContext.getUsername() == "guest") {
+        if(AppContext.getUsername().equals("guest")) {
             return;
         }
 
