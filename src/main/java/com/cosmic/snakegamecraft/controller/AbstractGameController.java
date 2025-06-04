@@ -1,7 +1,6 @@
 package com.cosmic.snakegamecraft.controller;
 
 import com.cosmic.snakegamecraft.AppContext;
-import com.cosmic.snakegamecraft.core.GameLoop;
 import com.cosmic.snakegamecraft.entity.Entity;
 import com.cosmic.snakegamecraft.entity.Snake_Player;
 import com.cosmic.snakegamecraft.logic.HighscoreManager;
@@ -22,8 +21,13 @@ import java.util.Optional;
 
 import static com.cosmic.snakegamecraft.util.Constants.GRID_SIZE;
 import static com.cosmic.snakegamecraft.util.Constants.TILE_SIZE;
+
+/**
+ * Abstract base class for game controllers, providing common functionality
+ */
+
 @SuppressWarnings("all")
-public abstract class AbstractGameController {
+abstract class AbstractGameController {
 
     protected Snake_Player player;
     protected ItemManager itemManager;
@@ -32,7 +36,7 @@ public abstract class AbstractGameController {
 
     private final SceneManager sceneManager = new SceneManager(AppContext.getStage());
 
-    protected void drawBackground(Canvas gameCanvas){
+    protected void drawBackground(Canvas gameCanvas) {
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
 
         gc.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
@@ -44,7 +48,7 @@ public abstract class AbstractGameController {
                 gc.drawImage(SpriteManager.getBgTile1(), x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
             }
         }
-        for(int x = 0; x < GRID_SIZE; x++) {
+        for (int x = 0; x < GRID_SIZE; x++) {
             gc.drawImage(SpriteManager.getBgScore(), x * 64, 640, 64, 64);
         }
 
@@ -72,8 +76,8 @@ public abstract class AbstractGameController {
             HighscoreManager.saveScore(AppContext.getUsername(), player.getHighscore());
 
             Optional<ButtonType> result = alert.showAndWait();
-            result.ifPresent(button ->{
-                if (button == restartButton){
+            result.ifPresent(button -> {
+                if (button == restartButton) {
                     restartGame();
 
                 } else if (button == menuButton) {
@@ -85,10 +89,10 @@ public abstract class AbstractGameController {
         });
     }
 
-    private void restartGame(){
+    private void restartGame() {
         GameSettings settings = SettingsLoader.loadSettings(AppContext.getUsername());
 
-        player = new Snake_Player(5,5, 3, settings.getSpeedMultiplier());
+        player = new Snake_Player(5, 5, 3, settings.getSpeedMultiplier());
 
         itemManager = new ItemManager(GRID_SIZE);
 
@@ -111,14 +115,14 @@ public abstract class AbstractGameController {
         itemManager.removeItem(collidedItem);
     }
 
-    protected void startKeyHandler(Canvas gameCanvas){
+    protected void startKeyHandler(Canvas gameCanvas) {
         // Directional input handling, handled via a queue to prevent asynchronous issues
         Platform.runLater(() -> {
             gameCanvas.getScene().setOnKeyPressed(event -> {
                 switch (event.getCode()) {
-                    case UP, W    -> player.queuedDirection(Entity.Direction.UP);
-                    case DOWN, S  -> player.queuedDirection(Entity.Direction.DOWN);
-                    case LEFT, A  -> player.queuedDirection(Entity.Direction.LEFT);
+                    case UP, W -> player.queuedDirection(Entity.Direction.UP);
+                    case DOWN, S -> player.queuedDirection(Entity.Direction.DOWN);
+                    case LEFT, A -> player.queuedDirection(Entity.Direction.LEFT);
                     case RIGHT, D -> player.queuedDirection(Entity.Direction.RIGHT);
                 }
             });
