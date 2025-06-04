@@ -12,7 +12,7 @@ public class App extends Application {
 
         AppContext.setStage(primaryStage);
         primaryStage.setResizable(false);
-        primaryStage.getIcons().add(new Image(getClass().getResource("/icon/icon.png").toExternalForm()));
+        primaryStage.getIcons().add(new Image(getClass().getResource("/images/icon/icon.png").toExternalForm()));
 
         new SceneManager(primaryStage).showMenu();
     }
