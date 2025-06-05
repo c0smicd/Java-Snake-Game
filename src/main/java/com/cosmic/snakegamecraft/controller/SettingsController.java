@@ -26,7 +26,7 @@ public class SettingsController {
     public void initialize() {
         // Load current settings
         GameSettings settings = SettingsLoader.loadSettings(AppContext.getUsername());
-        speedSlider.setValue(settings.getSpeedMultiplier());
+        speedSlider.setValue(settings.speedMultiplier());
 
         speedSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             speedValueLabel.setText(String.format("%.1f", newVal.doubleValue())); // format to one decimal place

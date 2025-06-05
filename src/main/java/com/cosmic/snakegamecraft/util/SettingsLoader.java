@@ -6,7 +6,6 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import com.cosmic.snakegamecraft.AppContext;
 import com.cosmic.snakegamecraft.ui.GameSettings;
 import org.w3c.dom.*;
 
@@ -71,7 +70,7 @@ public class SettingsLoader {
                 root.appendChild(userElem);
             }
 
-            userElem.setAttribute("speed", String.valueOf(settings.getSpeedMultiplier()));
+            userElem.setAttribute("speed", String.valueOf(settings.speedMultiplier()));
 
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");

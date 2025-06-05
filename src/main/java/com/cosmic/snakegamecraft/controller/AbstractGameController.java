@@ -39,9 +39,9 @@ abstract class AbstractGameController {
     /**
      * Draws the game background and renders the player and items.
      *
-     * @param gameCanvas The canvas to draw on.
+     *  FIXME: This method should eventually call the corresponding Background Manager
      *
-     * FIXME: This method should eventually call the corresponding Background Manager
+     * @param gameCanvas The canvas to draw on.
      */
 
     protected void drawBackground(Canvas gameCanvas) {
@@ -104,7 +104,7 @@ abstract class AbstractGameController {
     private void restartGame() {
         GameSettings settings = SettingsLoader.loadSettings(AppContext.getUsername());
 
-        player = new Snake_Player(5, 5, 3, settings.getSpeedMultiplier());
+        player = new Snake_Player(5, 5, 3, settings.speedMultiplier());
 
         itemManager = new ItemManager(GRID_SIZE);
 
@@ -135,8 +135,9 @@ abstract class AbstractGameController {
     /**
      * Starts the key handler for player movement.
      *
-     * @param gameCanvas The canvas where the game is rendered.
      * ? Runs asynchronously due to JavaFX initializaition constraints.
+     *
+     * @param gameCanvas The canvas where the game is rendered.
      */
     protected void startKeyHandler(Canvas gameCanvas) {
         // Directional input handling, handled via a queue to prevent asynchronous issues
@@ -155,9 +156,11 @@ abstract class AbstractGameController {
     /**
      * Abstract method to be implemented by subclasses to define the game loop logic.
      *
+     * ? In this method a new GameLoop instance is created, which runs the game logic.
+     *
+     * @see GameLoop
      * @param settings The game settings to be used in the game loop.
      *
-     * ? In this method a new GameLoop instance is created, which runs the game logic.
      */
     protected abstract void gameLoopMethod(GameSettings settings);
 

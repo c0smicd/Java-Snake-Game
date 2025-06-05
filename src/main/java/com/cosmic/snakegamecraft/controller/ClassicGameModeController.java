@@ -38,7 +38,7 @@ public class ClassicGameModeController extends AbstractGameController {
         // Load ItemManager
         itemManager = new ItemManager(GRID_SIZE);
 
-        player = new Snake_Player(5, 5, INITIAL_SNAKE_LENGTH, settings.getSpeedMultiplier());
+        player = new Snake_Player(5, 5, INITIAL_SNAKE_LENGTH, settings.speedMultiplier());
 
 
         gameLoopMethod(settings);
@@ -50,7 +50,7 @@ public class ClassicGameModeController extends AbstractGameController {
 
     @Override
     protected void gameLoopMethod(GameSettings settings) {
-        gameLoop = new GameLoop(settings.getSpeedMultiplier() * STANDARD_SPEED) {
+        gameLoop = new GameLoop(settings.speedMultiplier() * STANDARD_SPEED) {
 
             @Override
             public void update() {

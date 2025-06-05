@@ -12,10 +12,8 @@ import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import javax.tools.Tool;
 import java.util.Random;
 
 import static com.cosmic.snakegamecraft.util.Tips.TIPS;
@@ -65,8 +63,8 @@ public class MenuController {
 
             settings = AppContext.getSettings();
             loginButton.setTooltip(new Tooltip("You are logged in as " + AppContext.getUsername()));
-            speedSlider.setValue(settings.getSpeedMultiplier());
-            speedValueLabel.setText("Speed: " + settings.getSpeedMultiplier());
+            speedSlider.setValue(settings.speedMultiplier());
+            speedValueLabel.setText("Speed: " + settings.speedMultiplier());
             tipBox.setText(tip);
         }else{
             loginButton.setTooltip(new Tooltip("You are not logged in. Click to log in."));
@@ -135,8 +133,8 @@ public class MenuController {
             loginOverlay.setVisible(false);
             loginButton.setTooltip(new Tooltip("You are logged in as " + AppContext.getUsername()));
             settings = SettingsLoader.loadSettings(AppContext.getUsername());
-            speedSlider.setValue(settings.getSpeedMultiplier());
-            speedValueLabel.setText("Speed: " + String.format("%.1f", settings.getSpeedMultiplier()));
+            speedSlider.setValue(settings.speedMultiplier());
+            speedValueLabel.setText("Speed: " + String.format("%.1f", settings.speedMultiplier()));
             tipBox.setText(TIPS.get(rand.nextInt(TIPS.size())));
 
             AppContext.setSettings(settings);
