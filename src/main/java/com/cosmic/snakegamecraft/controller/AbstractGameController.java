@@ -44,7 +44,7 @@ abstract class AbstractGameController {
      * @param gameCanvas The canvas to draw on.
      */
 
-    protected void drawBackground(Canvas gameCanvas) {
+    protected void drawFrame(Canvas gameCanvas) {
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
 
         gc.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
@@ -54,8 +54,16 @@ abstract class AbstractGameController {
                 gc.drawImage(SpriteManager.getBgTile1(), x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
             }
         }
+
+        // Score background
         for (int x = 0; x < GRID_SIZE; x++) {
             gc.drawImage(SpriteManager.getBgScore(), x * 64, 640, 64, 64);
+        }
+
+        // Bottom / Top grass background score
+        for (int x = 0; x < GRID_SIZE; x++){
+            gc.drawImage(SpriteManager.getBgGrassBottom(), x * 64, 640, 64, 64);
+            gc.drawImage(SpriteManager.getBgGrassTop(), x * 64, 640, 64, 64);
         }
 
 

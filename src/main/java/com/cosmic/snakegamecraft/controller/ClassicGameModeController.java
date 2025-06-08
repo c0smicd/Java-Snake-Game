@@ -77,7 +77,7 @@ public class ClassicGameModeController extends AbstractGameController {
                 }
 
 
-                drawBackground(gameCanvas);
+                drawFrame(gameCanvas);
             }
         };
 
