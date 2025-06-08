@@ -48,10 +48,6 @@ public class MenuController {
     @FXML
     public void initialize() {
 
-
-
-
-
         speedSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             speedValueLabel.setText( "Speed: " + String.format("%.1f", newVal.doubleValue())); // format to one decimal place
         });

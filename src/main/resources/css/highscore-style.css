@@ -1,0 +1,7 @@
+.root {
+    -fx-background-image: url("../images/menu/background.png");
+    -fx-background-size: auto;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-font-family: "Segoe UI", sans-serif;
+}

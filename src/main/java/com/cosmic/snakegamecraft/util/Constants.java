@@ -14,4 +14,6 @@ public class Constants {
     public static final int INVULNERABILITY_DURATION = 100; // Duration of invulnerability in ticks
     public static final int INITIAL_SNAKE_LENGTH = 3; // Initial length of the snake
 
+    public static final int SHOWN_HIGHSCORES = 5;
+
 }

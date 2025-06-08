@@ -8,6 +8,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class HighscoreManager {
     private static final String FILE_PATH = "highscores.xml";
@@ -60,11 +61,11 @@ public class HighscoreManager {
         }
     }
 
-    public static List<String> getTopEntries(String currentUser, int limit) {
+    public static String getTopEntries(String currentUser, int limit) {
         List<Map.Entry<String, Integer>> entries = new ArrayList<>();
         try {
             File file = new File(FILE_PATH);
-            if (!file.exists()) return List.of();
+            if (!file.exists()) return "";
 
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
             NodeList nodes = doc.getElementsByTagName("entry");
@@ -84,7 +85,7 @@ public class HighscoreManager {
 
         List<String> output = getStrings(currentUser, limit, entries);
 
-        return output;
+        return String.join("\n", output);
     }
 
     @NotNull

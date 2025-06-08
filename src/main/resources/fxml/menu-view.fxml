@@ -9,25 +9,27 @@
 
     <!-- Main Menu Layer -->
     <AnchorPane fx:id="menuPane" prefHeight="640" prefWidth="640">
-        <children>
-            <VBox alignment="CENTER" layoutX="88.0" layoutY="60.0" spacing="12" />
-            <Label layoutX="259.0" layoutY="104.0" prefHeight="41.0" prefWidth="149.0" text="Snake Game">
-                <font>
-                    <Font name="System Bold" size="23.0" />
-                </font>
-            </Label>
-            <Button fx:id="classicModeButton" layoutX="45.0" layoutY="221.0" onAction="#handleClassicMode" text="Classic Mode" />
-            <Button fx:id="modernModeButton" layoutX="246.0" layoutY="221.0" onAction="#handleModernMode" text="Modern Mode" />
-            <Button fx:id="crazyModeButton" layoutX="457.0" layoutY="221.0" onAction="#handleCrazyMode" text="Crazy Mode" />
-            <Button fx:id="highscoreButton" layoutX="264.0" layoutY="365.0" onAction="#handleHighscores" text="Highscores" />
-            <Button fx:id="settingsButton" layoutX="537.0" layoutY="544.0" onAction="#handleSettings" />
-            <Button fx:id="loginButton" layoutX="45.0" layoutY="544.0" onAction="#handleLogin" text="Login" />
-
-            <Label fx:id="tipBox" layoutX="139.0" layoutY="19.0" onMouseClicked="#handleTipClick" textAlignment="CENTER" wrapText="true">
+        <VBox alignment="CENTER" layoutX="88.0" layoutY="60.0" spacing="12"/>
+        <Label layoutX="259.0" layoutY="104.0" prefHeight="41.0" prefWidth="149.0" text="Snake Game">
             <font>
-               <Font size="15.0" />
-            </font></Label>
-        </children>
+                <Font name="System Bold" size="23.0"/>
+            </font>
+        </Label>
+        <Button fx:id="classicModeButton" layoutX="45.0" layoutY="221.0" onAction="#handleClassicMode"
+                text="Classic Mode"/>
+        <Button fx:id="modernModeButton" layoutX="246.0" layoutY="221.0" onAction="#handleModernMode"
+                text="Modern Mode"/>
+        <Button fx:id="crazyModeButton" layoutX="457.0" layoutY="221.0" onAction="#handleCrazyMode" text="Crazy Mode"/>
+        <Button fx:id="highscoreButton" layoutX="264.0" layoutY="365.0" onAction="#handleHighscores" text="Highscores"/>
+        <Button fx:id="settingsButton" layoutX="537.0" layoutY="544.0" onAction="#handleSettings"/>
+        <Button fx:id="loginButton" layoutX="45.0" layoutY="544.0" onAction="#handleLogin" text="Login"/>
+
+        <Label fx:id="tipBox" layoutX="139.0" layoutY="19.0" onMouseClicked="#handleTipClick" textAlignment="CENTER"
+               wrapText="true">
+        <font>
+            <Font size="15.0"/>
+        </font>
+        </Label>
     </AnchorPane>
 
     <!-- Login Overlay -->
