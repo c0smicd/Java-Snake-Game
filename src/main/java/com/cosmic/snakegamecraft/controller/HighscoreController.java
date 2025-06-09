@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import static com.cosmic.snakegamecraft.util.Constants.SHOWN_HIGHSCORES;
 
@@ -22,12 +24,13 @@ public class HighscoreController {
     private Button backToMenu;
 
     @FXML
-    private Label highScoreLabel;
+    private TextFlow highScoreText;
 
 
     @FXML
     private void initialize() {
-        highScoreLabel.setText(HighscoreManager.getTopEntries(AppContext.getUsername(), SHOWN_HIGHSCORES));
+        highScoreText.getChildren().clear();
+        highScoreText.getChildren().addAll(HighscoreManager.getTopEntries(AppContext.getUsername(), SHOWN_HIGHSCORES));
     }
 
     @FXML

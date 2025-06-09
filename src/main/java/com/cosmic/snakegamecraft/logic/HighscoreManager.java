@@ -1,6 +1,8 @@
 package com.cosmic.snakegamecraft.logic;
 
+import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
@@ -9,12 +11,18 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
+import javafx.scene.text.Text;
+import javafx.scene.paint.Color;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Font;
 
 public class HighscoreManager {
     private static final String FILE_PATH = "highscores.xml";
 
     public static void saveScore(String name, int score) {
         try {
+            if(Objects.equals(name, "guest")) return;
+
             File file = new File(FILE_PATH);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -61,11 +69,11 @@ public class HighscoreManager {
         }
     }
 
-    public static String getTopEntries(String currentUser, int limit) {
+    public static List<Text> getTopEntries(String currentUser, int limit) {
         List<Map.Entry<String, Integer>> entries = new ArrayList<>();
         try {
             File file = new File(FILE_PATH);
-            if (!file.exists()) return "";
+            if (!file.exists()) return Collections.emptyList();
 
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
             NodeList nodes = doc.getElementsByTagName("entry");
@@ -83,29 +91,42 @@ public class HighscoreManager {
             e.printStackTrace();
         }
 
-        List<String> output = getStrings(currentUser, limit, entries);
-
-        return String.join("\n", output);
+        return buildTextList(currentUser, limit, entries);
     }
 
     @NotNull
-    private static List<String> getStrings(String currentUser, int limit, List<Map.Entry<String, Integer>> entries) {
-        List<String> output = new ArrayList<>();
-        boolean userShown = false;
+    private static List<Text> buildTextList(String currentUser, int limit, List<Map.Entry<String, Integer>> entries) {
+        List<Text> output = new ArrayList<>();
+
+        boolean currentUserAlreadyShown = false;
 
         for (int i = 0; i < entries.size(); i++) {
             Map.Entry<String, Integer> e = entries.get(i);
-            if (i < limit) {
-                output.add((i + 1) + ". " + e.getKey() + " " + e.getValue());
-            }
-            if (e.getKey().equals(currentUser)) {
-                userShown = true;
-                if (i >= limit) {
-                    output.add("...");
-                    output.add((i + 1) + ". " + e.getKey() + " " + e.getValue());
+
+            if (i < limit || (e.getKey().equals(currentUser) && !currentUserAlreadyShown)) {
+
+                if (i == limit && !currentUserAlreadyShown) {
+                    // Add "..."
+                    Text dots = new Text("...\n");
+                    dots.setFill(Color.BLACK);
+                    output.add(dots);
                 }
+
+                Text line = new Text((i + 1) + ". " + e.getKey() + " " + e.getValue() + "\n");
+
+                if (e.getKey().equals(currentUser)) {
+                    line.setFill(Color.GOLD);
+                    line.setFont(Font.font("System", FontWeight.BOLD, 16));
+                    currentUserAlreadyShown = true;
+                } else {
+                    line.setFill(Color.BLACK);
+                    line.setFont(Font.font("System", FontWeight.NORMAL, 16));
+                }
+
+                output.add(line);
             }
         }
+
         return output;
     }
 }

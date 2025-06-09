@@ -45,6 +45,7 @@
 #tipBox {
     -fx-background-radius: 12px;
     -fx-border-radius: 12px;
+    -fx-alignment: center;
     -fx-font-weight: bold;
     -fx-border-color: rgba(0, 0, 0, 0.2); /* optional subtle border */
     -fx-border-width: 1px;

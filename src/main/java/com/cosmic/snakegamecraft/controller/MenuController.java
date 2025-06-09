@@ -43,6 +43,8 @@ public class MenuController {
 
     private final Random rand = new Random();
 
+    private Timeline repeat;
+
 
     //TODO: Outsource the random tip function into TIPS
     @FXML
@@ -134,6 +136,9 @@ public class MenuController {
             tipBox.setText(TIPS.get(rand.nextInt(TIPS.size())));
 
             AppContext.setSettings(settings);
+
+            // Stop buzzing
+            repeat.stop();
         }
     }
 
@@ -181,12 +186,14 @@ public class MenuController {
             buzz.setAutoReverse(true);
             buzz.setCycleCount(6); // back and forth 3 times
 
-            Timeline repeat = new Timeline(
+            repeat = new Timeline(
                     new KeyFrame(Duration.seconds(0), e -> buzz.play()),
                     new KeyFrame(Duration.seconds(6)) // repeat every 6 seconds
             );
             repeat.setCycleCount(Animation.INDEFINITE);
             repeat.play();
+
+
         }
     }
 
