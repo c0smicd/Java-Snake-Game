@@ -16,7 +16,7 @@ import javafx.util.Duration;
 
 import java.util.Random;
 
-import static com.cosmic.snakegamecraft.util.Tips.TIPS;
+import static com.cosmic.snakegamecraft.util.Tips.*;
 
 
 public class MenuController {
@@ -57,7 +57,7 @@ public class MenuController {
         if(AppContext.isLoggedIn()){
             // For restart
 
-            String tip = TIPS.get(rand.nextInt(TIPS.size() - 1)); // Last tip is for not logged in
+            String tip = getTipRandom(); // Last tip is for not logged in
 
             settings = AppContext.getSettings();
             loginButton.setTooltip(new Tooltip("You are logged in as " + AppContext.getUsername()));
@@ -66,16 +66,16 @@ public class MenuController {
             tipBox.setText(tip);
         }else{
             loginButton.setTooltip(new Tooltip("You are not logged in. Click to log in."));
-            tipBox.setText(TIPS.getLast());
+            tipBox.setText(getLoginTip());
 
         }
 
 
         Timeline tipCycle = new Timeline(
                 new KeyFrame(Duration.minutes(3), e -> {
-                    String newTip = TIPS.get(rand.nextInt(TIPS.size() - 1));
+                    String newTip = getTipRandom();
                     if(!AppContext.isLoggedIn()){
-                        tipBox.setText(TIPS.getLast());
+                        tipBox.setText(getLoginTip());
                     }else{
                         tipBox.setText(newTip);
                     }
@@ -106,6 +106,8 @@ public class MenuController {
         sceneManager.startGame(GameMode.CRAZY);
     }
 
+
+    // TODO: Should only handle settings if logged in maybe
     @FXML
     public void handleSettings() {
         settingsOverlay.setVisible(true);
@@ -133,7 +135,7 @@ public class MenuController {
             settings = SettingsLoader.loadSettings(AppContext.getUsername());
             speedSlider.setValue(settings.speedMultiplier());
             speedValueLabel.setText("Speed: " + String.format("%.1f", settings.speedMultiplier()));
-            tipBox.setText(TIPS.get(rand.nextInt(TIPS.size())));
+            tipBox.setText(getTipRandom());
 
             AppContext.setSettings(settings);
 
@@ -151,7 +153,7 @@ public class MenuController {
     private void handleTipClick(){
 
         if(!AppContext.isLoggedIn()) return;
-        String newTip = TIPS.get(new Random().nextInt(TIPS.size() - 1));
+        String newTip = getTipRandom();
 
         tipBox.setText(newTip);
     }
