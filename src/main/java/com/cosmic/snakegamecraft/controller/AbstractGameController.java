@@ -1,6 +1,7 @@
 package com.cosmic.snakegamecraft.controller;
 
 import com.cosmic.snakegamecraft.AppContext;
+import com.cosmic.snakegamecraft.core.GameLoop;
 import com.cosmic.snakegamecraft.entity.Entity;
 import com.cosmic.snakegamecraft.entity.Snake_Player;
 import com.cosmic.snakegamecraft.logic.HighscoreManager;
@@ -12,6 +13,7 @@ import com.cosmic.snakegamecraft.ui.SceneManager;
 import com.cosmic.snakegamecraft.util.SettingsLoader;
 import com.cosmic.snakegamecraft.util.SpriteManager;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
@@ -19,8 +21,7 @@ import javafx.scene.control.ButtonType;
 
 import java.util.Optional;
 
-import static com.cosmic.snakegamecraft.util.Constants.GRID_SIZE;
-import static com.cosmic.snakegamecraft.util.Constants.TILE_SIZE;
+import static com.cosmic.snakegamecraft.util.Constants.*;
 
 /**
  * Abstract base class for game controllers, providing common functionality
@@ -36,10 +37,20 @@ abstract class AbstractGameController {
 
     private final SceneManager sceneManager = new SceneManager(AppContext.getStage());
 
+
+    /**
+     * Initializes the game controller.
+     * This method should be implemented by subclasses to set up the game state.
+     *
+     * ? Loads settings, sprites, initializes player and item manager, and starts the game loop.
+     */
+    @FXML
+    public abstract void initialize();
+
     /**
      * Draws the game background and renders the player and items.
      *
-     *  FIXME: This method should eventually call the corresponding Background Manager
+     *  @Note This method should eventually call the corresponding @see BackgroundManager
      *
      * @param gameCanvas The canvas to draw on.
      */
@@ -112,7 +123,10 @@ abstract class AbstractGameController {
     private void restartGame() {
         GameSettings settings = SettingsLoader.loadSettings(AppContext.getUsername());
 
-        player = new Snake_Player(5, 5, 3, settings.speedMultiplier());
+        player = new Snake_Player(5, 5, INITIAL_SNAKE_LENGTH, settings.speedMultiplier());
+
+        // Reset player highscore
+        resetHighscore();
 
         itemManager = new ItemManager(GRID_SIZE);
 
@@ -164,7 +178,7 @@ abstract class AbstractGameController {
     /**
      * Abstract method to be implemented by subclasses to define the game loop logic.
      *
-     * ? In this method a new GameLoop instance is created, which runs the game logic.
+     * @Note ? In this method a new GameLoop instance is created, which runs the game logic.
      *
      * @see GameLoop
      * @param settings The game settings to be used in the game loop.
@@ -178,12 +192,9 @@ abstract class AbstractGameController {
      */
     protected abstract void spawnItems();
 
-    /**
-     * Initializes the game controller.
-     * This method should be implemented by subclasses to set up the game state.
-     *
-     * ? Loads settings, sprites, initializes player and item manager, and starts the game loop.
-     */
-    public abstract void initialize();
+
+
+
+    protected abstract void resetHighscore();
 
 }

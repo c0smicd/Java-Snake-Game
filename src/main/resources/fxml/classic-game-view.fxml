@@ -9,7 +9,7 @@
 
     <top>
         <HBox>
-            <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
+            <Region HBox.hgrow="ALWAYS" />
         </HBox>
     </top>
 

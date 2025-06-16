@@ -29,7 +29,7 @@ public class SceneManager {
     public void startGame(GameMode mode){
 
         switch (mode){
-            case CLASSIC -> switchScene("game-view.fxml", "Game - Classic Mode");
+            case CLASSIC -> switchScene("classic-game-view.fxml", "Game - Classic Mode");
             case MODERN -> switchScene("game-modern-view.fxml", "Game - Modern Mode");
             case CRAZY -> switchScene("game-crazy-view.fxml", "Game - Crazy Mode");
         }

@@ -31,7 +31,7 @@ public class Snake_Player extends Entity {
     private final Image tailSprite;
     private final Image rotatedSprite;
     private int invulnerabilityTicks = 0; // Timer for invincibility effect
-    private int highscore;
+    private int highscore = 0;
     private final double speedMultiplier;
 
     public Snake_Player(int startX, int startY, int initialLength, double speedMultiplier) {
@@ -65,7 +65,7 @@ public class Snake_Player extends Entity {
      * Shrinks the snake by removing the last segment.
      */
     public void shrink(){
-        if(body.size() > 1) {
+        if(body.size() > 2) {
             body.removeLast(); // Remove the last segment to shrink the snake
         }
 
@@ -73,16 +73,21 @@ public class Snake_Player extends Entity {
     }
 
     /**
+     * Checks if the snake can shrink.
+     * @return true if the snake has more than one segment, false otherwise.
+     */
+    public boolean checkShrink(){
+        return body.size() == 2;
+    }
+
+    /**
      * Activates invincibility for a short duration.
      */
     public void rainbowApple(){
-        invulnerabilityTicks = (int) (INVULNERABILITY_DURATION * speedMultiplier);
         /* Speed multiplier speeds up the game internal update, thus
         the invincibility effect lasts shorter in real time. Hence, multiplying by speedMultiplier.
-
-
          */
-
+        invulnerabilityTicks = (int) (INVULNERABILITY_DURATION * speedMultiplier);
 
     }
 
@@ -122,6 +127,8 @@ public class Snake_Player extends Entity {
     }
 
 
+    //TODO: Should be defenetly be cleaned up
+    //TODO: Check if player has invurnerability effect, if so, draw head and body in different color and if head hit wall wrap around
     @Override
     public void render(GraphicsContext gc) {
 
@@ -244,6 +251,7 @@ public class Snake_Player extends Entity {
 
         return false;
     }
+
 
     public boolean checkWallCollision(int gridSize) {
         Segment head = body.getFirst();

@@ -25,6 +25,7 @@ public class SpriteManager {
 
 
     public static void loadSprites(){
+
         // Loading snake sprites from the resources folder
         snakeHead = load("snakes/player/head_snake.png");
         snakeBody = load("snakes/player/body_snake.png");

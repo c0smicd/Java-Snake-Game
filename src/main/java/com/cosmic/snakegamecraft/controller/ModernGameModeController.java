@@ -5,7 +5,6 @@ import com.cosmic.snakegamecraft.core.GameLoop;
 import com.cosmic.snakegamecraft.entity.Snake_Player;
 import com.cosmic.snakegamecraft.logic.Item;
 import com.cosmic.snakegamecraft.logic.ItemManager;
-import com.cosmic.snakegamecraft.logic.ItemType;
 import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.util.SettingsLoader;
 import com.cosmic.snakegamecraft.util.SpriteManager;
@@ -15,7 +14,7 @@ import javafx.scene.control.Label;
 
 import static com.cosmic.snakegamecraft.util.Constants.*;
 
-public class ClassicGameModeController extends AbstractGameController {
+public class ModernGameModeController extends AbstractGameController{
 
     @FXML
     private Canvas gameCanvas;
@@ -23,25 +22,22 @@ public class ClassicGameModeController extends AbstractGameController {
     @FXML
     private Label scoreLabel;
 
-
     private GameLoop gameLoop;
+
 
     @Override
     @FXML
     public void initialize() {
-        // Get settings
-        GameSettings settings = SettingsLoader.loadSettings(AppContext.getUsername());
 
-        // Load sprites
+        GameSettings gameSettings = SettingsLoader.loadSettings(AppContext.getUsername());
+
         SpriteManager.loadSprites();
 
-        // Load ItemManager
         itemManager = new ItemManager(GRID_SIZE);
 
-        player = new Snake_Player(5, 5, INITIAL_SNAKE_LENGTH, settings.speedMultiplier());
+        player = new Snake_Player(5,5, INITIAL_SNAKE_LENGTH, gameSettings.speedMultiplier());
 
-
-        gameLoopMethod(settings);
+        gameLoopMethod(gameSettings);
 
         startKeyHandler(gameCanvas);
 
@@ -50,10 +46,11 @@ public class ClassicGameModeController extends AbstractGameController {
 
     @Override
     protected void gameLoopMethod(GameSettings settings) {
-        gameLoop = new GameLoop(settings.speedMultiplier() * STANDARD_SPEED) {
 
+        gameLoop = new GameLoop(settings.speedMultiplier() * STANDARD_SPEED) {
             @Override
             public void update() {
+
                 player.update();
 
                 // Check for item collection
@@ -67,7 +64,9 @@ public class ClassicGameModeController extends AbstractGameController {
 
                 spawnItems();
 
-                boolean isDead = (player.checkSelfCollision() || player.checkWallCollision(GRID_SIZE));
+                boolean isDead = (player.checkSelfCollision()
+                        || player.checkWallCollision(GRID_SIZE)
+                        || !player.checkShrink()) && !player.isInvulnerable(); // If player got a shrink item, it can die if the size is under 3 tiles
 
                 if (isDead) {
                     System.out.println("Player is dead, stopping game loop.");
@@ -82,16 +81,17 @@ public class ClassicGameModeController extends AbstractGameController {
         };
 
         gameLoop.start();
-    }
 
+    }
 
     @Override
     protected void spawnItems() {
-        itemManager.spawnItem(ItemType.APPLE, player.getOccupiedPoints());
+
     }
 
+
     @Override
-    protected void resetHighscore(){
-        scoreLabel.setText("Score: " + player.getHighscore());
+    protected void resetHighscore() {
+
     }
 }

@@ -9,9 +9,9 @@ public class AppContext {
 
     private static Stage stage;
     private static String username = "guest";
-    private static final double multiplier = 1.0;
     private static GameMode gameMode = GameMode.CLASSIC;
     private static GameSettings settings;
+    private static int highScore = -1;
 
     public static void setStage(Stage s){
         stage = s;
@@ -30,6 +30,7 @@ public class AppContext {
         return username;
     }
 
+    //TODO: If logged in, fetch highscore from HighscoreManager
     public static boolean isLoggedIn() {
         return !username.equals("guest");
     }
