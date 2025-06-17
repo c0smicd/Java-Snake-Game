@@ -65,11 +65,9 @@ public class Snake_Player extends Entity {
      * Shrinks the snake by removing the last segment.
      */
     public void shrink(){
-        if(body.size() > 2) {
-            body.removeLast(); // Remove the last segment to shrink the snake
-        }
+        body.removeLast(); // Remove the last segment to shrink the snake
 
-        increaseHighscore(-5);
+        increaseHighscore((int) (-5 * speedMultiplier));
     }
 
     /**

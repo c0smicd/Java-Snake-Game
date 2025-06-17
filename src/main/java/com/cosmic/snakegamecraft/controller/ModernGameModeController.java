@@ -75,6 +75,10 @@ public class ModernGameModeController extends AbstractGameController{
                     return;
                 }
 
+                // If player is large enough, update SPEED
+
+                this.setTicksPerSecond(SPEEDUPDATE.UP);
+
 
                 drawFrame(gameCanvas);
             }
@@ -84,6 +88,12 @@ public class ModernGameModeController extends AbstractGameController{
 
     }
 
+    /**
+     * Spawns items in the modern game. Every item can only appear once in the same frame.
+     * <p>
+     * This method should not spawn items with probability one (1.0), except for the apple. All other items should spawn randomly
+     * with a certain chance
+     */
     @Override
     protected void spawnItems() {
 
