@@ -5,12 +5,15 @@ import com.cosmic.snakegamecraft.core.GameLoop;
 import com.cosmic.snakegamecraft.entity.Snake_Player;
 import com.cosmic.snakegamecraft.logic.Item;
 import com.cosmic.snakegamecraft.logic.ItemManager;
+import com.cosmic.snakegamecraft.logic.ItemType;
 import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.util.SettingsLoader;
 import com.cosmic.snakegamecraft.util.SpriteManager;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+
+import java.util.Arrays;
 
 import static com.cosmic.snakegamecraft.util.Constants.*;
 
@@ -24,6 +27,11 @@ public class ModernGameModeController extends AbstractGameController{
 
     private GameLoop gameLoop;
 
+
+    private int[] bad_apple_timer = {-1,-1,-1};
+    private int speed_timer = -1;
+
+    int speed = 1;
 
     @Override
     @FXML
@@ -57,28 +65,46 @@ public class ModernGameModeController extends AbstractGameController{
                 Item collectedItem = itemManager.checkCollision(player.getHeadX(), player.getHeadY());
 
                 if (collectedItem != null) {
-                    typeCheck(collectedItem);
+
+                    if(player.canSpeedUp() && (collectedItem.getType() == ItemType.APPLE || collectedItem.getType() == ItemType.GOLDEN_APPLE)) {
+                        this.setTicksPerSecond(SPEEDUPDATE.UP);
+                    }
+
+                    if(typeCheck(collectedItem)) {
+                        System.out.println("Speed Up item collected");
+                        this.speedUpEffect(SPEEDUPDATE.UP);
+                        speed_timer = (int) (SPEED_UP_DURATION * settings.speedMultiplier() * this.getCurrentSpeed());
+
+                        System.out.println("Speed timer set to: " + speed_timer);
+                    }
                     scoreLabel.setText("Score: " + player.getHighscore());
                 }
-                // Render items
 
+                // Render items
                 spawnItems();
+
+                // Handle bad apple timer
+                handleBadAppleTimer(settings, this.getCurrentSpeed());
+                handleSpeedTimer();
 
                 boolean isDead = (player.checkSelfCollision()
                         || player.checkWallCollision(GRID_SIZE)
-                        || !player.checkShrink()) && !player.isInvulnerable(); // If player got a shrink item, it can die if the size is under 3 tiles
+                        || player.checkShrink()) && !player.isInvulnerable(); // If player got a shrink item, it can die if the size is under 3 tiles
 
                 if (isDead) {
                     System.out.println("Player is dead, stopping game loop.");
+                    System.out.println("Self collision: " + player.checkSelfCollision());
+                    System.out.println("Wall collision: " + player.checkWallCollision(GRID_SIZE));
+                    System.out.println("Player shrink: " + player.checkShrink());
+                    System.out.println("Player invulnerable: " + player.isInvulnerable());
+
                     gameLoop.stop();
                     showGameOverDialog();
                     return;
                 }
 
-                // If player is large enough, update SPEED
 
-                this.setTicksPerSecond(SPEEDUPDATE.UP);
-
+                speed = (int) (settings.speedMultiplier() * this.getCurrentSpeed());
 
                 drawFrame(gameCanvas);
             }
@@ -96,12 +122,47 @@ public class ModernGameModeController extends AbstractGameController{
      */
     @Override
     protected void spawnItems() {
-
+        Arrays.stream(ItemType.values()).forEach(type -> {  itemManager.spawnItem(type, player.getOccupiedPoints(), speed);});
     }
 
 
     @Override
     protected void resetHighscore() {
+        scoreLabel.setText("Score: " + player.getHighscore());
+    }
 
+
+
+    private void handleBadAppleTimer(GameSettings settings, double currentSpeed) {
+        if (!itemManager.existsBadApple()) return;
+
+        if (Arrays.stream(bad_apple_timer).anyMatch(t -> t == 0)) {
+            itemManager.removeItem(ItemType.BAD_APPLE);
+            bad_apple_timer = Arrays.stream(bad_apple_timer).map(t ->  t == 0 ? -1 : t).toArray(); // Reset all bad apple timers
+            return;
+        }
+
+        if (Arrays.stream(bad_apple_timer).anyMatch(t -> t == -1)) {
+            bad_apple_timer = Arrays.stream(bad_apple_timer)
+                    .map(t -> t == -1 ? (int) (BAD_APPLE_DURATION * settings.speedMultiplier() * currentSpeed) : t)
+                    .toArray();
+        } else {
+            bad_apple_timer = Arrays.stream(bad_apple_timer)
+                    .map(t -> t > 0 ? t - 1 : t) // Decrease all timers that are greater than 0
+                    .toArray();
+        }
+    }
+
+    private void handleSpeedTimer(){
+        if(speed_timer == -1) return;
+
+
+        if(speed_timer == 0) {
+            gameLoop.speedUpEffect(GameLoop.SPEEDUPDATE.DOWN);
+            speed_timer = -1;
+
+        }else {
+            speed_timer--;
+        }
     }
 }

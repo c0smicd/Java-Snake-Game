@@ -87,7 +87,7 @@ public class ClassicGameModeController extends AbstractGameController {
 
     @Override
     protected void spawnItems() {
-        itemManager.spawnItem(ItemType.APPLE, player.getOccupiedPoints());
+        itemManager.spawnItem(ItemType.APPLE, player.getOccupiedPoints(), 1);
     }
 
     @Override

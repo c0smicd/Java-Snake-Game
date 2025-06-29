@@ -4,6 +4,7 @@ public enum ItemType {
 
     APPLE,
     GOLDEN_APPLE,
-    RAINBOW_APPLE,
-    BAD_APPLE
+    STAR,
+    BAD_APPLE,
+    SPEED_UP
 }

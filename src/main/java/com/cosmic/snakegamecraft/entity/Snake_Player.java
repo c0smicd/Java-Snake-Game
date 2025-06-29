@@ -3,19 +3,16 @@ package com.cosmic.snakegamecraft.entity;
 
 import com.cosmic.snakegamecraft.util.Point;
 import com.cosmic.snakegamecraft.util.SpriteManager;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.cosmic.snakegamecraft.util.Constants.INVULNERABILITY_DURATION;
-import static com.cosmic.snakegamecraft.util.Constants.TILE_SIZE;
+import static com.cosmic.snakegamecraft.util.Constants.*;
 
 public class Snake_Player extends Entity {
 
@@ -70,6 +67,10 @@ public class Snake_Player extends Entity {
         increaseHighscore((int) (-5 * speedMultiplier));
     }
 
+    public void speed(){
+        increaseHighscore((int) (15 * speedMultiplier));
+    }
+
     /**
      * Checks if the snake can shrink.
      * @return true if the snake has more than one segment, false otherwise.
@@ -81,11 +82,14 @@ public class Snake_Player extends Entity {
     /**
      * Activates invincibility for a short duration.
      */
-    public void rainbowApple(){
+    public void star(){
         /* Speed multiplier speeds up the game internal update, thus
         the invincibility effect lasts shorter in real time. Hence, multiplying by speedMultiplier.
          */
         invulnerabilityTicks = (int) (INVULNERABILITY_DURATION * speedMultiplier);
+
+
+        increaseHighscore((int) (30 * speedMultiplier));
 
     }
 
@@ -252,6 +256,14 @@ public class Snake_Player extends Entity {
 
 
     public boolean checkWallCollision(int gridSize) {
+
+        if(invulnerabilityTicks > 0) {
+
+            wrapAround(gridSize);
+            return false;
+        }
+
+
         Segment head = body.getFirst();
         return head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize;
     }
@@ -272,5 +284,21 @@ public class Snake_Player extends Entity {
 
     public int getHighscore() {
         return highscore;
+    }
+
+
+    public boolean canSpeedUp(){
+        return body.size() % (SPEED_UP_LENGTH - 1) == 0; // Can speed up if the snake's length is a multiple of SPEED_UP_LENGTH
+    }
+
+
+    private void wrapAround(int gridSize) {
+
+        Segment head = body.getFirst();
+
+        if (head.x < 0) head.x = gridSize - 1;
+        else if (head.x >= gridSize) head.x = 0;
+        if (head.y < 0) head.y = gridSize - 1;
+        else if (head.y >= gridSize) head.y = 0;
     }
 }

@@ -22,6 +22,7 @@ public class SceneManager {
         switchScene("menu-view.fxml", "Main Menu");
     }
 
+    @Deprecated
     public void showSettings(){
         switchScene("settings-view.fxml", "Settings");
     }
@@ -30,7 +31,7 @@ public class SceneManager {
 
         switch (mode){
             case CLASSIC -> switchScene("classic-game-view.fxml", "Game - Classic Mode");
-            case MODERN -> switchScene("game-modern-view.fxml", "Game - Modern Mode");
+            case MODERN -> switchScene("modern-game-view.fxml", "Game - Modern Mode");
             case CRAZY -> switchScene("game-crazy-view.fxml", "Game - Crazy Mode");
         }
 

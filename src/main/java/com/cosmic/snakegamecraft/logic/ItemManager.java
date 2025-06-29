@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static com.cosmic.snakegamecraft.util.Constants.*;
 
@@ -22,19 +23,26 @@ public class ItemManager {
 
     }
 
-    public void spawnItem(ItemType type, List<Point> occupied){
+    public void spawnItem(ItemType type, List<Point> occupied, int speed){
 
-        if(exitsItem(type)){
-            System.out.println("Item of type " + type + " already exists, not spawning again." + items.get(0).getType() + " " + items.get(0).getX() + " " + items.get(0).getY());
+        int random = rand.nextInt(100);
+
+        if(!(type == ItemType.BAD_APPLE && spawnBadApple()) && exitsItem(type)) {
             return; // Item of this type already exists, do not spawn again
         }
 
-        if(type == ItemType.BAD_APPLE && rand.nextInt(100) < BAD_APPLE_CHANCE) {
-            System.out.println("Bad apple not spawned due to random chance.");
+        if(type == ItemType.BAD_APPLE && random > BAD_APPLE_CHANCE / speed) {
+
             return;
 
-        }else if(type == ItemType.RAINBOW_APPLE && rand.nextInt(100) < RAINBOW_APPLE_CHANCE) {
-            System.out.println("Rainbow apple not spawned due to random chance.");
+        }else if(type == ItemType.STAR && random > STAR_CHANCE / speed) {
+
+            return;
+        } else if (type == ItemType.SPEED_UP && random > SPEED_UP_CHANCE / speed) {
+
+            return;
+        } else if (type == ItemType.GOLDEN_APPLE && random > GOLDEN_APPLE_CHANCE / speed) {
+
             return;
         }
 
@@ -48,16 +56,17 @@ public class ItemManager {
 
         Image sprite = switch(type) {
             case APPLE -> SpriteManager.getApple();
-            case BAD_APPLE -> null;
-            case GOLDEN_APPLE -> null;
-            case RAINBOW_APPLE -> null;
+            case BAD_APPLE -> SpriteManager.getBadApple();
+            case GOLDEN_APPLE -> SpriteManager.getGoldApple();
+            case STAR -> SpriteManager.getStarItem();
+            case SPEED_UP -> SpriteManager.getSpeedBoost();
         };
 
         items.add(new Item(type, x, y, sprite));
     }
 
     private boolean isOccupied(int x, int y, List<Point> occupied) {
-        return occupied.stream().anyMatch(p -> p.x() == x && p.y() == y);
+        return occupied.stream().anyMatch(p -> p.x() == x && p.y() == y) && items.stream().anyMatch(item -> item.getX() == x && item.getY() == y);
     }
 
     public void render(GraphicsContext gc){
@@ -82,11 +91,28 @@ public class ItemManager {
         items.remove(item);
     }
 
+    public void removeItem(ItemType type) {
+
+        for(Item item : items){
+            if(item.getType() == type){
+                items.remove(item);
+                return; // Remove only the first item of this type
+            }
+        }
+    }
+
     private boolean exitsItem(ItemType type) {
         return items.stream().anyMatch(item -> item.getType() == type);
     }
 
 
+    public boolean existsBadApple() {
+        return items.stream().anyMatch(item -> item.getType() == ItemType.BAD_APPLE);
+    }
 
+
+    private boolean spawnBadApple() {
+        return items.stream().filter(item -> item.getType() == ItemType.BAD_APPLE).toList().size() < BAD_APPLE_MAX_COUNT;
+    }
 
 }

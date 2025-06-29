@@ -14,6 +14,10 @@ public class SpriteManager {
     private static Image snakeTail;
     private static Image snakeRotate;
     private static Image apple;
+    private static Image badApple;
+    private static Image speedBoost;
+    private static Image starItem;
+    private static Image goldApple;
     private static Image bgTile1;
     private static Image bgTile2;
     private static Image bgGrassLeft;
@@ -34,6 +38,10 @@ public class SpriteManager {
 
         // Loading items sprite
         apple = load("items/apple_snake.png");
+        badApple = load("items/bad_apple.png");
+        speedBoost = load("items/speed_boost.png");
+        starItem = load("items/star.png");
+        goldApple = load("items/gold_apple.png");
 
         // Loading background sprites
         bgTile1 = load("playground/grass-tile.png");
@@ -64,6 +72,18 @@ public class SpriteManager {
     }
     public static Image getApple() {
         return apple;
+    }
+    public static Image getBadApple() {
+        return badApple;
+    }
+    public static Image getSpeedBoost() {
+        return speedBoost;
+    }
+    public static Image getStarItem() {
+        return starItem;
+    }
+    public static Image getGoldApple() {
+        return goldApple;
     }
     public static Image getBgTile1() {
         return bgTile1;

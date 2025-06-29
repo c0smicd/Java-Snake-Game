@@ -7,6 +7,7 @@ import com.cosmic.snakegamecraft.entity.Snake_Player;
 import com.cosmic.snakegamecraft.logic.HighscoreManager;
 import com.cosmic.snakegamecraft.logic.Item;
 import com.cosmic.snakegamecraft.logic.ItemManager;
+import com.cosmic.snakegamecraft.logic.ItemType;
 import com.cosmic.snakegamecraft.ui.GameMode;
 import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.ui.SceneManager;
@@ -140,18 +141,27 @@ abstract class AbstractGameController {
      *
      * @param collidedItem The item that was collected by the player.
      */
-    protected void typeCheck(Item collidedItem) {
+    protected boolean typeCheck(Item collidedItem) {
+        boolean isSpeedUp = false;
         switch (collidedItem.getType()) {
             case APPLE -> player.grow();
             case BAD_APPLE -> player.shrink();
-            case RAINBOW_APPLE -> player.rainbowApple();
+            case STAR -> player.star();
             case GOLDEN_APPLE -> {
 
                 player.grow();
                 player.grow(); // Golden apple gives two segments
             }
+            case SPEED_UP -> {
+                isSpeedUp = true;
+
+                player.speed();
+            }
         }
+
         itemManager.removeItem(collidedItem); // Remove item s.t. the next item can be spawned
+
+        return isSpeedUp;
     }
 
     /**
