@@ -5,21 +5,19 @@ import com.cosmic.snakegamecraft.core.GameLoop;
 import com.cosmic.snakegamecraft.entity.Entity;
 import com.cosmic.snakegamecraft.entity.Snake_Player;
 import com.cosmic.snakegamecraft.logic.HighscoreManager;
-import com.cosmic.snakegamecraft.logic.Item;
+import com.cosmic.snakegamecraft.util.Item;
 import com.cosmic.snakegamecraft.logic.ItemManager;
-import com.cosmic.snakegamecraft.logic.ItemType;
 import com.cosmic.snakegamecraft.ui.GameMode;
 import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.ui.SceneManager;
-import com.cosmic.snakegamecraft.util.SettingsLoader;
-import com.cosmic.snakegamecraft.util.SpriteManager;
+import com.cosmic.snakegamecraft.logic.SettingsLoader;
+import com.cosmic.snakegamecraft.logic.SpriteManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -103,7 +101,7 @@ abstract class AbstractGameController {
 
             alert.getButtonTypes().setAll(restartButton, menuButton);
 
-            HighscoreManager.saveScore(AppContext.getUsername(), player.getHighscore());
+            HighscoreManager.saveScore(AppContext.getUsername(), player.getCurrentHighscore());
 
             Optional<ButtonType> result = alert.showAndWait();
             result.ifPresent(button -> {

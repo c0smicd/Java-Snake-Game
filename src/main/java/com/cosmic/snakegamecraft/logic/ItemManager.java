@@ -1,14 +1,14 @@
 package com.cosmic.snakegamecraft.logic;
 
+import com.cosmic.snakegamecraft.util.Item;
+import com.cosmic.snakegamecraft.util.ItemType;
 import com.cosmic.snakegamecraft.util.Point;
-import com.cosmic.snakegamecraft.util.SpriteManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import static com.cosmic.snakegamecraft.util.Constants.*;
 

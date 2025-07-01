@@ -1,10 +1,11 @@
 package com.cosmic.snakegamecraft.controller;
 
 import com.cosmic.snakegamecraft.AppContext;
+import com.cosmic.snakegamecraft.logic.HighscoreManager;
 import com.cosmic.snakegamecraft.ui.GameMode;
 import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.ui.SceneManager;
-import com.cosmic.snakegamecraft.util.SettingsLoader;
+import com.cosmic.snakegamecraft.logic.SettingsLoader;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -14,8 +15,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
-import java.util.Random;
-
+import static com.cosmic.snakegamecraft.util.Constants.CRAZY_MODE_THRESHOLD;
+import static com.cosmic.snakegamecraft.util.Constants.MODERN_MODE_THRESHOLD;
 import static com.cosmic.snakegamecraft.util.Tips.*;
 
 
@@ -46,6 +47,10 @@ public class MenuController {
 
     private Timeline repeat;
 
+    private SplitPane splitPaneModernMode;
+
+    private SplitPane splitPaneCrazyMode;
+
 
     //TODO: Outsource the random tip function into TIPS
     @FXML
@@ -55,8 +60,21 @@ public class MenuController {
             speedValueLabel.setText( "Speed: " + String.format("%.1f", newVal.doubleValue())); // format to one decimal place
         });
 
+
+            // FIXME: Fix the split pane issue with the tooltips
             modernModeButton.setDisable(true);
             crazyModeButton.setDisable(true);
+
+            splitPaneModernMode = new SplitPane(modernModeButton);
+            splitPaneCrazyMode = new SplitPane(crazyModeButton);
+
+            Tooltip modernTooltip = new Tooltip("Get a highscore in Classic Mode of at least " + MODERN_MODE_THRESHOLD + " or higher to unlock Modern Mode.");
+            modernTooltip.setShowDelay(Duration.seconds(0.4));
+            splitPaneModernMode.setTooltip(modernTooltip);
+
+            Tooltip crazyTooltip = new Tooltip("Get a highscore in Modern Mode of at least " + CRAZY_MODE_THRESHOLD +  " or higher to unlock Crazy Mode.");
+            crazyTooltip.setShowDelay(Duration.seconds(0.4));
+            splitPaneCrazyMode.setTooltip(crazyTooltip);
 
 
         if(AppContext.isLoggedIn()){
@@ -65,19 +83,23 @@ public class MenuController {
             String tip = getTipRandom(); // Last tip is for not logged in
 
             settings = AppContext.getSettings();
-            loginButton.setTooltip(new Tooltip("You are logged in as " + AppContext.getUsername()));
+
+            Tooltip loginTooltip = new Tooltip("You are logged in as " + AppContext.getUsername());
+            loginTooltip.setShowDelay(Duration.seconds(0.4));
+            loginButton.setTooltip(loginTooltip);
+
+
             speedSlider.setValue(settings.speedMultiplier());
-            speedValueLabel.setText("Speed: " + settings.speedMultiplier());
             tipBox.setText(tip);
 
-            if(settings.canModernMode() || AppContext.isCanModernMode()) {
-                modernModeButton.setDisable(false);
-            } else if(settings.canCrazyMode() || AppContext.isCanCrazyMode()) {
-                crazyModeButton.setDisable(false);
-            }
+            canShowNextModes(AppContext.getUsername());
 
         }else{
-            loginButton.setTooltip(new Tooltip("You are not logged in. Click to log in."));
+
+            Tooltip loginTooltip = new Tooltip("You are not logged in. Click to log in.");
+
+            loginTooltip.setShowDelay(Duration.seconds(0.4));
+            loginButton.setTooltip(loginTooltip);
             tipBox.setText(getLoginTip());
 
         }
@@ -151,6 +173,8 @@ public class MenuController {
 
             AppContext.setSettings(settings);
 
+            canShowNextModes(username);
+
             // Stop buzzing
             repeat.stop();
         }
@@ -179,7 +203,7 @@ public class MenuController {
 
         double speed = (double) Math.round((speedSlider.getValue() * 10)) / 10; // truncate to one decimal place
         System.out.println(speed);
-        settings = new GameSettings(speed, AppContext.isCanModernMode(), AppContext.isCanCrazyMode());
+        settings = new GameSettings(speed);
 
         SettingsLoader.saveSettings(settings, AppContext.getUsername());
         settingsOverlay.setVisible(false);
@@ -208,6 +232,22 @@ public class MenuController {
             repeat.play();
 
 
+        }
+    }
+
+    private void canShowNextModes(String username){
+        AppContext.setCanModernMode(HighscoreManager.getCurrentUserScore(username));
+        AppContext.setCanCrazyMode(HighscoreManager.getCurrentUserScore(username));
+
+        if(AppContext.isCanModernMode()) {
+            modernModeButton.setDisable(false);
+
+            splitPaneModernMode.setTooltip(null);
+
+        } else if(AppContext.isCanCrazyMode()) {
+            crazyModeButton.setDisable(false);
+
+            splitPaneCrazyMode.setTooltip(null);
         }
     }
 

@@ -5,6 +5,9 @@ import com.cosmic.snakegamecraft.ui.GameSettings;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
+import static com.cosmic.snakegamecraft.util.Constants.CRAZY_MODE_THRESHOLD;
+import static com.cosmic.snakegamecraft.util.Constants.MODERN_MODE_THRESHOLD;
+
 public class AppContext {
 
     private static Stage stage;
@@ -53,12 +56,12 @@ public class AppContext {
         return settings;
     }
 
-    public static void setCanModernMode(boolean canModernMode) {
-        AppContext.canModernMode = canModernMode;
+    public static void setCanModernMode(int highScore) {
+        AppContext.canModernMode = highScore > MODERN_MODE_THRESHOLD;
     }
 
-    public void setCanCrazyMode(boolean canCrazyMode) {
-        AppContext.canCrazyMode = canCrazyMode;
+    public static void setCanCrazyMode(int highScore) {
+        AppContext.canCrazyMode = highScore > CRAZY_MODE_THRESHOLD;
     }
 
     public static boolean isCanModernMode() {

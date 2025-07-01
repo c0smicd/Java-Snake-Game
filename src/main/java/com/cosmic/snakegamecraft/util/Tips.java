@@ -12,6 +12,7 @@ public class Tips {
             "\uD83D\uDC46 Click me to show a new tip!", // Emoji for ☝️
             "💡 The Highscore scales with your speed multiplier.",
             "🎮 Use the arrow keys or WASD to control your snake.",
+            "Hover over the buttons to see tooltips.",
             "💾 Login to save highscores and custom settings."
     );
 

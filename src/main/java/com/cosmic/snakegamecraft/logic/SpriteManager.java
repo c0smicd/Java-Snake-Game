@@ -1,4 +1,4 @@
-package com.cosmic.snakegamecraft.util;
+package com.cosmic.snakegamecraft.logic;
 
 import javafx.scene.image.Image;
 

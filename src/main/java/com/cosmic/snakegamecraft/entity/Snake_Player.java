@@ -2,7 +2,7 @@ package com.cosmic.snakegamecraft.entity;
 
 
 import com.cosmic.snakegamecraft.util.Point;
-import com.cosmic.snakegamecraft.util.SpriteManager;
+import com.cosmic.snakegamecraft.logic.SpriteManager;
 import javafx.scene.canvas.GraphicsContext;
 
 import javafx.scene.image.Image;
@@ -28,7 +28,7 @@ public class Snake_Player extends Entity {
     private final Image tailSprite;
     private final Image rotatedSprite;
     private int invulnerabilityTicks = 0; // Timer for invincibility effect
-    private int highscore = 0;
+    private int currentHighscore = 0;
     private final double speedMultiplier;
 
     public Snake_Player(int startX, int startY, int initialLength, double speedMultiplier) {
@@ -237,7 +237,7 @@ public class Snake_Player extends Entity {
 
 
     private void increaseHighscore(int amount) {
-        highscore += amount;
+        currentHighscore += amount;
     }
 
 
@@ -282,8 +282,8 @@ public class Snake_Player extends Entity {
                 .toList();
     }
 
-    public int getHighscore() {
-        return highscore;
+    public int getCurrentHighscore() {
+        return currentHighscore;
     }
 
 

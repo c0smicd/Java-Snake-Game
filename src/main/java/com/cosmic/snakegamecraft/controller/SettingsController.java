@@ -3,7 +3,7 @@ package com.cosmic.snakegamecraft.controller;
 import com.cosmic.snakegamecraft.AppContext;
 import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.ui.SceneManager;
-import com.cosmic.snakegamecraft.util.SettingsLoader;
+import com.cosmic.snakegamecraft.logic.SettingsLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;

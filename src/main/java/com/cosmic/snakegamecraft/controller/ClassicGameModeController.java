@@ -3,12 +3,12 @@ package com.cosmic.snakegamecraft.controller;
 import com.cosmic.snakegamecraft.AppContext;
 import com.cosmic.snakegamecraft.core.GameLoop;
 import com.cosmic.snakegamecraft.entity.Snake_Player;
-import com.cosmic.snakegamecraft.logic.Item;
+import com.cosmic.snakegamecraft.util.Item;
 import com.cosmic.snakegamecraft.logic.ItemManager;
-import com.cosmic.snakegamecraft.logic.ItemType;
+import com.cosmic.snakegamecraft.util.ItemType;
 import com.cosmic.snakegamecraft.ui.GameSettings;
-import com.cosmic.snakegamecraft.util.SettingsLoader;
-import com.cosmic.snakegamecraft.util.SpriteManager;
+import com.cosmic.snakegamecraft.logic.SettingsLoader;
+import com.cosmic.snakegamecraft.logic.SpriteManager;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
@@ -61,7 +61,7 @@ public class ClassicGameModeController extends AbstractGameController {
 
                 if (collectedItem != null) {
                     typeCheck(collectedItem, 0);
-                    scoreLabel.setText("Score: " + player.getHighscore());
+                    scoreLabel.setText("Score: " + player.getCurrentHighscore());
                 }
                 // Render items
 
@@ -74,9 +74,9 @@ public class ClassicGameModeController extends AbstractGameController {
                     gameLoop.stop();
                     showGameOverDialog();
 
-                    if(player.getHighscore() > MODERN_MODE_THRESHOLD){
-                        AppContext.setCanModernMode(true);
-                    }
+                    // Check if player can play modern mode
+                    AppContext.setCanModernMode(player.getCurrentHighscore());
+
                     return;
                 }
 
@@ -96,6 +96,6 @@ public class ClassicGameModeController extends AbstractGameController {
 
     @Override
     protected void resetHighscore(){
-        scoreLabel.setText("Score: " + player.getHighscore());
+        scoreLabel.setText("Score: " + player.getCurrentHighscore());
     }
 }

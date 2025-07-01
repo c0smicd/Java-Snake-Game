@@ -1,4 +1,4 @@
-package com.cosmic.snakegamecraft.util;
+package com.cosmic.snakegamecraft.logic;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -7,9 +7,12 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import com.cosmic.snakegamecraft.ui.GameSettings;
+import com.cosmic.snakegamecraft.util.XMLEmptyLines;
 import org.w3c.dom.*;
 
 import java.io.File;
+
+
 
 public class SettingsLoader {
     private static final String FILE_PATH = "settings.xml";
@@ -28,10 +31,9 @@ public class SettingsLoader {
                 Element user = (Element) users.item(i);
                 if (user.getAttribute("name").equals(username)) {
                     double speed = Double.parseDouble(user.getAttribute("speed"));
-                    boolean canModernMode = Boolean.parseBoolean(user.getAttribute("canModernMode"));
-                    boolean canCrazyMode = Boolean.parseBoolean(user.getAttribute("canCrazyMode"));
 
-                    return new GameSettings(speed, canModernMode, canCrazyMode) ;
+
+                    return new GameSettings(speed) ;
 
                 }
             }
@@ -75,12 +77,12 @@ public class SettingsLoader {
             }
 
             userElem.setAttribute("speed", String.valueOf(settings.speedMultiplier()));
-            userElem.setAttribute("canModernMode", String.valueOf(settings.canModernMode()));
-            userElem.setAttribute("canCrazyMode", String.valueOf(settings.canCrazyMode()));
 
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.transform(new DOMSource(doc), new StreamResult(file));
+
+            XMLEmptyLines.removeEmptyLinesFromXml("settings.xml");
 
         } catch (Exception e) {
             e.printStackTrace();

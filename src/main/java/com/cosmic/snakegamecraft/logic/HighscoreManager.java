@@ -1,5 +1,6 @@
 package com.cosmic.snakegamecraft.logic;
 
+import com.cosmic.snakegamecraft.util.XMLEmptyLines;
 import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,10 +20,10 @@ import javafx.scene.text.Font;
 public class HighscoreManager {
     private static final String FILE_PATH = "highscores.xml";
 
-    // TODO: Update to save the score of the current mode
+
     public static void saveScore(String name, int score) {
         try {
-            if(Objects.equals(name, "guest")) return;
+            if (Objects.equals(name, "guest")) return;
 
             File file = new File(FILE_PATH);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -60,6 +61,8 @@ public class HighscoreManager {
                 newEntry.setAttribute("name", name);
                 newEntry.setAttribute("score", String.valueOf(score));
                 root.appendChild(newEntry);
+
+                XMLEmptyLines.removeEmptyLinesFromXml("highscores.xml");
             }
 
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -130,4 +133,26 @@ public class HighscoreManager {
 
         return output;
     }
+
+    public static int getCurrentUserScore(String username) {
+        try {
+            File file = new File(FILE_PATH);
+            if (!file.exists()) return -1;
+
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
+            NodeList nodes = doc.getElementsByTagName("entry");
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                Element e = (Element) nodes.item(i);
+                if (e.getAttribute("name").equals(username)) {
+                    return Integer.parseInt(e.getAttribute("score"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return 0;
+    }
+
 }
