@@ -8,7 +8,7 @@ public class Constants {
 
 
     public static final double BAD_APPLE_CHANCE = 5; // Chance of a bad apple appearing
-    public static final double STAR_CHANCE = 0.00001; // Chance of a rainbow apple appearing
+    public static final double STAR_CHANCE = 0.000000001; // Chance of a rainbow apple appearing
     public static final double SPEED_UP_CHANCE = 3; // Chance of a speed up item appearing
     public static final double GOLDEN_APPLE_CHANCE = 7; // Chance of a golden apple appearing
 
@@ -24,5 +24,8 @@ public class Constants {
     public static final double SPEED_UP_EFFECT = 1.5; // Speed up effect multiplier
     public static final int SPEED_UP_DURATION = 5; // Duration of speed up effect in ticks
     public static final int SPEED_UP_LENGTH = 5; // Length of the speed up effect in tiles
+
+    public static final int MODERN_MODE_THRESHOLD = 5000; // Score threshold for modern mode in classic mode
+    public static final int CRAZY_MODE_THRESHOLD = 10000; // Score threshold for crazy mode in classic mode
 
 }

@@ -70,7 +70,7 @@ public class ModernGameModeController extends AbstractGameController{
                         this.setTicksPerSecond(SPEEDUPDATE.UP);
                     }
 
-                    if(typeCheck(collectedItem)) {
+                    if(typeCheck(collectedItem, this.getCurrentSpeed())) {
                         System.out.println("Speed Up item collected");
                         this.speedUpEffect(SPEEDUPDATE.UP);
                         speed_timer = (int) (SPEED_UP_DURATION * settings.speedMultiplier() * this.getCurrentSpeed());

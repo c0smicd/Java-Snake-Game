@@ -19,6 +19,7 @@ import javafx.scene.text.Font;
 public class HighscoreManager {
     private static final String FILE_PATH = "highscores.xml";
 
+    // TODO: Update to save the score of the current mode
     public static void saveScore(String name, int score) {
         try {
             if(Objects.equals(name, "guest")) return;

@@ -28,7 +28,11 @@ public class SettingsLoader {
                 Element user = (Element) users.item(i);
                 if (user.getAttribute("name").equals(username)) {
                     double speed = Double.parseDouble(user.getAttribute("speed"));
-                    return new GameSettings(speed);
+                    boolean canModernMode = Boolean.parseBoolean(user.getAttribute("canModernMode"));
+                    boolean canCrazyMode = Boolean.parseBoolean(user.getAttribute("canCrazyMode"));
+
+                    return new GameSettings(speed, canModernMode, canCrazyMode) ;
+
                 }
             }
         } catch (Exception e) {
@@ -71,6 +75,8 @@ public class SettingsLoader {
             }
 
             userElem.setAttribute("speed", String.valueOf(settings.speedMultiplier()));
+            userElem.setAttribute("canModernMode", String.valueOf(settings.canModernMode()));
+            userElem.setAttribute("canCrazyMode", String.valueOf(settings.canCrazyMode()));
 
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");

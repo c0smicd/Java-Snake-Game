@@ -13,6 +13,8 @@ public class AppContext {
     private static GameSettings settings;
     private static int highScore = -1;
 
+    private static boolean canModernMode, canCrazyMode;
+
     public static void setStage(Stage s){
         stage = s;
     }
@@ -49,6 +51,22 @@ public class AppContext {
     public static GameSettings getSettings() {
         assert(settings != null) : "Settings have not been initialized!";
         return settings;
+    }
+
+    public static void setCanModernMode(boolean canModernMode) {
+        AppContext.canModernMode = canModernMode;
+    }
+
+    public void setCanCrazyMode(boolean canCrazyMode) {
+        AppContext.canCrazyMode = canCrazyMode;
+    }
+
+    public static boolean isCanModernMode() {
+        return canModernMode;
+    }
+
+    public static boolean isCanCrazyMode() {
+        return canCrazyMode;
     }
 }
 

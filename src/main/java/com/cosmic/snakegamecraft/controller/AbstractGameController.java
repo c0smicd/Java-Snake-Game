@@ -19,6 +19,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -141,12 +142,12 @@ abstract class AbstractGameController {
      *
      * @param collidedItem The item that was collected by the player.
      */
-    protected boolean typeCheck(Item collidedItem) {
+    protected boolean typeCheck(Item collidedItem, double currentSpeed) {
         boolean isSpeedUp = false;
         switch (collidedItem.getType()) {
             case APPLE -> player.grow();
             case BAD_APPLE -> player.shrink();
-            case STAR -> player.star();
+            case STAR -> player.star(currentSpeed);
             case GOLDEN_APPLE -> {
 
                 player.grow();

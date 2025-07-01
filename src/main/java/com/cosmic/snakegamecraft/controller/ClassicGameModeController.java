@@ -60,7 +60,7 @@ public class ClassicGameModeController extends AbstractGameController {
                 Item collectedItem = itemManager.checkCollision(player.getHeadX(), player.getHeadY());
 
                 if (collectedItem != null) {
-                    typeCheck(collectedItem);
+                    typeCheck(collectedItem, 0);
                     scoreLabel.setText("Score: " + player.getHighscore());
                 }
                 // Render items
@@ -73,6 +73,10 @@ public class ClassicGameModeController extends AbstractGameController {
                     System.out.println("Player is dead, stopping game loop.");
                     gameLoop.stop();
                     showGameOverDialog();
+
+                    if(player.getHighscore() > MODERN_MODE_THRESHOLD){
+                        AppContext.setCanModernMode(true);
+                    }
                     return;
                 }
 

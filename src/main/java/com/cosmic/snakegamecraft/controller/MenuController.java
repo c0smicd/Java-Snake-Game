@@ -39,9 +39,10 @@ public class MenuController {
     private Slider speedSlider;
     @FXML
     private Label speedValueLabel;
-
-
-    private final Random rand = new Random();
+    @FXML
+    private Button modernModeButton;
+    @FXML
+    private Button crazyModeButton;
 
     private Timeline repeat;
 
@@ -54,6 +55,10 @@ public class MenuController {
             speedValueLabel.setText( "Speed: " + String.format("%.1f", newVal.doubleValue())); // format to one decimal place
         });
 
+            modernModeButton.setDisable(true);
+            crazyModeButton.setDisable(true);
+
+
         if(AppContext.isLoggedIn()){
             // For restart
 
@@ -64,6 +69,13 @@ public class MenuController {
             speedSlider.setValue(settings.speedMultiplier());
             speedValueLabel.setText("Speed: " + settings.speedMultiplier());
             tipBox.setText(tip);
+
+            if(settings.canModernMode() || AppContext.isCanModernMode()) {
+                modernModeButton.setDisable(false);
+            } else if(settings.canCrazyMode() || AppContext.isCanCrazyMode()) {
+                crazyModeButton.setDisable(false);
+            }
+
         }else{
             loginButton.setTooltip(new Tooltip("You are not logged in. Click to log in."));
             tipBox.setText(getLoginTip());
@@ -167,9 +179,9 @@ public class MenuController {
 
         double speed = (double) Math.round((speedSlider.getValue() * 10)) / 10; // truncate to one decimal place
         System.out.println(speed);
-        settings = new GameSettings(speed);
+        settings = new GameSettings(speed, AppContext.isCanModernMode(), AppContext.isCanCrazyMode());
 
-        SettingsLoader.saveSettings(new GameSettings(speed), AppContext.getUsername());
+        SettingsLoader.saveSettings(settings, AppContext.getUsername());
         settingsOverlay.setVisible(false);
 
         AppContext.setSettings(settings);

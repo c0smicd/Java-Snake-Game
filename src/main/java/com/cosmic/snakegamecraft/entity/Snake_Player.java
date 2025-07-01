@@ -82,11 +82,11 @@ public class Snake_Player extends Entity {
     /**
      * Activates invincibility for a short duration.
      */
-    public void star(){
+    public void star(double currentSpeed){
         /* Speed multiplier speeds up the game internal update, thus
         the invincibility effect lasts shorter in real time. Hence, multiplying by speedMultiplier.
          */
-        invulnerabilityTicks = (int) (INVULNERABILITY_DURATION * speedMultiplier);
+        invulnerabilityTicks = (int) (INVULNERABILITY_DURATION * speedMultiplier * currentSpeed);
 
 
         increaseHighscore((int) (30 * speedMultiplier));

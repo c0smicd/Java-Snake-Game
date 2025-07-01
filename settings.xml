@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <settings>
-                                                                
+                                                                    
+    
     
     
     
@@ -17,7 +18,7 @@
     
     
     <user name="cosmic" speed="5.5"/>
-                                                            
+                                                                
 
 
 
@@ -32,8 +33,10 @@
     
     
     
-    <user name="comsic" speed="10.0"/>
-                                    
+    
+    <user name="comsic" speed="3.0"/>
+                                        
+    
     
     
     
@@ -43,7 +46,8 @@
     
     
     <user name="caaadadd" speed="6.0"/>
-                                
+                                    
+    
     
     
     
@@ -52,7 +56,8 @@
     
     
     <user name="adjnajdnadj" speed="1.0"/>
-                            
+                                
+
 
 
 
