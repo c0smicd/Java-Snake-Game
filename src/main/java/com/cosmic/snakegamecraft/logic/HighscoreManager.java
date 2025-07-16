@@ -110,7 +110,7 @@ public class HighscoreManager {
 
             if (i < limit || (e.getKey().equals(currentUser) && !currentUserAlreadyShown)) {
 
-                if (i == limit && !currentUserAlreadyShown) {
+                if (i == limit) {
                     // Add "..."
                     Text dots = new Text("...\n");
                     dots.setFill(Color.BLACK);
