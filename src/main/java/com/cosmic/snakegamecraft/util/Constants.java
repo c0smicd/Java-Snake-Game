@@ -25,7 +25,7 @@ public class Constants {
     public static final int SPEED_UP_DURATION = 5; // Duration of speed up effect in ticks
     public static final int SPEED_UP_LENGTH = 5; // Length of the speed up effect in tiles
 
-    public static final int MODERN_MODE_THRESHOLD = 5000; // Score threshold for modern mode in classic mode
+    public static final int MODERN_MODE_THRESHOLD = 2000; // Score threshold for modern mode in classic mode
     public static final int CRAZY_MODE_THRESHOLD = 10000; // Score threshold for crazy mode in classic mode
 
 }

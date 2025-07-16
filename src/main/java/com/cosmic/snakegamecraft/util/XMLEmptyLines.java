@@ -6,6 +6,12 @@ import java.util.List;
 
 public  class XMLEmptyLines {
 
+
+    /**
+     * Removes empty lines from an XML file.
+     *
+     * @param pathname the path to the XML file
+     */
     public static void removeEmptyLinesFromXml(String pathname) {
         File file = new File(pathname);
         List<String> lines = new ArrayList<>();

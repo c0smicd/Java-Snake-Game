@@ -92,6 +92,8 @@ public class MenuController {
             speedSlider.setValue(settings.speedMultiplier());
             tipBox.setText(tip);
 
+
+            // FIXME: When already logged in and the threshold, the buttons are not enabled
             canShowNextModes(AppContext.getUsername());
 
         }else{
@@ -196,7 +198,7 @@ public class MenuController {
 
     @FXML
     private void saveSettings(){
-        if(AppContext.getUsername() == "guest") {
+        if(AppContext.getUsername().equals("guest")) {
             settingsOverlay.setVisible(false);
             return;
         }

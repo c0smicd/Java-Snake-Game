@@ -130,7 +130,7 @@ public class Snake_Player extends Entity {
 
 
     //TODO: Should be defenetly be cleaned up
-    //TODO: Check if player has invurnerability effect, if so, draw head and body in different color and if head hit wall wrap around
+    //TODO: Check if player has invurnerability effect, if so, draw head and body in different color
     @Override
     public void render(GraphicsContext gc) {
 
@@ -138,6 +138,7 @@ public class Snake_Player extends Entity {
         for (int i = 0; i < body.size(); i++) {
             Segment curr = body.get(i);
             Image spriteToDraw;
+
 
             ImageView rotatedImage;
 

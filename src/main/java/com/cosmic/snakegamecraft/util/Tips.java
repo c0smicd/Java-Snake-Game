@@ -6,13 +6,13 @@ public class Tips {
 
     private static final List<String> TIPS = List.of(
             "🛠 You can change the speed in the Settings.",
-            "🍏 Modern Mode has bonus apples and difficulty scaling.",
+            "🍏 Modern Mode has special items and difficulty scaling.",
             "💡 Play Crazy Mode for AI enemies and weapons!",
             "🔄 Your snake gets faster as it grows in Modern Mode.",
             "\uD83D\uDC46 Click me to show a new tip!", // Emoji for ☝️
             "💡 The Highscore scales with your speed multiplier.",
             "🎮 Use the arrow keys or WASD to control your snake.",
-            "Hover over the buttons to see tooltips.",
+            "💡 Hover over the buttons to see tooltips.",
             "💾 Login to save highscores and custom settings."
     );
 

@@ -62,12 +62,13 @@ public class HighscoreManager {
                 newEntry.setAttribute("score", String.valueOf(score));
                 root.appendChild(newEntry);
 
-                XMLEmptyLines.removeEmptyLinesFromXml("highscores.xml");
             }
 
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.transform(new DOMSource(doc), new StreamResult(file));
+
+            XMLEmptyLines.removeEmptyLinesFromXml("highscores.xml");
         } catch (Exception e) {
             e.printStackTrace();
         }
