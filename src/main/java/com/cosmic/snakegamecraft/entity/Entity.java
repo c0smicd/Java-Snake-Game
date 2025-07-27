@@ -41,7 +41,7 @@ public abstract class Entity {
      * Sets the direction of the entity.
      * This method prevents the entity from reversing direction directly.
      * <p>
-     * ! Deprecated: Use {@link #queuedDirection(Direction)} instead for player-controlled entities.
+     * @Note Use {@link #queuedDirection(Direction)} instead for player-controlled entities.
      * @param newDirection The new direction to set.
      */
 

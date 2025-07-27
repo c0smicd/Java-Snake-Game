@@ -3,21 +3,25 @@ package com.cosmic.snakegamecraft.controller;
 import com.cosmic.snakegamecraft.AppContext;
 import com.cosmic.snakegamecraft.core.GameLoop;
 import com.cosmic.snakegamecraft.entity.Snake_Player;
-import com.cosmic.snakegamecraft.util.Item;
 import com.cosmic.snakegamecraft.logic.ItemManager;
-import com.cosmic.snakegamecraft.util.ItemType;
-import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.logic.SettingsLoader;
 import com.cosmic.snakegamecraft.logic.SpriteManager;
+import com.cosmic.snakegamecraft.ui.GameSettings;
+import com.cosmic.snakegamecraft.util.Item;
+import com.cosmic.snakegamecraft.util.ItemType;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 
 import java.util.Arrays;
 
 import static com.cosmic.snakegamecraft.util.Constants.*;
 
-public class ModernGameModeController extends AbstractGameController{
+public class ModernGameModeController extends AbstractGameController {
+
+    @FXML
+    private AnchorPane rootPane;
 
     @FXML
     private Canvas gameCanvas;
@@ -28,7 +32,7 @@ public class ModernGameModeController extends AbstractGameController{
     private GameLoop gameLoop;
 
 
-    private int[] bad_apple_timer = {-1,-1,-1};
+    private int[] bad_apple_timer = {-1, -1, -1};
     private int speed_timer = -1;
 
     private GameSettings gameSettings;
@@ -45,7 +49,7 @@ public class ModernGameModeController extends AbstractGameController{
 
         itemManager = new ItemManager(GRID_SIZE);
 
-        player = new Snake_Player(5,5, INITIAL_SNAKE_LENGTH, gameSettings.speedMultiplier());
+        player = new Snake_Player(5, 5, INITIAL_SNAKE_LENGTH, gameSettings.speedMultiplier());
 
         gameLoopMethod(gameSettings);
 
@@ -63,23 +67,26 @@ public class ModernGameModeController extends AbstractGameController{
 
                 player.update();
 
+                int highscoreBefore = player.getCurrentHighscore();
+
                 // Check for item collection
                 Item collectedItem = itemManager.checkCollision(player.getHeadX(), player.getHeadY());
 
                 if (collectedItem != null) {
 
-                    if(player.canSpeedUp() && (collectedItem.getType() == ItemType.APPLE || collectedItem.getType() == ItemType.GOLDEN_APPLE)) {
+                    if (player.canSpeedUp() && (collectedItem.getType() == ItemType.APPLE || collectedItem.getType() == ItemType.GOLDEN_APPLE)) {
                         this.setTicksPerSecond(SPEEDUPDATE.UP);
                     }
 
-                    if(typeCheck(collectedItem, this.getCurrentSpeed())) {
+                    if (typeCheck(collectedItem, this.getCurrentSpeed())) {
                         System.out.println("Speed Up item collected");
                         this.speedUpEffect(SPEEDUPDATE.UP);
                         speed_timer = (int) (SPEED_UP_DURATION * settings.speedMultiplier() * this.getCurrentSpeed());
 
                         System.out.println("Speed timer set to: " + speed_timer);
                     }
-                    scoreLabel.setText("Score: " + player.getCurrentHighscore());
+
+
                 }
 
                 // Render items
@@ -87,7 +94,19 @@ public class ModernGameModeController extends AbstractGameController{
 
                 // Handle bad apple timer
                 handleBadAppleTimer(settings, this.getCurrentSpeed());
+
+                // Handle speed timer
                 handleSpeedTimer();
+
+                // A fucking mess, but it works. Only updates the highscore if the player is invulnerable over time.
+                // The invulnerability effect is handled in the player class
+                handleInvulnerability();
+
+               // System.out.println("Current highscore: " + player.getCurrentHighscore());
+                scoreLabel.setText("Score: " + player.getCurrentHighscore());
+
+
+                showScoreIncrease(player.getCurrentHighscore() - highscoreBefore, rootPane, scoreLabel);
 
                 boolean isDead = (player.checkSelfCollision()
                         || player.checkWallCollision(GRID_SIZE)
@@ -119,7 +138,9 @@ public class ModernGameModeController extends AbstractGameController{
      */
     @Override
     protected void spawnItems() {
-        Arrays.stream(ItemType.values()).forEach(type -> {  itemManager.spawnItem(type, player.getOccupiedPoints(), speed);});
+        Arrays.stream(ItemType.values()).forEach(type -> {
+            itemManager.spawnItem(type, player.getOccupiedPoints(), speed);
+        });
     }
 
 
@@ -129,13 +150,12 @@ public class ModernGameModeController extends AbstractGameController{
     }
 
 
-
     private void handleBadAppleTimer(GameSettings settings, double currentSpeed) {
         if (!itemManager.existsBadApple()) return;
 
         if (Arrays.stream(bad_apple_timer).anyMatch(t -> t == 0)) {
             itemManager.removeItem(ItemType.BAD_APPLE);
-            bad_apple_timer = Arrays.stream(bad_apple_timer).map(t ->  t == 0 ? -1 : t).toArray(); // Reset all bad apple timers
+            bad_apple_timer = Arrays.stream(bad_apple_timer).map(t -> t == 0 ? -1 : t).toArray(); // Reset all bad apple timers
             return;
         }
 
@@ -150,17 +170,36 @@ public class ModernGameModeController extends AbstractGameController{
         }
     }
 
-    private void handleSpeedTimer(){
-        if(speed_timer == -1) return;
+    /**
+     * Handles the speed timer for the player.
+     * If the timer reaches 0, the speed effect is removed.
+     * If the timer is -1, no speed effect is active.
+     *
+     * @Note also Handles the SpeedHighscoreOvertime for the player.
+     */
+    private void handleSpeedTimer() {
+        if (speed_timer == -1) return;
 
 
-        if(speed_timer == 0) {
+        if (speed_timer == 0) {
             gameLoop.speedUpEffect(GameLoop.SPEEDUPDATE.DOWN);
             speed_timer = -1;
 
-        }else {
-            player.increaseHighscoreOvertime((int) (gameSettings.speedMultiplier() * SPEED_UP_POINTS));
+        } else {
+            player.increaseHighscoreOvertime((int) ((gameSettings.speedMultiplier() * SPEED_UP_POINTS) / 1.5));
             speed_timer--;
+
+            System.out.println("Speed Timer updated: " + speed_timer);
         }
     }
+
+
+    private void handleInvulnerability() {
+        if (player.isInvulnerable()) {
+            System.out.println("Player is invulnerable, increasing highscore over time.");
+            player.increaseHighscoreOvertime((int) ((gameSettings.speedMultiplier() * STAR_POINTS) / 2));
+        }
+    }
+
+
 }

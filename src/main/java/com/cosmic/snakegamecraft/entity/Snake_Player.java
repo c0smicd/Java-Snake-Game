@@ -84,9 +84,14 @@ public class Snake_Player extends Entity {
          */
         invulnerabilityTicks = (int) (INVULNERABILITY_DURATION * speedMultiplier * currentSpeed);
 
+        // This gets handled here: ModernGameModeController.handleInvulnerability();
+       // increaseHighscore((int) (30 * speedMultiplier));
 
-        increaseHighscore((int) (30 * speedMultiplier));
+    }
 
+
+    public void increaseHighscoreOvertime(int amount){
+        increaseHighscore(amount);
     }
 
 
@@ -118,7 +123,6 @@ public class Snake_Player extends Entity {
             body.get(i).x = body.get(i - 1).x;
             body.get(i).y = body.get(i - 1).y;
         }
-        System.out.println("Snake head position: " + body.getFirst().x + ", " + body.getFirst().y);
 
         Segment head = body.getFirst();
         switch (direction) {
@@ -171,7 +175,7 @@ public class Snake_Player extends Entity {
                     tailDirection = Direction.DOWN; // Tail is facing down
                 }
 
-                System.out.println("Tail direction: " + tailDirection);
+                // System.out.println("Tail direction: " + tailDirection);
 
 
 
@@ -294,9 +298,6 @@ public class Snake_Player extends Entity {
         return body.size() % (SPEED_UP_LENGTH - 1) == 0; // Can speed up if the snake's length is a multiple of SPEED_UP_LENGTH
     }
 
-    public void increaseHighscoreOvertime(int amount){
-        increaseHighscore(amount);
-    }
 
 
     private void wrapAround(int gridSize) {

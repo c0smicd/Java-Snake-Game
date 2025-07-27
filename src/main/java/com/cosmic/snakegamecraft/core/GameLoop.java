@@ -40,18 +40,16 @@ public abstract class GameLoop extends AnimationTimer {
 
 
     public GameLoop(double tps) {
-        System.out.println(tps);
         this.standardTps = tps;
         this.interval = (long) (1_000_000_000 / tps); // Convert TPS to nanoseconds
 
-        System.out.println(interval);
     }
 
     @Override
     public void handle(long now) {
         if(now - lastUpdate >= interval) {
             lastUpdate = now;
-            System.out.println("Updating game state at time: " + interval);
+            //System.out.println("Updating game state at time: " + interval);
             update();
         }
     }

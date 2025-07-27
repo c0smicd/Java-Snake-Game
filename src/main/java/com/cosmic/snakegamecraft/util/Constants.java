@@ -8,7 +8,7 @@ public class Constants {
 
 
     public static final double BAD_APPLE_CHANCE = 5; // Chance of a bad apple appearing
-    public static final double STAR_CHANCE = 0.000000001; // Chance of a rainbow apple appearing
+    public static final double STAR_CHANCE = 0.00000000001; // Chance of a rainbow apple appearing
     public static final double SPEED_UP_CHANCE = 3; // Chance of a speed up item appearing
     public static final double GOLDEN_APPLE_CHANCE = 7; // Chance of a golden apple appearing
 
@@ -16,8 +16,9 @@ public class Constants {
     public static final int BAD_APPLE_MAX_COUNT = 3; // Maximum number of bad apples on the board
 
     public static final int SHRINK_POINTS = -5; // Points deducted for collecting a bad apple
-    public static final int SPEED_UP_POINTS = 15; // Points awarded for collecting a speed-up item
+    public static final int SPEED_UP_POINTS = 1; // Points awarded for collecting a speed-up item
     public static final int NORMAL_APPLE_POINTS = 10; // Points awarded for collecting a normal apple
+    public static final int STAR_POINTS = 2; // Points awarded for collecting a rainbow apple
 
 
     public static final int INVULNERABILITY_DURATION = 10; // Duration of invulnerability in ticks

@@ -12,12 +12,22 @@ import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.ui.SceneManager;
 import com.cosmic.snakegamecraft.logic.SettingsLoader;
 import com.cosmic.snakegamecraft.logic.SpriteManager;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.util.Optional;
 
@@ -181,6 +191,36 @@ abstract class AbstractGameController {
                 }
             });
         });
+    }
+
+    protected void showScoreIncrease(int increaseAmount, AnchorPane rootPane, Label scoreLabel) {
+
+        if(increaseAmount == 0) {
+            return; // No score increase to show
+        }
+
+        Text scoreText = new Text(increaseAmount > 0 ? "+" + increaseAmount : "-" + Math.abs(increaseAmount));
+        scoreText.setFill(Color.WHITE);
+        scoreText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+
+        scoreText.setLayoutX(scoreLabel.getLayoutX() + scoreLabel.getWidth() + 10);
+        scoreText.setLayoutY(scoreLabel.getLayoutY());
+
+        rootPane.getChildren().add(scoreText); // rootPane is your scene's root (e.g., AnchorPane)
+
+        // Move up
+        TranslateTransition moveUp = new TranslateTransition(Duration.seconds(1), scoreText);
+        moveUp.setByY(-20);
+
+        // Fade out
+        FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), scoreText);
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+
+        // Play together
+        ParallelTransition animation = new ParallelTransition(moveUp, fadeOut);
+        animation.setOnFinished(e -> rootPane.getChildren().remove(scoreText));
+        animation.play();
     }
 
     /**

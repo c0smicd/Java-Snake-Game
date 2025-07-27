@@ -12,10 +12,14 @@ import com.cosmic.snakegamecraft.logic.SpriteManager;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 
 import static com.cosmic.snakegamecraft.util.Constants.*;
 
 public class ClassicGameModeController extends AbstractGameController {
+
+    @FXML
+    private AnchorPane rootPane;
 
     @FXML
     private Canvas gameCanvas;
@@ -56,12 +60,15 @@ public class ClassicGameModeController extends AbstractGameController {
             public void update() {
                 player.update();
 
+                int highscoreBefore = player.getCurrentHighscore();
+
                 // Check for item collection
                 Item collectedItem = itemManager.checkCollision(player.getHeadX(), player.getHeadY());
 
                 if (collectedItem != null) {
                     typeCheck(collectedItem, 0);
                     scoreLabel.setText("Score: " + player.getCurrentHighscore());
+                    showScoreIncrease(player.getCurrentHighscore() - highscoreBefore, rootPane, scoreLabel);
                 }
                 // Render items
 
