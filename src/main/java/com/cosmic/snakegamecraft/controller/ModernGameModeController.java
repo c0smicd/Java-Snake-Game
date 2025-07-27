@@ -31,13 +31,15 @@ public class ModernGameModeController extends AbstractGameController{
     private int[] bad_apple_timer = {-1,-1,-1};
     private int speed_timer = -1;
 
+    private GameSettings gameSettings;
+
     int speed = 1;
 
     @Override
     @FXML
     public void initialize() {
 
-        GameSettings gameSettings = SettingsLoader.loadSettings(AppContext.getUsername());
+        gameSettings = SettingsLoader.loadSettings(AppContext.getUsername());
 
         SpriteManager.loadSprites();
 
@@ -92,11 +94,6 @@ public class ModernGameModeController extends AbstractGameController{
                         || player.checkShrink()) && !player.isInvulnerable(); // If player got a shrink item, it can die if the size is under 3 tiles
 
                 if (isDead) {
-                    System.out.println("Player is dead, stopping game loop.");
-                    System.out.println("Self collision: " + player.checkSelfCollision());
-                    System.out.println("Wall collision: " + player.checkWallCollision(GRID_SIZE));
-                    System.out.println("Player shrink: " + player.checkShrink());
-                    System.out.println("Player invulnerable: " + player.isInvulnerable());
 
                     gameLoop.stop();
                     showGameOverDialog();
@@ -162,6 +159,7 @@ public class ModernGameModeController extends AbstractGameController{
             speed_timer = -1;
 
         }else {
+            player.increaseHighscoreOvertime((int) (gameSettings.speedMultiplier() * SPEED_UP_POINTS));
             speed_timer--;
         }
     }

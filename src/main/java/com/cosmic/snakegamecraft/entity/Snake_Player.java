@@ -55,7 +55,7 @@ public class Snake_Player extends Entity {
         Segment last = body.getLast();
         body.add(new Segment(last.x,last.y));
 
-        increaseHighscore((int) (10 * speedMultiplier)); // Increase score based on speed multiplier
+        increaseHighscore((int) (NORMAL_APPLE_POINTS * speedMultiplier)); // Increase score based on speed multiplier
     }
 
     /**
@@ -64,11 +64,7 @@ public class Snake_Player extends Entity {
     public void shrink(){
         body.removeLast(); // Remove the last segment to shrink the snake
 
-        increaseHighscore((int) (-5 * speedMultiplier));
-    }
-
-    public void speed(){
-        increaseHighscore((int) (15 * speedMultiplier));
+        increaseHighscore((int) (SHRINK_POINTS * speedMultiplier));
     }
 
     /**
@@ -93,6 +89,12 @@ public class Snake_Player extends Entity {
 
     }
 
+
+    /**
+     * Checks if the snake is currently invulnerable
+     *
+     * @return true if the snake is currently invulnerable, false otherwise
+     */
     public boolean isInvulnerable() {
         return invulnerabilityTicks > 0;
     }
@@ -290,6 +292,10 @@ public class Snake_Player extends Entity {
 
     public boolean canSpeedUp(){
         return body.size() % (SPEED_UP_LENGTH - 1) == 0; // Can speed up if the snake's length is a multiple of SPEED_UP_LENGTH
+    }
+
+    public void increaseHighscoreOvertime(int amount){
+        increaseHighscore(amount);
     }
 
 

@@ -66,12 +66,11 @@ public class ItemManager {
     }
 
     private boolean isOccupied(int x, int y, List<Point> occupied) {
-        return occupied.stream().anyMatch(p -> p.x() == x && p.y() == y) && items.stream().anyMatch(item -> item.getX() == x && item.getY() == y);
+        return occupied.stream().anyMatch(p -> p.x() == x && p.y() == y) || items.stream().anyMatch(item -> item.getX() == x && item.getY() == y);
     }
 
     public void render(GraphicsContext gc){
         for(Item item : items){
-            System.out.println("Rendering item: " + item.getType() + " at (" + item.getX() + ", " + item.getY() + ")");
             gc.drawImage(item.getSprite(), item.getX() * TILE_SIZE, item.getY() * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         }
     }

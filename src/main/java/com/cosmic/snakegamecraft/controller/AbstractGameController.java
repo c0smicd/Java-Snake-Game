@@ -42,7 +42,7 @@ abstract class AbstractGameController {
      * Initializes the game controller.
      * This method should be implemented by subclasses to set up the game state.
      *
-     * ? Loads settings, sprites, initializes player and item manager, and starts the game loop.
+     * @Note Loads settings, sprites, initializes player and item manager, and starts the game loop.
      */
     @FXML
     public abstract void initialize();
@@ -80,7 +80,6 @@ abstract class AbstractGameController {
 
         player.render(gc);
 
-        System.out.println("Render item");
         itemManager.render(gc);
 
     }
@@ -139,6 +138,8 @@ abstract class AbstractGameController {
      * Checks the type of the collided item and updates the player's state accordingly.
      *
      * @param collidedItem The item that was collected by the player.
+     *
+     * @return true if the item is a speed-up item, false otherwise.
      */
     protected boolean typeCheck(Item collidedItem, double currentSpeed) {
         boolean isSpeedUp = false;
@@ -153,8 +154,6 @@ abstract class AbstractGameController {
             }
             case SPEED_UP -> {
                 isSpeedUp = true;
-
-                player.speed();
             }
         }
 

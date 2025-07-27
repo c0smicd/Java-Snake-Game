@@ -15,15 +15,19 @@ public class Constants {
     public static final int BAD_APPLE_DURATION = 50; // Duration of bad apple effect in ticks
     public static final int BAD_APPLE_MAX_COUNT = 3; // Maximum number of bad apples on the board
 
+    public static final int SHRINK_POINTS = -5; // Points deducted for collecting a bad apple
+    public static final int SPEED_UP_POINTS = 15; // Points awarded for collecting a speed-up item
+    public static final int NORMAL_APPLE_POINTS = 10; // Points awarded for collecting a normal apple
 
-    public static final int INVULNERABILITY_DURATION = 20; // Duration of invulnerability in ticks
+
+    public static final int INVULNERABILITY_DURATION = 10; // Duration of invulnerability in ticks
     public static final int INITIAL_SNAKE_LENGTH = 3; // Initial length of the snake
 
     public static final int SHOWN_HIGHSCORES = 10; // Number of high scores to show in the leaderboard
 
     public static final double SPEED_UP_EFFECT = 1.5; // Speed up effect multiplier
-    public static final int SPEED_UP_DURATION = 5; // Duration of speed up effect in ticks
-    public static final int SPEED_UP_LENGTH = 5; // Length of the speed up effect in tiles
+    public static final int SPEED_UP_DURATION = 5; // Duration of speed-up effect in ticks
+    public static final int SPEED_UP_LENGTH = 5; // Length of the speed-up effect in tiles
 
     public static final int MODERN_MODE_THRESHOLD = 2000; // Score threshold for modern mode in classic mode
     public static final int CRAZY_MODE_THRESHOLD = 10000; // Score threshold for crazy mode in classic mode
