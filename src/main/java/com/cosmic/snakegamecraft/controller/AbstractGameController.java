@@ -22,6 +22,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -65,14 +66,17 @@ abstract class AbstractGameController {
      * @param gameCanvas The canvas to draw on.
      */
 
-    protected void drawFrame(Canvas gameCanvas) {
+    protected void drawFrame(Canvas gameCanvas, GameMode gameMode) {
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
+
+        Image backGroundImage = gameMode == GameMode.FALLOUT ? SpriteManager.getBgTileFallout() : SpriteManager.getBgTile1();
+
 
         gc.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
 
         for (int x = 0; x < GRID_SIZE; x++) {
             for (int y = 0; y < GRID_SIZE; y++) {
-                gc.drawImage(SpriteManager.getBgTile1(), x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                gc.drawImage(backGroundImage, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
             }
         }
 
@@ -164,6 +168,12 @@ abstract class AbstractGameController {
             }
             case SPEED_UP -> {
                 isSpeedUp = true;
+                player.speedUp(currentSpeed);
+            }
+
+            case IODINE -> {
+                System.out.println("IODINE");
+                player.increaseRadiationTolerance(INCREASE_IOD);
             }
         }
 

@@ -4,8 +4,10 @@ import com.cosmic.snakegamecraft.AppContext;
 import com.cosmic.snakegamecraft.core.GameLoop;
 import com.cosmic.snakegamecraft.entity.Snake_Player;
 import com.cosmic.snakegamecraft.logic.ItemManager;
+import com.cosmic.snakegamecraft.logic.PlaySound;
 import com.cosmic.snakegamecraft.logic.SettingsLoader;
 import com.cosmic.snakegamecraft.logic.SpriteManager;
+import com.cosmic.snakegamecraft.ui.GameMode;
 import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.util.Item;
 import com.cosmic.snakegamecraft.util.ItemType;
@@ -46,6 +48,8 @@ public class ModernGameModeController extends AbstractGameController {
         gameSettings = SettingsLoader.loadSettings(AppContext.getUsername());
 
         SpriteManager.loadSprites();
+
+        PlaySound.loadSounds();
 
         itemManager = new ItemManager(GRID_SIZE);
 
@@ -109,20 +113,23 @@ public class ModernGameModeController extends AbstractGameController {
                 showScoreIncrease(player.getCurrentHighscore() - highscoreBefore, rootPane, scoreLabel);
 
                 boolean isDead = (player.checkSelfCollision()
-                        || player.checkWallCollision(GRID_SIZE)
+                        || player.checkWallCollision()
                         || player.checkShrink()) && !player.isInvulnerable(); // If player got a shrink item, it can die if the size is under 3 tiles
 
                 if (isDead) {
 
                     gameLoop.stop();
                     showGameOverDialog();
+
+                    AppContext.setCanFalloutMode(player.getCurrentHighscore());
+
                     return;
                 }
 
 
                 speed = (int) (settings.speedMultiplier() * this.getCurrentSpeed());
 
-                drawFrame(gameCanvas);
+                drawFrame(gameCanvas, GameMode.MODERN);
             }
         };
 
@@ -189,14 +196,12 @@ public class ModernGameModeController extends AbstractGameController {
             player.increaseHighscoreOvertime((int) ((gameSettings.speedMultiplier() * SPEED_UP_POINTS) / 1.5));
             speed_timer--;
 
-            System.out.println("Speed Timer updated: " + speed_timer);
         }
     }
 
 
     private void handleInvulnerability() {
         if (player.isInvulnerable()) {
-            System.out.println("Player is invulnerable, increasing highscore over time.");
             player.increaseHighscoreOvertime((int) ((gameSettings.speedMultiplier() * STAR_POINTS) / 2));
         }
     }

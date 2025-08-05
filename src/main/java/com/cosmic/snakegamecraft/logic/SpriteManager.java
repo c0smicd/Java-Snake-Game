@@ -1,5 +1,6 @@
 package com.cosmic.snakegamecraft.logic;
 
+import com.cosmic.snakegamecraft.ui.GameMode;
 import javafx.scene.image.Image;
 
 import java.util.Objects;
@@ -25,10 +26,15 @@ public class SpriteManager {
     private static Image bgGrassTop;
     private static Image bgGrassBottom;
     private static Image bgScore;
+    private static Image snakeBodyFallout;
+    private static Image snakeHeadFallout;
+    private static Image bgTileFallout;
+    private static Image bgTileFalloutWasted;
+    private static Image mushroomCloud;
+    private static Image iodine;
 
 
-
-    public static void loadSprites(){
+    public static void loadSprites() {
 
         // Loading snake sprites from the resources folder
         snakeHead = load("snakes/player/head_snake.png");
@@ -42,6 +48,7 @@ public class SpriteManager {
         speedBoost = load("items/speed_boost.png");
         starItem = load("items/star.png");
         goldApple = load("items/gold_apple.png");
+        iodine = load("items/iodine.png");
 
         // Loading background sprites
         bgTile1 = load("playground/grass-tile.png");
@@ -52,62 +59,122 @@ public class SpriteManager {
         bgGrassBottom = load("playground/grass_bot.png");
         bgScore = load("playground/background-score.png");
 
+        // Load fallout sprites
+
+        snakeBodyFallout = load("snakes/player/snake_body_fallout.png");
+        snakeHeadFallout = load("snakes/player/snake_head_fallout.png");
+        bgTileFallout = load("playground/grass-tile-fallout.png");
+        bgTileFalloutWasted = load("playground/grass-tile-fallout_wasted.png");
+        mushroomCloud = load("nuclear_pilz.png");
+
+
     }
 
-    private static Image load(String path){
+    private static Image load(String path) {
         return new Image(Objects.requireNonNull(SpriteManager.class.getResourceAsStream(SPRITE_PATH + path)));
     }
 
-    public static Image getSnakeHead() {
+    public static Image getSnakeHead(GameMode gameMode) {
+
+        switch (gameMode) {
+            case CLASSIC, MODERN -> {
+                System.out.println("Classic Snake Head");
+                return snakeHead;
+            }
+            case FALLOUT -> {
+                System.out.println("Getting snake head fallout");
+                return snakeHeadFallout;
+            }
+        }
+
         return snakeHead;
     }
-    public static Image getSnakeBody() {
+
+    public static Image getSnakeBody(GameMode gameMode) {
+        switch (gameMode) {
+            case CLASSIC, MODERN -> {
+                return snakeBody;
+            }
+            case FALLOUT -> {
+                return snakeBodyFallout;
+            }
+        }
         return snakeBody;
     }
+
     public static Image getSnakeTail() {
         return snakeTail;
     }
+
     public static Image getSnakeRotate() {
         return snakeRotate;
     }
+
     public static Image getApple() {
         return apple;
     }
+
     public static Image getBadApple() {
         return badApple;
     }
+
     public static Image getSpeedBoost() {
         return speedBoost;
     }
+
     public static Image getStarItem() {
         return starItem;
     }
+
     public static Image getGoldApple() {
         return goldApple;
     }
+
     public static Image getBgTile1() {
         return bgTile1;
     }
+
     public static Image getBgScore() {
         return bgScore;
     }
+
     public static Image getBgTile2() {
         return bgTile2;
     }
+
     public static Image getBgGrassLeft() {
         return bgGrassLeft;
     }
+
     public static Image getBgGrassRight() {
         return bgGrassRight;
     }
+
     public static Image getBgGrassTop() {
         return bgGrassTop;
     }
+
     public static Image getBgGrassBottom() {
         return bgGrassBottom;
     }
+
     public static String getSpritePath() {
         return SPRITE_PATH;
     }
 
+    public static Image getBgTileFallout() {
+        return bgTileFallout;
+    }
+
+    public static Image getBgTileFalloutWasted() {
+        return bgTileFalloutWasted;
+    }
+
+    public static Image getMushroomCloud() {
+        return mushroomCloud;
+    }
+
+    public static Image getIodine() {
+        return iodine;
+    }
 }

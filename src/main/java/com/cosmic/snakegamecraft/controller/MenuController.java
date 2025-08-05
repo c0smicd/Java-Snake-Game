@@ -12,10 +12,11 @@ import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
 
-import static com.cosmic.snakegamecraft.util.Constants.CRAZY_MODE_THRESHOLD;
+import static com.cosmic.snakegamecraft.util.Constants.FALLOUT_MODE_THRESHOLD;
 import static com.cosmic.snakegamecraft.util.Constants.MODERN_MODE_THRESHOLD;
 import static com.cosmic.snakegamecraft.util.Tips.*;
 
@@ -25,6 +26,9 @@ public class MenuController {
     private final SceneManager sceneManager = new SceneManager(AppContext.getStage());
 
     private GameSettings settings;
+
+    @FXML
+    private StackPane root;
 
     @FXML
     private Button loginButton;
@@ -43,7 +47,7 @@ public class MenuController {
     @FXML
     private Button modernModeButton;
     @FXML
-    private Button crazyModeButton;
+    private Button falloutModeButton;
 
     private Timeline repeat;
 
@@ -61,20 +65,36 @@ public class MenuController {
         });
 
 
+
             // FIXME: Fix the split pane issue with the tooltips
             modernModeButton.setDisable(true);
-            crazyModeButton.setDisable(true);
+            falloutModeButton.setDisable(true);
 
             splitPaneModernMode = new SplitPane(modernModeButton);
-            splitPaneCrazyMode = new SplitPane(crazyModeButton);
+            splitPaneCrazyMode = new SplitPane(falloutModeButton);
 
             Tooltip modernTooltip = new Tooltip("Get a highscore in Classic Mode of at least " + MODERN_MODE_THRESHOLD + " or higher to unlock Modern Mode.");
             modernTooltip.setShowDelay(Duration.seconds(0.4));
             splitPaneModernMode.setTooltip(modernTooltip);
 
-            Tooltip crazyTooltip = new Tooltip("Get a highscore in Modern Mode of at least " + CRAZY_MODE_THRESHOLD +  " or higher to unlock Crazy Mode.");
+            Tooltip crazyTooltip = new Tooltip("Get a highscore in Modern Mode of at least " + FALLOUT_MODE_THRESHOLD +  " or higher to unlock Crazy Mode.");
             crazyTooltip.setShowDelay(Duration.seconds(0.4));
             splitPaneCrazyMode.setTooltip(crazyTooltip);
+
+
+        falloutModeButton.setOnMouseEntered(e -> {
+            root.setStyle(
+                    "-fx-background-image: url('" + getClass().getResource("/images/menu/background_fallout.png") + "');" +
+                            "-fx-background-size: cover;"
+            );
+
+            // Also change the buttons and text here
+        });
+
+        falloutModeButton.setOnMouseExited(e -> {
+            // Optional: reset background on hover exit
+            root.setStyle("-fx-background-image: url('" + getClass().getResource("/images/menu/background.png") + "');");  // or set to another default background
+        });
 
 
         if(AppContext.isLoggedIn()){
@@ -138,8 +158,8 @@ public class MenuController {
     }
 
     @FXML
-    public void handleCrazyMode() {
-        sceneManager.startGame(GameMode.CRAZY);
+    public void handleFalloutMode() {
+        sceneManager.startGame(GameMode.FALLOUT);
     }
 
 
@@ -239,15 +259,18 @@ public class MenuController {
 
     private void canShowNextModes(String username){
         AppContext.setCanModernMode(HighscoreManager.getCurrentUserScore(username));
-        AppContext.setCanCrazyMode(HighscoreManager.getCurrentUserScore(username));
+        AppContext.setCanFalloutMode(HighscoreManager.getCurrentUserScore(username));
 
         if(AppContext.isCanModernMode()) {
+            System.out.println("Can modern mode");
             modernModeButton.setDisable(false);
 
             splitPaneModernMode.setTooltip(null);
 
-        } else if(AppContext.isCanCrazyMode()) {
-            crazyModeButton.setDisable(false);
+        }
+        if(AppContext.isCanFalloutMode()) {
+            System.out.println("Can fallout mode");
+            falloutModeButton.setDisable(false);
 
             splitPaneCrazyMode.setTooltip(null);
         }

@@ -6,5 +6,6 @@ public enum ItemType {
     GOLDEN_APPLE,
     STAR,
     BAD_APPLE,
-    SPEED_UP
+    SPEED_UP,
+    IODINE
 }

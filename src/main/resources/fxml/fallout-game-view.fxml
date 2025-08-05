@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.text.Font?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.cosmic.snakegamecraft.controller.ModernGameModeController"
-            prefHeight="704.0" prefWidth="640.0">
+<BorderPane prefHeight="704.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosmic.snakegamecraft.controller.FalloutGameModeController">
 
     <top>
         <HBox>
@@ -23,6 +20,7 @@
                 <font>
                     <Font name="Lucida Console" size="25.0" />
                 </font></Label>
+         <ProgressBar fx:id="radiationBar" layoutX="40.0" layoutY="14.0" prefHeight="18.0" prefWidth="560.0" progress="0.0" />
         </AnchorPane>
     </center>
 

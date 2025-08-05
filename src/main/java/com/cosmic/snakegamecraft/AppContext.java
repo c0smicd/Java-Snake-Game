@@ -5,7 +5,7 @@ import com.cosmic.snakegamecraft.ui.GameSettings;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
-import static com.cosmic.snakegamecraft.util.Constants.CRAZY_MODE_THRESHOLD;
+import static com.cosmic.snakegamecraft.util.Constants.FALLOUT_MODE_THRESHOLD;
 import static com.cosmic.snakegamecraft.util.Constants.MODERN_MODE_THRESHOLD;
 
 public class AppContext {
@@ -16,7 +16,7 @@ public class AppContext {
     private static GameSettings settings;
     private static int highScore = -1;
 
-    private static boolean canModernMode, canCrazyMode;
+    private static boolean canModernMode, canFalloutMode;
 
     public static void setStage(Stage s){
         stage = s;
@@ -42,6 +42,8 @@ public class AppContext {
 
     public static void setGameMode(GameMode mode) {
         gameMode = mode;
+
+        System.out.println("Setting game mode: " + gameMode);
     }
 
     public static GameMode getGameMode() {
@@ -60,16 +62,20 @@ public class AppContext {
         AppContext.canModernMode = highScore > MODERN_MODE_THRESHOLD;
     }
 
-    public static void setCanCrazyMode(int highScore) {
-        AppContext.canCrazyMode = highScore > CRAZY_MODE_THRESHOLD;
+    public static void setCanFalloutMode(int highScore) {
+
+        System.out.println("Setting canFallout mode");
+        AppContext.canFalloutMode = highScore > FALLOUT_MODE_THRESHOLD;
+
+        System.out.println("Can fallout mode: " + AppContext.canFalloutMode);
     }
 
     public static boolean isCanModernMode() {
         return canModernMode;
     }
 
-    public static boolean isCanCrazyMode() {
-        return canCrazyMode;
+    public static boolean isCanFalloutMode() {
+        return canFalloutMode;
     }
 }
 

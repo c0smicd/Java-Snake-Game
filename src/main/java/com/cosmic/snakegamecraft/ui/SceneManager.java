@@ -29,13 +29,14 @@ public class SceneManager {
 
     public void startGame(GameMode mode){
 
+        AppContext.setGameMode(mode);
+
         switch (mode){
             case CLASSIC -> switchScene("classic-game-view.fxml", "Game - Classic Mode");
             case MODERN -> switchScene("modern-game-view.fxml", "Game - Modern Mode");
-            case CRAZY -> switchScene("game-crazy-view.fxml", "Game - Crazy Mode");
+            case FALLOUT -> switchScene("fallout-game-view.fxml", "Game - Fallout Mode");
         }
 
-        AppContext.setGameMode(mode);
     }
 
     public void showHighscores(){

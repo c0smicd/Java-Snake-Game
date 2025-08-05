@@ -46,6 +46,8 @@ public class ItemManager {
             return;
         }
 
+        if(!canSpawnIodine()) return;
+
         int  x, y;
 
         do{
@@ -60,6 +62,7 @@ public class ItemManager {
             case GOLDEN_APPLE -> SpriteManager.getGoldApple();
             case STAR -> SpriteManager.getStarItem();
             case SPEED_UP -> SpriteManager.getSpeedBoost();
+            case IODINE -> SpriteManager.getIodine();
         };
 
         items.add(new Item(type, x, y, sprite));
@@ -112,6 +115,10 @@ public class ItemManager {
 
     private boolean spawnBadApple() {
         return items.stream().filter(item -> item.getType() == ItemType.BAD_APPLE).toList().size() < BAD_APPLE_MAX_COUNT;
+    }
+
+    private boolean canSpawnIodine() {
+        return items.stream().filter(item -> item.getType() == ItemType.IODINE).toList().size() < IODINE_MAX_COUNT;
     }
 
 }

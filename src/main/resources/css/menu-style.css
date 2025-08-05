@@ -63,8 +63,8 @@
     -fx-background-color: #2563eb;
 }
 
-#crazyModeButton {
-    -fx-background-color: #ef4444;
+#falloutModeButton {
+    -fx-background-color: linear-gradient(to bottom, #7A8585, #2DFD2D);
 }
 
 #highscoreButton {
@@ -97,8 +97,8 @@
     -fx-background-color: #3b82f6;
 }
 
-#crazyModeButton:hover {
-    -fx-background-color: #f87171;
+#falloutModeButton:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 0, 0.9), 15, 0.6, 0, 0);
 }
 
 #highscoreButton:hover {

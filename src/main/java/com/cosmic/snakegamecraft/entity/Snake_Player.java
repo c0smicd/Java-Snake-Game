@@ -1,10 +1,12 @@
 package com.cosmic.snakegamecraft.entity;
 
 
-import com.cosmic.snakegamecraft.util.Point;
+import com.cosmic.snakegamecraft.AppContext;
+import com.cosmic.snakegamecraft.logic.PlaySound;
 import com.cosmic.snakegamecraft.logic.SpriteManager;
+import com.cosmic.snakegamecraft.ui.GameMode;
+import com.cosmic.snakegamecraft.util.Point;
 import javafx.scene.canvas.GraphicsContext;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -16,21 +18,19 @@ import static com.cosmic.snakegamecraft.util.Constants.*;
 
 public class Snake_Player extends Entity {
 
-    public static class Segment {
-        int x,y;
-
-        public Segment(int x, int y) {this.x = x; this.y = y;}
-    }
-
     private final LinkedList<Segment> body = new LinkedList<>();
     private final Image headSprite;
     private final Image bodySprite;
     private final Image tailSprite;
-    private final Image rotatedSprite;
-    private int invulnerabilityTicks = 0; // Timer for invincibility effect
-    private int currentHighscore = 0;
     private final double speedMultiplier;
+    private int invulnerabilityTicks = 0; // Timer for invincibility effect
+    private int speedUpTicks = 0;
+    private int currentHighscore = 0;
 
+
+    private int radiationTolerance = RAD_TOL;
+
+    private GameMode gameMode = AppContext.getGameMode();
     public Snake_Player(int startX, int startY, int initialLength, double speedMultiplier) {
         this.x = startX;
         this.y = startY;
@@ -42,18 +42,19 @@ public class Snake_Player extends Entity {
             body.add(new Segment(startX - i, startY));
         }
 
-        headSprite = SpriteManager.getSnakeHead();
-        bodySprite = SpriteManager.getSnakeBody();
+        headSprite = SpriteManager.getSnakeHead(gameMode);
+        bodySprite = SpriteManager.getSnakeBody(gameMode);
         tailSprite = SpriteManager.getSnakeTail();
-        rotatedSprite = SpriteManager.getSnakeRotate();
     }
 
     /**
      * Grows the snake by adding a new segment at the end of the body.
      */
-    public void grow(){
+    public void grow() {
         Segment last = body.getLast();
-        body.add(new Segment(last.x,last.y));
+        body.add(new Segment(last.x, last.y));
+
+        PlaySound.playSound(PlaySound.Sound.APPLE);
 
         increaseHighscore((int) (NORMAL_APPLE_POINTS * speedMultiplier)); // Increase score based on speed multiplier
     }
@@ -61,7 +62,7 @@ public class Snake_Player extends Entity {
     /**
      * Shrinks the snake by removing the last segment.
      */
-    public void shrink(){
+    public void shrink() {
         body.removeLast(); // Remove the last segment to shrink the snake
 
         increaseHighscore((int) (SHRINK_POINTS * speedMultiplier));
@@ -69,31 +70,37 @@ public class Snake_Player extends Entity {
 
     /**
      * Checks if the snake can shrink.
+     *
      * @return true if the snake has more than one segment, false otherwise.
      */
-    public boolean checkShrink(){
+    public boolean checkShrink() {
         return body.size() == 2;
     }
 
     /**
      * Activates invincibility for a short duration.
      */
-    public void star(double currentSpeed){
+    public void star(double currentSpeed) {
         /* Speed multiplier speeds up the game internal update, thus
         the invincibility effect lasts shorter in real time. Hence, multiplying by speedMultiplier.
          */
         invulnerabilityTicks = (int) (INVULNERABILITY_DURATION * speedMultiplier * currentSpeed);
 
         // This gets handled here: ModernGameModeController.handleInvulnerability();
-       // increaseHighscore((int) (30 * speedMultiplier));
+        // increaseHighscore((int) (30 * speedMultiplier));
 
     }
 
+    public void speedUp(double currentSpeed) {
 
-    public void increaseHighscoreOvertime(int amount){
+        PlaySound.playSound(PlaySound.Sound.SPEEDUP);
+
+        speedUpTicks = (int) (SPEED_UP_DURATION * speedMultiplier * currentSpeed);
+    }
+
+    public void increaseHighscoreOvertime(int amount) {
         increaseHighscore(amount);
     }
-
 
     /**
      * Checks if the snake is currently invulnerable
@@ -104,18 +111,22 @@ public class Snake_Player extends Entity {
         return invulnerabilityTicks > 0;
     }
 
-
+    public boolean isSpeedUp() {
+        return speedUpTicks > 0;
+    }
 
     @Override
     public void update() {
 
-        if(queuedDirection != null){
+        if (queuedDirection != null) {
             this.direction = queuedDirection;
             queuedDirection = null; // Reset queued direction after applying it
         }
 
         // Handle invincibility effect
-        if(invulnerabilityTicks > 0) invulnerabilityTicks--;
+        if (invulnerabilityTicks > 0) invulnerabilityTicks--;
+
+        if (speedUpTicks > 0) speedUpTicks--;
 
         // Shift body segments
 
@@ -134,6 +145,27 @@ public class Snake_Player extends Entity {
 
     }
 
+    public void increaseRadiationTolerance(int radiationTolerance) {
+
+        System.out.println(this.radiationTolerance);
+
+        this.radiationTolerance += radiationTolerance;
+
+        System.out.println(this.radiationTolerance);
+    }
+
+    public void decreaseRadiationTolerance(int radiationTolerance) {
+        this.radiationTolerance -= radiationTolerance;
+    }
+
+    public int getRadiationTolerance() {
+        return this.radiationTolerance;
+    }
+
+
+    public boolean checkRadiationDeath(){
+        return radiationTolerance <= 0;
+    }
 
     //TODO: Should be defenetly be cleaned up
     //TODO: Check if player has invurnerability effect, if so, draw head and body in different color
@@ -148,14 +180,13 @@ public class Snake_Player extends Entity {
 
             ImageView rotatedImage;
 
-            if(i==0){
+            if (i == 0) {
                 // Draw head
                 rotatedImage = new ImageView(headSprite);
 
                 spriteToDraw = rotateImage(rotatedImage);
 
-            }
-            else if(i == body.size()-1){
+            } else if (i == body.size() - 1) {
                 // Draw tail
 
                 //FIXME: This is not working properly, tail direction is not correct
@@ -165,11 +196,11 @@ public class Snake_Player extends Entity {
                 Direction tailDirection;
 
 
-                if(beforeTail.x < tail.x) {
+                if (beforeTail.x < tail.x) {
                     tailDirection = Direction.LEFT; // Tail is facing left
-                } else if(beforeTail.x > tail.x) {
+                } else if (beforeTail.x > tail.x) {
                     tailDirection = Direction.RIGHT; // Tail is facing right
-                } else if(beforeTail.y < tail.y) {
+                } else if (beforeTail.y < tail.y) {
                     tailDirection = Direction.UP; // Tail is facing up
                 } else {
                     tailDirection = Direction.DOWN; // Tail is facing down
@@ -178,62 +209,22 @@ public class Snake_Player extends Entity {
                 // System.out.println("Tail direction: " + tailDirection);
 
 
-
                 rotatedImage = new ImageView(tailSprite);
 
-                spriteToDraw = rotateImage(rotatedImage, tailDirection);
+                // spriteToDraw = rotateImage(rotatedImage, tailDirection);
+
+                // NOTE: The snake tail rotates prematurely, thus until i have time, only the body part gets rendered as tail
+                spriteToDraw = bodySprite;
 
 
+            } else {
 
-            }else{
+                spriteToDraw = bodySprite;
 
-                //TODO: Maybe not needed, body tiles on turn looks also good
-
-                rotatedImage = new ImageView(rotatedSprite);
-
-                Segment prev = body.get(i - 1);
-                Segment next = body.get(i + 1);
-
-                boolean turnRightDown = prev.y - 1 == curr.y && next.x - 1 == curr.x;
-                boolean turnRightUp = prev.y + 1 == curr.y && next.x - 1 == curr.x;
-                boolean turnLeftDown = prev.y - 1 == curr.y && next.x + 1 == curr.x;
-                boolean turnLeftUp = prev.y + 1 == curr.y && next.x + 1 == curr.x;
-
-                boolean horizontal = prev.y == curr.y && next.y == curr.y;
-                boolean vertical = prev.x == curr.x && next.x == curr.x;
-
-               if (horizontal || vertical) {
-                    // Draw body
-                    spriteToDraw = bodySprite;
-                }else{
-                   spriteToDraw = bodySprite;
-               }
-                /*
-                else{
-
-                    if(turnRightDown){
-                        rotatedImage.setRotate(-90); // Right Down (└)
-                        spriteToDraw = rotatedImage.snapshot(params, null);
-                    }
-                    else if(turnRightUp){
-                        spriteToDraw = rotatedSprite; // Right Up, already in correct orientation (┌)
-                    }
-                    else if(turnLeftDown){
-                        rotatedImage.setRotate(90); // Left Down (┘)
-                        spriteToDraw = rotatedImage.snapshot(params, null);
-
-                    }else if(turnLeftUp){
-                        rotatedImage.setRotate(90); // Left Up (┐)
-                        spriteToDraw = rotatedImage.snapshot(params, null);
-                    }
-                }
-
-                 */
             }
             //spriteToDraw = rotateImage(params, rotatedImage);
 
             gc.drawImage(Objects.requireNonNull(spriteToDraw), curr.x * TILE_SIZE, curr.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-
 
 
         }
@@ -241,14 +232,11 @@ public class Snake_Player extends Entity {
 
     }
 
-
-
     private void increaseHighscore(int amount) {
         currentHighscore += amount;
     }
 
-
-    public boolean checkSelfCollision(){
+    public boolean checkSelfCollision() {
         Segment head = body.getFirst();
 
         for (int i = 1; i < body.size(); i++) {
@@ -261,18 +249,17 @@ public class Snake_Player extends Entity {
         return false;
     }
 
+    public boolean checkWallCollision() {
 
-    public boolean checkWallCollision(int gridSize) {
+        if (invulnerabilityTicks > 0) {
 
-        if(invulnerabilityTicks > 0) {
-
-            wrapAround(gridSize);
+            wrapAround(GRID_SIZE);
             return false;
         }
 
 
         Segment head = body.getFirst();
-        return head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize;
+        return head.x < 0 || head.x >= GRID_SIZE || head.y < 0 || head.y >= GRID_SIZE;
     }
 
     public int getHeadX() {
@@ -293,12 +280,9 @@ public class Snake_Player extends Entity {
         return currentHighscore;
     }
 
-
-    public boolean canSpeedUp(){
+    public boolean canSpeedUp() {
         return body.size() % (SPEED_UP_LENGTH - 1) == 0; // Can speed up if the snake's length is a multiple of SPEED_UP_LENGTH
     }
-
-
 
     private void wrapAround(int gridSize) {
 
@@ -308,5 +292,14 @@ public class Snake_Player extends Entity {
         else if (head.x >= gridSize) head.x = 0;
         if (head.y < 0) head.y = gridSize - 1;
         else if (head.y >= gridSize) head.y = 0;
+    }
+
+    public static class Segment {
+        int x, y;
+
+        public Segment(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
     }
 }

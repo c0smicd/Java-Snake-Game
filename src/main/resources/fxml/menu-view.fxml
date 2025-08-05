@@ -5,7 +5,7 @@
 <?import javafx.scene.text.*?>
 <?size = "740" ?>
 
-<StackPane prefHeight="640" prefWidth="640" stylesheets="@../css/menu-style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosmic.snakegamecraft.controller.MenuController">
+<StackPane fx:id="root" prefHeight="640" prefWidth="640" stylesheets="@../css/menu-style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosmic.snakegamecraft.controller.MenuController">
 
     <!-- Main Menu Layer -->
     <AnchorPane fx:id="menuPane" prefHeight="640" prefWidth="640">
@@ -19,7 +19,7 @@
                 text="Classic Mode"/>
         <Button fx:id="modernModeButton" layoutX="246.0" layoutY="221.0" onAction="#handleModernMode"
                 text="Modern Mode"/>
-        <Button fx:id="crazyModeButton" layoutX="457.0" layoutY="221.0" onAction="#handleCrazyMode" text="Crazy Mode"/>
+        <Button fx:id="falloutModeButton" layoutX="457.0" layoutY="221.0" onAction="#handleFalloutMode" text="Fallout Mode"/>
         <Button fx:id="highscoreButton" layoutX="264.0" layoutY="365.0" onAction="#handleHighscores" text="Highscores"/>
         <Button fx:id="settingsButton" layoutX="537.0" layoutY="544.0" onAction="#handleSettings"/>
         <Button fx:id="loginButton" layoutX="45.0" layoutY="544.0" onAction="#handleLogin" text="Login"/>

@@ -17,9 +17,9 @@ public abstract class GameLoop extends AnimationTimer {
 
     private enum SPEED {
         SLOW(1),
-        FAST(1.5),
-        FASTER(2),
-        ULTRA_FAST(3);
+        FAST(1.25),
+        FASTER(1.5),
+        ULTRA_FAST(2);
 
         private final double tps;
 
