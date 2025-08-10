@@ -39,7 +39,7 @@ public class ModernGameModeController extends AbstractGameController {
 
     private GameSettings gameSettings;
 
-    int speed = 1;
+    private int speed = 1;
 
     @Override
     @FXML

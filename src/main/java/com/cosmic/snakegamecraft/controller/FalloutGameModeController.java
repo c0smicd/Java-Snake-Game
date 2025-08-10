@@ -65,7 +65,7 @@ public class FalloutGameModeController extends AbstractGameController {
 
         itemManager = new ItemManager(GRID_SIZE);
 
-        player = new Snake_Player(5, 5, INITIAL_SNAKE_LENGTH, gameSettings.speedMultiplier());
+        player = new Snake_Player(5, 5, FALLOUT_SNAKE_LENGTH, gameSettings.speedMultiplier());
 
         gameLoopMethod(gameSettings);
 
@@ -105,10 +105,14 @@ public class FalloutGameModeController extends AbstractGameController {
                 Item collectedItem = itemManager.checkCollision(player.getHeadX(), player.getHeadY());
 
                 if (collectedItem != null) {
-                    typeCheck(collectedItem, 0);
-                    scoreLabel.setText("Score: " + player.getCurrentHighscore());
-                    showScoreIncrease(player.getCurrentHighscore() - highscoreBefore, rootPane, scoreLabel);
+                    typeCheck(collectedItem, this.getCurrentSpeed());
+
                 }
+
+                scoreLabel.setText("Score: " + player.getCurrentHighscore());
+                showScoreIncrease(player.getCurrentHighscore() - highscoreBefore, rootPane, scoreLabel);
+
+
                 // Render items
 
                 spawnItems();
@@ -122,6 +126,8 @@ public class FalloutGameModeController extends AbstractGameController {
 
                     return;
                 }
+
+                player.increaseHighscoreOvertime(LIVE_POINTS_PER_TICK);
 
 
                 drawFrame(gameCanvas, GameMode.FALLOUT);
@@ -144,17 +150,15 @@ public class FalloutGameModeController extends AbstractGameController {
     @Override
     protected void spawnItems() {
 
-        List<Point> radiationPoints = new ArrayList<>(player.getOccupiedPoints());
-        radiationPoints.addAll(
+        List<Point> blockedPoints = new ArrayList<>(player.getOccupiedPoints());
+        blockedPoints.addAll(
                 IntStream.range(0, 20)
                         .mapToObj(x -> new Point(x, 0))
                         .toList()
         );
 
+        itemManager.spawnItem(ItemType.IODINE, blockedPoints, 1);
 
-        for (int i = 0; i < IODINE_MAX_COUNT; i++) {
-            itemManager.spawnItem(ItemType.IODINE, radiationPoints, 1);
-        }
     }
 
     @Override

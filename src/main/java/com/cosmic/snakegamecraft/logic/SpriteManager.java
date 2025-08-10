@@ -63,7 +63,7 @@ public class SpriteManager {
 
         snakeBodyFallout = load("snakes/player/snake_body_fallout.png");
         snakeHeadFallout = load("snakes/player/snake_head_fallout.png");
-        bgTileFallout = load("playground/grass-tile-fallout.png");
+        bgTileFallout = load("playground/grass-tile-fallout-2.png");
         bgTileFalloutWasted = load("playground/grass-tile-fallout_wasted.png");
         mushroomCloud = load("nuclear_pilz.png");
 

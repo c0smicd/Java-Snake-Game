@@ -8,7 +8,7 @@ public class Constants {
 
 
     public static final double BAD_APPLE_CHANCE = 5; // Chance of a bad apple appearing
-    public static final double STAR_CHANCE = 0.00000000001; // Chance of a rainbow apple appearing
+    public static final double STAR_CHANCE = 0.1e10; // Chance of a rainbow star appearing
     public static final double SPEED_UP_CHANCE = 3; // Chance of a speed up item appearing
     public static final double GOLDEN_APPLE_CHANCE = 7; // Chance of a golden apple appearing
 
@@ -20,11 +20,12 @@ public class Constants {
     public static final int SHRINK_POINTS = -5; // Points deducted for collecting a bad apple
     public static final int SPEED_UP_POINTS = 1; // Points awarded for collecting a speed-up item
     public static final int NORMAL_APPLE_POINTS = 10; // Points awarded for collecting a normal apple
-    public static final int STAR_POINTS = 2; // Points awarded for collecting a rainbow apple
+    public static final int STAR_POINTS = 2; // Points awarded for collecting a rainbow apple overtime
 
 
     public static final int INVULNERABILITY_DURATION = 10; // Duration of invulnerability in ticks
     public static final int INITIAL_SNAKE_LENGTH = 3; // Initial length of the snake
+    public static final int FALLOUT_SNAKE_LENGTH = 15;
 
     public static final int SHOWN_HIGHSCORES = 10; // Number of high scores to show in the leaderboard
 
@@ -37,6 +38,8 @@ public class Constants {
 
 
     public static final int RAD_TOL = 100;
-    public static final int INCREASE_IOD = 10;
+    public static final int INCREASE_IOD = 5;
+    public static final double BOMB_SPAWN_CHANCE = 0.1e5;
+    public static final int LIVE_POINTS_PER_TICK = 1;
 
 }

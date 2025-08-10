@@ -98,6 +98,11 @@ public class Snake_Player extends Entity {
         speedUpTicks = (int) (SPEED_UP_DURATION * speedMultiplier * currentSpeed);
     }
 
+    public void iodine(double currentSpeed) {
+        increaseRadiationTolerance((int) (INCREASE_IOD * currentSpeed * speedMultiplier));
+
+    }
+
     public void increaseHighscoreOvertime(int amount) {
         increaseHighscore(amount);
     }
@@ -147,11 +152,10 @@ public class Snake_Player extends Entity {
 
     public void increaseRadiationTolerance(int radiationTolerance) {
 
-        System.out.println(this.radiationTolerance);
-
         this.radiationTolerance += radiationTolerance;
 
-        System.out.println(this.radiationTolerance);
+        this.radiationTolerance = Math.min(this.radiationTolerance, RAD_TOL);
+
     }
 
     public void decreaseRadiationTolerance(int radiationTolerance) {

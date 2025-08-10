@@ -27,36 +27,47 @@ public class ItemManager {
 
         int random = rand.nextInt(100);
 
-        if(!(type == ItemType.BAD_APPLE && spawnBadApple()) && exitsItem(type)) {
+        // For normal items which only spawn once (Apple, Goldenapple, speedup)
+        if(exitsItem(type)) return;
+
+        if(type == ItemType.BAD_APPLE && !canSpawnBadApple()) {
             return; // Item of this type already exists, do not spawn again
         }
 
-        if(type == ItemType.BAD_APPLE && random > BAD_APPLE_CHANCE / speed) {
-
+        if(type == ItemType.IODINE && !canSpawnIodine()) {
             return;
-
+        }
+        if(type == ItemType.BAD_APPLE && random > BAD_APPLE_CHANCE / speed) {
+            return;
         }else if(type == ItemType.STAR && random > STAR_CHANCE / speed) {
-
             return;
         } else if (type == ItemType.SPEED_UP && random > SPEED_UP_CHANCE / speed) {
-
             return;
         } else if (type == ItemType.GOLDEN_APPLE && random > GOLDEN_APPLE_CHANCE / speed) {
-
             return;
         }
 
-        if(!canSpawnIodine()) return;
+        System.out.println("Spawn Iodine");
 
-        int  x, y;
+        int[] points = getFreePosition(occupied);
 
-        do{
+        Image sprite = getSpriteForType(type);
+
+        items.add(new Item(type, points[0], points[1], sprite));
+    }
+
+
+    private int[] getFreePosition(List<Point> occupied) {
+        int x, y;
+        do {
             x = rand.nextInt(gridSize);
             y = rand.nextInt(gridSize);
-        } while(isOccupied(x, y, occupied));
+        } while (isOccupied(x, y, occupied));
+        return new int[]{x, y};
+    }
 
-
-        Image sprite = switch(type) {
+    private Image getSpriteForType(ItemType type) {
+        return switch (type) {
             case APPLE -> SpriteManager.getApple();
             case BAD_APPLE -> SpriteManager.getBadApple();
             case GOLDEN_APPLE -> SpriteManager.getGoldApple();
@@ -64,8 +75,6 @@ public class ItemManager {
             case SPEED_UP -> SpriteManager.getSpeedBoost();
             case IODINE -> SpriteManager.getIodine();
         };
-
-        items.add(new Item(type, x, y, sprite));
     }
 
     private boolean isOccupied(int x, int y, List<Point> occupied) {
@@ -104,7 +113,11 @@ public class ItemManager {
     }
 
     private boolean exitsItem(ItemType type) {
-        return items.stream().anyMatch(item -> item.getType() == type);
+        return items.stream().anyMatch(item -> (type == ItemType.APPLE)
+                || (type == ItemType.GOLDEN_APPLE)
+                || (type == ItemType.SPEED_UP)
+                || (type == ItemType.STAR) &&
+                item.getType() == type);
     }
 
 
@@ -113,7 +126,7 @@ public class ItemManager {
     }
 
 
-    private boolean spawnBadApple() {
+    private boolean canSpawnBadApple() {
         return items.stream().filter(item -> item.getType() == ItemType.BAD_APPLE).toList().size() < BAD_APPLE_MAX_COUNT;
     }
 
@@ -122,3 +135,4 @@ public class ItemManager {
     }
 
 }
+

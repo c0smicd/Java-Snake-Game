@@ -2,6 +2,7 @@ package com.cosmic.snakegamecraft.controller;
 
 import com.cosmic.snakegamecraft.AppContext;
 import com.cosmic.snakegamecraft.logic.HighscoreManager;
+import com.cosmic.snakegamecraft.ui.GameMode;
 import com.cosmic.snakegamecraft.ui.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,13 +25,24 @@ public class HighscoreController {
     private Button backToMenu;
 
     @FXML
-    private TextFlow highScoreText;
+    private TextFlow highScoreTextClassic;
+
+    @FXML
+    private TextFlow highScoreTextModern;
+
+    @FXML
+    private TextFlow highScoreTextFallout;
 
 
     @FXML
     private void initialize() {
-        highScoreText.getChildren().clear();
-        highScoreText.getChildren().addAll(HighscoreManager.getTopEntries(AppContext.getUsername(), SHOWN_HIGHSCORES));
+        highScoreTextClassic.getChildren().clear();
+        highScoreTextModern.getChildren().clear();
+        highScoreTextFallout.getChildren().clear();
+
+        highScoreTextClassic.getChildren().addAll(HighscoreManager.getTopEntries(GameMode.CLASSIC, AppContext.getUsername(), SHOWN_HIGHSCORES));
+        highScoreTextModern.getChildren().addAll(HighscoreManager.getTopEntries(GameMode.MODERN, AppContext.getUsername(), SHOWN_HIGHSCORES));
+        highscorePane.getChildren().addAll(HighscoreManager.getTopEntries(GameMode.FALLOUT, AppContext.getUsername(), SHOWN_HIGHSCORES));
     }
 
     @FXML

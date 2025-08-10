@@ -114,7 +114,7 @@ abstract class AbstractGameController {
 
             alert.getButtonTypes().setAll(restartButton, menuButton);
 
-            HighscoreManager.saveScore(AppContext.getUsername(), player.getCurrentHighscore());
+            HighscoreManager.saveScore(AppContext.getGameMode(), AppContext.getUsername(), player.getCurrentHighscore());
 
             Optional<ButtonType> result = alert.showAndWait();
             result.ifPresent(button -> {
@@ -173,7 +173,8 @@ abstract class AbstractGameController {
 
             case IODINE -> {
                 System.out.println("IODINE");
-                player.increaseRadiationTolerance(INCREASE_IOD);
+
+                player.iodine(currentSpeed);
             }
         }
 

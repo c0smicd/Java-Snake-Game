@@ -7,16 +7,40 @@
 <StackPane prefHeight="640" prefWidth="640" stylesheets="@../css/highscore-style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosmic.snakegamecraft.controller.HighscoreController">
 
     <AnchorPane fx:id="highscorePane" prefHeight="640" prefWidth="640">
-        <Label fx:id="highscore" layoutX="259.0" layoutY="104.0" prefHeight="41.0" prefWidth="149.0" text="Highscores">
+
+        <!-- Title -->
+        <Label fx:id="highscore" layoutX="260.0" layoutY="43.0" text="Highscores">
             <font>
                 <Font name="System Bold" size="23.0" />
             </font>
         </Label>
-        <Button fx:id="backToMenu" layoutX="45" layoutY="544" onAction="#handleBackToMenu" text="Back To Menu" />
 
-        <TextFlow fx:id="highScoreText" layoutX="259.0" layoutY="266.0"  />
+        <!-- Classic Mode -->
+        <Label layoutX="78.0" layoutY="100.0" text="Classic">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <TextFlow fx:id="highScoreTextClassic" layoutX="44.0" layoutY="145.0" prefHeight="350.0" prefWidth="160.0" />
 
+        <!-- Modern Mode -->
+        <Label layoutX="286.0" layoutY="100.0" text="Modern">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <TextFlow fx:id="highScoreTextModern" layoutX="240.0" layoutY="145.0" prefHeight="350.0" prefWidth="160.0" />
 
+        <!-- Fallout Mode -->
+        <Label layoutX="510.0" layoutY="100.0" text="Fallout">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <TextFlow fx:id="highScoreTextFallout" layoutX="460.0" layoutY="145.0" prefHeight="350.0" prefWidth="160.0" />
+
+        <!-- Back Button -->
+        <Button fx:id="backToMenu" layoutX="32.0" layoutY="582.0" onAction="#handleBackToMenu" text="Back To Menu" />
 
     </AnchorPane>
 

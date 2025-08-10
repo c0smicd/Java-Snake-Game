@@ -258,8 +258,8 @@ public class MenuController {
     }
 
     private void canShowNextModes(String username){
-        AppContext.setCanModernMode(HighscoreManager.getCurrentUserScore(username));
-        AppContext.setCanFalloutMode(HighscoreManager.getCurrentUserScore(username));
+        AppContext.setCanModernMode(HighscoreManager.getCurrentUserScore(GameMode.CLASSIC, username));
+        AppContext.setCanFalloutMode(HighscoreManager.getCurrentUserScore(GameMode.MODERN, username));
 
         if(AppContext.isCanModernMode()) {
             System.out.println("Can modern mode");

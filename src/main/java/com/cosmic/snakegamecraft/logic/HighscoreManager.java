@@ -1,5 +1,6 @@
 package com.cosmic.snakegamecraft.logic;
 
+import com.cosmic.snakegamecraft.ui.GameMode;
 import com.cosmic.snakegamecraft.util.XMLEmptyLines;
 import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
@@ -18,17 +19,16 @@ import javafx.scene.text.Font;
 public class HighscoreManager {
     private static final String FILE_PATH = "highscores.xml";
 
-
-    public static void saveScore(String name, int score) {
+    public static void saveScore(GameMode gameMode, String name, int score) {
         try {
-            if (Objects.equals(name, "guest")) return;
+            if ("guest".equalsIgnoreCase(name)) return;
 
             File file = new File(FILE_PATH);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc;
-
             Element root;
+
             if (file.exists()) {
                 doc = dBuilder.parse(file);
                 root = doc.getDocumentElement();
@@ -38,8 +38,11 @@ public class HighscoreManager {
                 doc.appendChild(root);
             }
 
-            // Check if user exists
-            NodeList nodes = root.getElementsByTagName("entry");
+            // Find or create game mode node
+            Element modeElement = getOrCreateModeElement(doc, root, gameMode.name());
+
+            // Update or add player score
+            NodeList nodes = modeElement.getElementsByTagName("entry");
             boolean updated = false;
 
             for (int i = 0; i < nodes.getLength(); i++) {
@@ -58,29 +61,32 @@ public class HighscoreManager {
                 Element newEntry = doc.createElement("entry");
                 newEntry.setAttribute("name", name);
                 newEntry.setAttribute("score", String.valueOf(score));
-                root.appendChild(newEntry);
-
+                modeElement.appendChild(newEntry);
             }
 
+            // Save XML
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.transform(new DOMSource(doc), new StreamResult(file));
 
-            XMLEmptyLines.removeEmptyLinesFromXml("highscores.xml");
+            XMLEmptyLines.removeEmptyLinesFromXml(FILE_PATH);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static List<Text> getTopEntries(String currentUser, int limit) {
+    public static List<Text> getTopEntries(GameMode gameMode, String currentUser, int limit) {
         List<Map.Entry<String, Integer>> entries = new ArrayList<>();
         try {
             File file = new File(FILE_PATH);
             if (!file.exists()) return Collections.emptyList();
 
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
-            NodeList nodes = doc.getElementsByTagName("entry");
+            Element modeElement = getModeElement(doc, gameMode.name());
+            if (modeElement == null) return Collections.emptyList();
 
+            NodeList nodes = modeElement.getElementsByTagName("entry");
             for (int i = 0; i < nodes.getLength(); i++) {
                 Element e = (Element) nodes.item(i);
                 entries.add(Map.entry(
@@ -97,19 +103,52 @@ public class HighscoreManager {
         return buildTextList(currentUser, limit, entries);
     }
 
+    public static int getCurrentUserScore(GameMode gameMode, String username) {
+        try {
+            File file = new File(FILE_PATH);
+            if (!file.exists()) return -1;
+
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
+            Element modeElement = getModeElement(doc, gameMode.name());
+            if (modeElement == null) return 0;
+
+            NodeList nodes = modeElement.getElementsByTagName("entry");
+            for (int i = 0; i < nodes.getLength(); i++) {
+                Element e = (Element) nodes.item(i);
+                if (e.getAttribute("name").equals(username)) {
+                    return Integer.parseInt(e.getAttribute("score"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private static Element getOrCreateModeElement(Document doc, Element root, String modeName) {
+        Element modeElement = getModeElement(doc, modeName);
+        if (modeElement == null) {
+            modeElement = doc.createElement(modeName);
+            root.appendChild(modeElement);
+        }
+        return modeElement;
+    }
+
+    private static Element getModeElement(Document doc, String modeName) {
+        NodeList modeNodes = doc.getElementsByTagName(modeName);
+        return modeNodes.getLength() > 0 ? (Element) modeNodes.item(0) : null;
+    }
+
     @NotNull
     private static List<Text> buildTextList(String currentUser, int limit, List<Map.Entry<String, Integer>> entries) {
         List<Text> output = new ArrayList<>();
-
         boolean currentUserAlreadyShown = false;
 
         for (int i = 0; i < entries.size(); i++) {
             Map.Entry<String, Integer> e = entries.get(i);
 
             if (i < limit || (e.getKey().equals(currentUser) && !currentUserAlreadyShown)) {
-
                 if (i == limit) {
-                    // Add "..."
                     Text dots = new Text("...\n");
                     dots.setFill(Color.BLACK);
                     output.add(dots);
@@ -129,29 +168,7 @@ public class HighscoreManager {
                 output.add(line);
             }
         }
-
         return output;
     }
-
-    public static int getCurrentUserScore(String username) {
-        try {
-            File file = new File(FILE_PATH);
-            if (!file.exists()) return -1;
-
-            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
-            NodeList nodes = doc.getElementsByTagName("entry");
-
-            for (int i = 0; i < nodes.getLength(); i++) {
-                Element e = (Element) nodes.item(i);
-                if (e.getAttribute("name").equals(username)) {
-                    return Integer.parseInt(e.getAttribute("score"));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-        return 0;
-    }
-
 }
+

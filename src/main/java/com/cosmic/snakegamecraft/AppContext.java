@@ -14,7 +14,6 @@ public class AppContext {
     private static String username = "guest";
     private static GameMode gameMode = GameMode.CLASSIC;
     private static GameSettings settings;
-    private static int highScore = -1;
 
     private static boolean canModernMode, canFalloutMode;
 
