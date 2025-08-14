@@ -4,14 +4,11 @@ import com.cosmic.snakegamecraft.AppContext;
 import com.cosmic.snakegamecraft.core.GameLoop;
 import com.cosmic.snakegamecraft.entity.Entity;
 import com.cosmic.snakegamecraft.entity.Snake_Player;
-import com.cosmic.snakegamecraft.logic.HighscoreManager;
+import com.cosmic.snakegamecraft.logic.*;
 import com.cosmic.snakegamecraft.util.Item;
-import com.cosmic.snakegamecraft.logic.ItemManager;
 import com.cosmic.snakegamecraft.ui.GameMode;
 import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.ui.SceneManager;
-import com.cosmic.snakegamecraft.logic.SettingsLoader;
-import com.cosmic.snakegamecraft.logic.SpriteManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -43,10 +40,12 @@ abstract class AbstractGameController {
 
     protected Snake_Player player;
     protected ItemManager itemManager;
+    protected NukeManager nukeManager;
 
     protected GameMode gameMode = AppContext.getGameMode();
 
     private final SceneManager sceneManager = new SceneManager(AppContext.getStage());
+
 
 
     /**
@@ -95,6 +94,10 @@ abstract class AbstractGameController {
         player.render(gc);
 
         itemManager.render(gc);
+
+        if(gameMode == GameMode.FALLOUT) {
+            nukeManager.render(gc);
+        }
 
     }
 

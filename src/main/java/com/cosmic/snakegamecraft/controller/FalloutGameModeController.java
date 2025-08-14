@@ -27,6 +27,7 @@ import javafx.scene.layout.AnchorPane;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.IntStream;
 
 import static com.cosmic.snakegamecraft.util.Constants.*;
@@ -50,6 +51,9 @@ public class FalloutGameModeController extends AbstractGameController {
     private int[] iod_timer = new int[IODINE_MAX_COUNT];
 
     private IntegerProperty radiationLevel = new SimpleIntegerProperty(RAD_TOL);
+
+    int speed = 1;
+
 
     @Override
     @FXML
@@ -112,7 +116,7 @@ public class FalloutGameModeController extends AbstractGameController {
                 scoreLabel.setText("Score: " + player.getCurrentHighscore());
                 showScoreIncrease(player.getCurrentHighscore() - highscoreBefore, rootPane, scoreLabel);
 
-
+                speed = (int) (settings.speedMultiplier() * this.getCurrentSpeed());
                 // Render items
 
                 spawnItems();
@@ -165,4 +169,7 @@ public class FalloutGameModeController extends AbstractGameController {
     protected void resetHighscore() {
         scoreLabel.setText("Score: " + player.getCurrentHighscore());
     }
+
+
+
 }

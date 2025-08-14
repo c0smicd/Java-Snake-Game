@@ -41,5 +41,6 @@ public class Constants {
     public static final int INCREASE_IOD = 5;
     public static final double BOMB_SPAWN_CHANCE = 0.1e5;
     public static final int LIVE_POINTS_PER_TICK = 1;
+    public static final int NUKE_MAX_COUNT = 5; // Maximum number of nukes on the board
 
 }
