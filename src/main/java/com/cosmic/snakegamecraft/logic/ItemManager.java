@@ -134,5 +134,13 @@ public class ItemManager {
         return items.stream().filter(item -> item.getType() == ItemType.IODINE).toList().size() < IODINE_MAX_COUNT;
     }
 
+    public List<Point> getOccupiedItemPoints() {
+        List<Point> occupied = new ArrayList<>();
+        for (Item item : items) {
+            occupied.add(new Point(item.getX(), item.getY()));
+        }
+        return occupied;
+    }
+
 }
 

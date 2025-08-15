@@ -3,10 +3,7 @@ package com.cosmic.snakegamecraft.controller;
 import com.cosmic.snakegamecraft.AppContext;
 import com.cosmic.snakegamecraft.core.GameLoop;
 import com.cosmic.snakegamecraft.entity.Snake_Player;
-import com.cosmic.snakegamecraft.logic.ItemManager;
-import com.cosmic.snakegamecraft.logic.PlaySound;
-import com.cosmic.snakegamecraft.logic.SettingsLoader;
-import com.cosmic.snakegamecraft.logic.SpriteManager;
+import com.cosmic.snakegamecraft.logic.*;
 import com.cosmic.snakegamecraft.ui.GameMode;
 import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.util.Item;
@@ -68,6 +65,7 @@ public class FalloutGameModeController extends AbstractGameController {
         PlaySound.loadSounds();
 
         itemManager = new ItemManager(GRID_SIZE);
+        nukeManager = new NukeManager();
 
         player = new Snake_Player(5, 5, FALLOUT_SNAKE_LENGTH, gameSettings.speedMultiplier());
 
@@ -125,7 +123,7 @@ public class FalloutGameModeController extends AbstractGameController {
 
                 if (isDead) {
                     System.out.println("Player is dead, stopping game loop.");
-                    gameLoop.stop();
+                    stop();
                     showGameOverDialog();
 
                     return;
@@ -170,6 +168,32 @@ public class FalloutGameModeController extends AbstractGameController {
         scoreLabel.setText("Score: " + player.getCurrentHighscore());
     }
 
+    private void spawnNukes(){
 
+        List<Point> blockedPoints = new ArrayList<>(player.getOccupiedPoints());
+        blockedPoints.addAll(
+                IntStream.range(0, 20)
+                        .mapToObj(x -> new Point(x, 0))
+                        .toList()
+        );
+        blockedPoints.addAll(itemManager.getOccupiedItemPoints());
+
+        nukeManager.dropNuke(blockedPoints, speed);
+
+    }
+
+    /**
+     * Handles all nukes. Ticking them forward into the next possible state and checking if
+     * the player collides with a nuke or the radiation field.
+     * @return An array of booleans, where the first element indicates if the player died by a nuke and the second element indicates if the player is in a radiation field.
+     */
+    private boolean[] nukeHandler(){
+        nukeManager.handleNukeTick();
+
+        boolean checkNukeDeath = nukeManager.checkNukeCollision(player.getHeadX(), player.getHeadY());
+        boolean checkWasteField = nukeManager.checkWasteCollision(player.getHeadX(), player.getHeadY());
+
+        return new boolean[]{checkNukeDeath, checkWasteField};
+    }
 
 }

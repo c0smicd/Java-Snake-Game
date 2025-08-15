@@ -40,10 +40,29 @@ public class NukeManager {
 
     class AfterEffektState implements State {
 
+
+
         @Override
         public void handle(Nuke nuke) {
             // Handle after-effect state logic
             System.out.println("Handling after-effect state for nuke at (" + nuke.x + ", " + nuke.y + ")");
+
+            // Spawn waste positions based on nuke's position
+
+            List<Point> wastePositions = List.of(
+                    new Point(nuke.x - 1, nuke.y),
+                    new Point(nuke.x + 1, nuke.y),
+                    new Point(nuke.x, nuke.y - 1),
+                    new Point(nuke.x, nuke.y + 1)
+            );
+
+            wastePositions = wastePositions.stream().filter(point -> {
+                Random random = new Random();
+                return random.nextInt(100) < WASTE_SPAWN_CHANCE; // Random chance to spawn waste
+            }).toList();
+
+            nuke.setWastePositions(wastePositions);
+
         }
     }
 
@@ -62,9 +81,14 @@ public class NukeManager {
         private final int[] ticksRemaining;
         private State currentState;
 
+        private List<Point> wastePositions;
+
+        private Image[] sprites;
+
         public Nuke(int x, int y, int[] ticksPerState) {
             this.x = x;
             this.y = y;
+
             this.states = new State[]{
                     new LaserState(),
                     new ExplodeState(),
@@ -88,15 +112,21 @@ public class NukeManager {
             currentState.handle(this);
         }
 
-        public javafx.scene.image.Image[] getSprites() {
-            // Return the sprites for the current state
-            // This is a placeholder, replace with actual sprite retrieval logic
-            return new Image[]{};
+        public Image[] getSprites() {
+            return sprites;
+        }
+
+        public void setSprites(Image[] sprites) {
+            this.sprites = sprites;
         }
 
 
         public State getCurrentState() {
             return currentState;
+        }
+
+        public void setWastePositions(List<Point> wastePositions) {
+            this.wastePositions = wastePositions;
         }
     }
 
@@ -130,12 +160,14 @@ public class NukeManager {
 
         for(Nuke nuke : nukes){
             if(nuke != null){
+                Image[] sprites = nuke.getSprites();
                 // When nuke is instance of AfterEffektState, draw the nuke and the waste
                 if(nuke.getCurrentState() instanceof AfterEffektState){
+                    gc.drawImage(sprites[0], nuke.x * TILE_SIZE, nuke.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 
                 }else {
                     // Draw the nuke sprite based on its current state
-                    Image[] sprites = nuke.getSprites();
+
                     if (sprites.length > 0) {
                         gc.drawImage(sprites[0], nuke.x * TILE_SIZE, nuke.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); // Replace with actual tile size
                     }
@@ -151,6 +183,28 @@ public class NukeManager {
             }
         }
         return -1; // No empty slot found
+    }
+
+    public boolean checkNukeCollision(int x, int y) {
+        for (Nuke nuke : nukes) {
+            if (nuke != null && nuke.x == x && nuke.y == y) {
+                return true; // Collision with a nuke
+            }
+        }
+        return false; // No collision
+    }
+
+    public boolean checkWasteCollision(int x, int y) {
+        for (Nuke nuke : nukes) {
+            if (nuke != null && nuke.wastePositions != null) {
+                for (Point waste : nuke.wastePositions) {
+                    if (waste.x() == x && waste.y() == y) {
+                        return true; // Collision with waste
+                    }
+                }
+            }
+        }
+        return false; // No collision with waste
     }
 
 }
