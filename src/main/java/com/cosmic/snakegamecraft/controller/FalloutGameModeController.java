@@ -118,8 +118,15 @@ public class FalloutGameModeController extends AbstractGameController {
                 // Render items
 
                 spawnItems();
+                spawnNukes();
 
-                boolean isDead = (player.checkSelfCollision() || player.checkWallCollision() || player.checkRadiationDeath());
+                boolean[] checkNukeDeath = nukeHandler(); // Also forwards the tick of the nuke
+
+                boolean isDead = (player.checkSelfCollision()
+                        || player.checkWallCollision()
+                        || player.checkRadiationDeath()
+                        || checkNukeDeath[0]
+                        || checkNukeDeath[1]);
 
                 if (isDead) {
                     System.out.println("Player is dead, stopping game loop.");

@@ -25,9 +25,10 @@ public class ItemManager {
 
     public void spawnItem(ItemType type, List<Point> occupied, int speed){
 
-        int random = rand.nextInt(100);
+        double random = rand.nextDouble(100);
 
-        // For normal items which only spawn once (Apple, Goldenapple, speedup)
+
+        // For normal items which only spawn once (Apple, Goldenapple, speedup, star)
         if(exitsItem(type)) return;
 
         if(type == ItemType.BAD_APPLE && !canSpawnBadApple()) {
@@ -47,7 +48,7 @@ public class ItemManager {
             return;
         }
 
-        System.out.println("Spawn Iodine");
+
 
         int[] points = getFreePosition(occupied);
 
@@ -113,11 +114,7 @@ public class ItemManager {
     }
 
     private boolean exitsItem(ItemType type) {
-        return items.stream().anyMatch(item -> (type == ItemType.APPLE)
-                || (type == ItemType.GOLDEN_APPLE)
-                || (type == ItemType.SPEED_UP)
-                || (type == ItemType.STAR) &&
-                item.getType() == type);
+        return items.stream().anyMatch(item -> item.getType() == type && (type != ItemType.BAD_APPLE && type != ItemType.IODINE));
     }
 
 

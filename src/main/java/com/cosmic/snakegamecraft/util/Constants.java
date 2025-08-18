@@ -8,7 +8,7 @@ public class Constants {
 
 
     public static final double BAD_APPLE_CHANCE = 5; // Chance of a bad apple appearing
-    public static final double STAR_CHANCE = 0.1e10; // Chance of a rainbow star appearing
+    public static final double STAR_CHANCE = 1; // Chance of a rainbow star appearing
     public static final double SPEED_UP_CHANCE = 3; // Chance of a speed up item appearing
     public static final double GOLDEN_APPLE_CHANCE = 7; // Chance of a golden apple appearing
 
@@ -39,7 +39,7 @@ public class Constants {
 
     public static final int RAD_TOL = 100;
     public static final int INCREASE_IOD = 5;
-    public static final double BOMB_SPAWN_CHANCE = 0.1e5;
+    public static final double BOMB_SPAWN_CHANCE = 1;
     public static final int LIVE_POINTS_PER_TICK = 1;
     public static final int NUKE_MAX_COUNT = 5; // Maximum number of nukes on the board
     public static final int WASTE_SPAWN_CHANCE = 50;

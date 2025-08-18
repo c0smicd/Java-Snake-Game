@@ -3,4 +3,10 @@
     <CLASSIC>
         <entry name="modernMode" score="2001"/>
     </CLASSIC>
+    <MODERN>
+        <entry name="modernMode" score="30000"/>
+    </MODERN>
+    <FALLOUT>
+        <entry name="modernMode" score="73"/>
+    </FALLOUT>
 </highscores>

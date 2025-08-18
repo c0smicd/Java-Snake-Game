@@ -32,6 +32,7 @@ public class SpriteManager {
     private static Image bgTileFalloutWasted;
     private static Image mushroomCloud;
     private static Image iodine;
+    private static Image laser;
 
 
     public static void loadSprites() {
@@ -66,6 +67,8 @@ public class SpriteManager {
         bgTileFallout = load("playground/grass-tile-fallout-2.png");
         bgTileFalloutWasted = load("playground/grass-tile-fallout_wasted.png");
         mushroomCloud = load("nuclear_pilz.png");
+        laser = load("laser.png");
+
 
 
     }
@@ -176,5 +179,9 @@ public class SpriteManager {
 
     public static Image getIodine() {
         return iodine;
+    }
+
+    public static Image getLaser() {
+        return laser;
     }
 }

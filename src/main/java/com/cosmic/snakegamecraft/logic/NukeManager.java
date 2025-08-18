@@ -5,6 +5,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -12,7 +14,7 @@ import static com.cosmic.snakegamecraft.util.Constants.*;
 
 public class NukeManager {
 
-    private Nuke[] nukes = new Nuke[NUKE_MAX_COUNT];
+    private List<Nuke> nukes = new ArrayList<>();
 
     interface State {
 
@@ -24,8 +26,7 @@ public class NukeManager {
 
         @Override
         public void handle(Nuke nuke) {
-            // Handle laser state logic
-            System.out.println("Handling laser state for nuke at (" + nuke.x + ", " + nuke.y + ")");
+            nuke.setSprite(SpriteManager.getLaser());
         }
     }
 
@@ -33,8 +34,7 @@ public class NukeManager {
 
         @Override
         public void handle(Nuke nuke) {
-            // Handle explode state logic
-            System.out.println("Handling explode state for nuke at (" + nuke.x + ", " + nuke.y + ")");
+            nuke.setSprite(SpriteManager.getMushroomCloud());
         }
     }
 
@@ -44,24 +44,25 @@ public class NukeManager {
 
         @Override
         public void handle(Nuke nuke) {
-            // Handle after-effect state logic
-            System.out.println("Handling after-effect state for nuke at (" + nuke.x + ", " + nuke.y + ")");
 
             // Spawn waste positions based on nuke's position
 
             List<Point> wastePositions = List.of(
+                    new Point(nuke.x, nuke.y),
                     new Point(nuke.x - 1, nuke.y),
                     new Point(nuke.x + 1, nuke.y),
                     new Point(nuke.x, nuke.y - 1),
                     new Point(nuke.x, nuke.y + 1)
             );
 
-            wastePositions = wastePositions.stream().filter(point -> {
+            wastePositions = wastePositions.stream().filter(_ -> {
                 Random random = new Random();
                 return random.nextInt(100) < WASTE_SPAWN_CHANCE; // Random chance to spawn waste
             }).toList();
 
             nuke.setWastePositions(wastePositions);
+
+            nuke.setSprite(SpriteManager.getBgTileFalloutWasted());
 
         }
     }
@@ -83,7 +84,7 @@ public class NukeManager {
 
         private List<Point> wastePositions;
 
-        private Image[] sprites;
+        private Image sprite;
 
         public Nuke(int x, int y, int[] ticksPerState) {
             this.x = x;
@@ -112,12 +113,12 @@ public class NukeManager {
             currentState.handle(this);
         }
 
-        public Image[] getSprites() {
-            return sprites;
+        public Image getSprite() {
+            return sprite;
         }
 
-        public void setSprites(Image[] sprites) {
-            this.sprites = sprites;
+        public void setSprite(Image sprite) {
+            this.sprite = sprite;
         }
 
 
@@ -128,61 +129,85 @@ public class NukeManager {
         public void setWastePositions(List<Point> wastePositions) {
             this.wastePositions = wastePositions;
         }
+
+        public List<Point> getWastePositions() {
+            return wastePositions;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
     }
 
     public void dropNuke(List<Point> occupied, int speed) {
-        if (findEmptyNukeSlot() == -1) {
+
+        int emptySlot = findEmptyNukeSlot();
+
+        if (emptySlot == -1) {
             return; // max nuke count reached
         }
 
         Random rand = new Random();
 
-        if(rand.nextInt(100) > BOMB_SPAWN_CHANCE / speed) return; // Do not spawn nuke based on chance
+        if(rand.nextDouble(100) > BOMB_SPAWN_CHANCE / speed) return; // Do not spawn nuke based on chance
 
 
-        int[] ticksPerState = { 5, 10, 15, 20 }; // Example ticks for each state
-        Nuke nuke = new Nuke(0, 0, ticksPerState); // Replace with actual coordinates
-        nukes[findEmptyNukeSlot()] = nuke;
+        int[] ticksPerState = {rand.nextInt(5 * speed,10 * speed), rand.nextInt(5 * speed,20 * speed), rand.nextInt(20 * speed,50 * speed), 1}; // Example ticks for each state
+
+        int x,y;
+
+        do{
+            x = rand.nextInt(TILE_SIZE);
+            y = rand.nextInt(TILE_SIZE);
+        }while(isOccupied(x, y, occupied));
+
+        Nuke nuke = new Nuke(x, y, ticksPerState); // Replace with actual coordinates
+
+        if(emptySlot == nukes.size()) nukes.add(nuke);
+        else nukes.set(emptySlot, nuke);
     }
 
     public void handleNukeTick() {
-        for (int i = 0; i < nukes.length; i++) {
-            if (nukes[i] != null) {
-                nukes[i].tick();
-                if (nukes[i].getCurrentState() instanceof DespawnState) {
-                    nukes[i] = null; // Remove nuke after despawn state
+        for (int i = 0; i < nukes.size(); i++) {
+            if (nukes.get(i) != null) {
+                nukes.get(i).tick();
+                if (nukes.get(i).getCurrentState() instanceof DespawnState) {
+                    nukes.set(i, null); // Remove nuke after despawn state
                 }
             }
         }
     }
 
     public void render(GraphicsContext gc) {
+        for (Nuke nuke : nukes) {
+            if (nuke == null) continue;
 
-        for(Nuke nuke : nukes){
-            if(nuke != null){
-                Image[] sprites = nuke.getSprites();
-                // When nuke is instance of AfterEffektState, draw the nuke and the waste
-                if(nuke.getCurrentState() instanceof AfterEffektState){
-                    gc.drawImage(sprites[0], nuke.x * TILE_SIZE, nuke.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            Image sprite = nuke.getSprite();
 
-                }else {
-                    // Draw the nuke sprite based on its current state
+            // Draw nuke
+            gc.drawImage(sprite, nuke.x * TILE_SIZE, nuke.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 
-                    if (sprites.length > 0) {
-                        gc.drawImage(sprites[0], nuke.x * TILE_SIZE, nuke.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); // Replace with actual tile size
-                    }
+            // If AfterEffektSate draw waste
+            if (nuke.getCurrentState() instanceof AfterEffektState) {
+                for (Point point : nuke.getWastePositions()) {
+                    gc.drawImage(sprite, point.x() * TILE_SIZE, point.y() * TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 }
             }
         }
     }
 
     private int findEmptyNukeSlot() {
-        for (int i = 0; i < nukes.length; i++) {
-            if (nukes[i] == null) {
-                return i;
-            }
+        if(nukes.size() < NUKE_MAX_COUNT - 1) return nukes.size();
+
+        for (int i = 0; i < nukes.size(); i++) {
+            if(nukes.get(i) == null) return i;
         }
-        return -1; // No empty slot found
+
+        return -1;
     }
 
     public boolean checkNukeCollision(int x, int y) {
@@ -201,10 +226,16 @@ public class NukeManager {
                     if (waste.x() == x && waste.y() == y) {
                         return true; // Collision with waste
                     }
+
                 }
             }
         }
         return false; // No collision with waste
+    }
+
+
+    private boolean isOccupied(int x, int y, List<Point> occupied) {
+        return occupied.stream().anyMatch(p -> p.x() == x && p.y() == y) || nukes.stream().anyMatch(nuke -> nuke != null && nuke.getX() == x && nuke.getY() == y);
     }
 
 }

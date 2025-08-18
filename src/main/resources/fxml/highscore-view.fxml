@@ -16,7 +16,7 @@
         </Label>
 
         <!-- Classic Mode -->
-        <Label layoutX="78.0" layoutY="100.0" text="Classic">
+        <Label layoutX="96.0" layoutY="100.0" text="Classic">
             <font>
                 <Font name="System Bold" size="18.0" />
             </font>
@@ -32,12 +32,12 @@
         <TextFlow fx:id="highScoreTextModern" layoutX="240.0" layoutY="145.0" prefHeight="350.0" prefWidth="160.0" />
 
         <!-- Fallout Mode -->
-        <Label layoutX="510.0" layoutY="100.0" text="Fallout">
+        <Label layoutX="487.0" layoutY="100.0" text="Fallout">
             <font>
                 <Font name="System Bold" size="18.0" />
             </font>
         </Label>
-        <TextFlow fx:id="highScoreTextFallout" layoutX="460.0" layoutY="145.0" prefHeight="350.0" prefWidth="160.0" />
+        <TextFlow fx:id="highScoreTextFallout" layoutX="436.0" layoutY="145.0" prefHeight="350.0" prefWidth="160.0" />
 
         <!-- Back Button -->
         <Button fx:id="backToMenu" layoutX="32.0" layoutY="582.0" onAction="#handleBackToMenu" text="Back To Menu" />
