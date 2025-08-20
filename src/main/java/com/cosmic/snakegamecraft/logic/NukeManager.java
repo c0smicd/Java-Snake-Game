@@ -15,6 +15,7 @@ import static com.cosmic.snakegamecraft.util.Constants.*;
 public class NukeManager {
 
     private List<Nuke> nukes = new ArrayList<>();
+    private Radiation currentRadiation = Radiation.LOW;
 
     interface State {
 
@@ -40,10 +41,13 @@ public class NukeManager {
 
     class AfterEffektState implements State {
 
+        private boolean handled = false;
 
 
         @Override
         public void handle(Nuke nuke) {
+
+            if(handled) return;
 
             // Spawn waste positions based on nuke's position
 
@@ -63,6 +67,8 @@ public class NukeManager {
             nuke.setWastePositions(wastePositions);
 
             nuke.setSprite(SpriteManager.getBgTileFalloutWasted());
+
+            handled = true;
 
         }
     }
@@ -156,25 +162,32 @@ public class NukeManager {
         if(rand.nextDouble(100) > BOMB_SPAWN_CHANCE / speed) return; // Do not spawn nuke based on chance
 
 
-        int[] ticksPerState = {rand.nextInt(5 * speed,10 * speed), rand.nextInt(5 * speed,20 * speed), rand.nextInt(20 * speed,50 * speed), 1}; // Example ticks for each state
+        int[] ticksPerState = {rand.nextInt(5 * speed,10 * speed), rand.nextInt(5 * speed,20 * speed), rand.nextInt(20 * speed,50 * speed), 1};
+
 
         int x,y;
 
         do{
-            x = rand.nextInt(TILE_SIZE);
-            y = rand.nextInt(TILE_SIZE);
+            x = rand.nextInt(GRID_SIZE);
+            y = rand.nextInt(GRID_SIZE);
         }while(isOccupied(x, y, occupied));
 
         Nuke nuke = new Nuke(x, y, ticksPerState); // Replace with actual coordinates
 
         if(emptySlot == nukes.size()) nukes.add(nuke);
         else nukes.set(emptySlot, nuke);
+
     }
 
     public void handleNukeTick() {
         for (int i = 0; i < nukes.size(); i++) {
             if (nukes.get(i) != null) {
                 nukes.get(i).tick();
+
+                if(!(nukes.get(i).getCurrentState() instanceof LaserState)) {
+                    changeRadiationLevel();
+                }
+
                 if (nukes.get(i).getCurrentState() instanceof DespawnState) {
                     nukes.set(i, null); // Remove nuke after despawn state
                 }
@@ -198,6 +211,27 @@ public class NukeManager {
                 }
             }
         }
+
+        // Get plate based on radiation level
+        Image plateToRender = switch (currentRadiation) {
+            case LOW -> SpriteManager.getLowRadiation();
+            case MEDIUM -> SpriteManager.getMediumRadiation();
+            case HIGH -> SpriteManager.getHighRadiation();
+        };
+
+        // Scale factor to fit height 64
+        double availableHeight = 64.0;
+        double scale = availableHeight / plateToRender.getHeight();
+
+        double scaledWidth = plateToRender.getWidth() * scale;
+        double scaledHeight = availableHeight;
+
+        // Position on the right side, starting at y = 640
+        double x = 640 - scaledWidth;
+        double y = 640;
+
+        gc.drawImage(plateToRender, x - 10, y, scaledWidth, scaledHeight);
+
     }
 
     private int findEmptyNukeSlot() {
@@ -212,7 +246,7 @@ public class NukeManager {
 
     public boolean checkNukeCollision(int x, int y) {
         for (Nuke nuke : nukes) {
-            if (nuke != null && nuke.x == x && nuke.y == y) {
+            if (nuke != null && nuke.getX() == x && nuke.getY() == y) {
                 return true; // Collision with a nuke
             }
         }
@@ -236,6 +270,27 @@ public class NukeManager {
 
     private boolean isOccupied(int x, int y, List<Point> occupied) {
         return occupied.stream().anyMatch(p -> p.x() == x && p.y() == y) || nukes.stream().anyMatch(nuke -> nuke != null && nuke.getX() == x && nuke.getY() == y);
+    }
+
+    private int getRealSizeNukes(){
+        int size = 0;
+        for(Nuke nuke : nukes) {
+            if(nuke != null && !(nuke.getCurrentState() instanceof LaserState)) size++;
+        }
+
+        return size;
+    }
+
+    private void changeRadiationLevel(){
+        int realSize = getRealSizeNukes();
+
+        if (realSize > 3) this.currentRadiation = Radiation.HIGH;
+        else if(realSize > 2) this.currentRadiation = Radiation.MEDIUM;
+        else this.currentRadiation = Radiation.LOW;
+    }
+
+    public Radiation getCurrentRadiation() {
+        return currentRadiation;
     }
 
 }

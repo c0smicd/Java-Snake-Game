@@ -46,6 +46,8 @@ public class ItemManager {
             return;
         } else if (type == ItemType.GOLDEN_APPLE && random > GOLDEN_APPLE_CHANCE / speed) {
             return;
+        } else if(type == ItemType.IODINE_STACK && random > IODINE_STACK_CHANCE / speed){
+            return;
         }
 
 
@@ -75,6 +77,7 @@ public class ItemManager {
             case STAR -> SpriteManager.getStarItem();
             case SPEED_UP -> SpriteManager.getSpeedBoost();
             case IODINE -> SpriteManager.getIodine();
+            case IODINE_STACK -> SpriteManager.getIodineStack();
         };
     }
 

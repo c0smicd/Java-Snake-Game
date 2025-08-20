@@ -84,7 +84,11 @@ public class HighscoreManager {
 
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
             Element modeElement = getModeElement(doc, gameMode.name());
-            if (modeElement == null) return Collections.emptyList();
+            if (modeElement == null){
+
+                System.out.println("Empty Collection");
+                return Collections.emptyList();
+            }
 
             NodeList nodes = modeElement.getElementsByTagName("entry");
             for (int i = 0; i < nodes.getLength(); i++) {

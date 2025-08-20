@@ -11,6 +11,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.cosmic.snakegamecraft.util.Constants.SHOWN_HIGHSCORES;
 
 
@@ -42,7 +45,7 @@ public class HighscoreController {
 
         highScoreTextClassic.getChildren().addAll(HighscoreManager.getTopEntries(GameMode.CLASSIC, AppContext.getUsername(), SHOWN_HIGHSCORES));
         highScoreTextModern.getChildren().addAll(HighscoreManager.getTopEntries(GameMode.MODERN, AppContext.getUsername(), SHOWN_HIGHSCORES));
-        highscorePane.getChildren().addAll(HighscoreManager.getTopEntries(GameMode.FALLOUT, AppContext.getUsername(), SHOWN_HIGHSCORES));
+        highScoreTextFallout.getChildren().addAll(HighscoreManager.getTopEntries(GameMode.FALLOUT, AppContext.getUsername(), SHOWN_HIGHSCORES));
     }
 
     @FXML

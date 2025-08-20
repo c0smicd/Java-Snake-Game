@@ -298,6 +298,10 @@ public class Snake_Player extends Entity {
         else if (head.y >= gridSize) head.y = 0;
     }
 
+    public void iodineStack(double currentSpeed) {
+        increaseRadiationTolerance((int) (INCREASE_IOD_STACK * currentSpeed * speedMultiplier));
+    }
+
     public static class Segment {
         int x, y;
 

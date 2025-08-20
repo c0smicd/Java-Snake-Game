@@ -7,5 +7,6 @@ public enum ItemType {
     STAR,
     BAD_APPLE,
     SPEED_UP,
-    IODINE
+    IODINE,
+    IODINE_STACK
 }

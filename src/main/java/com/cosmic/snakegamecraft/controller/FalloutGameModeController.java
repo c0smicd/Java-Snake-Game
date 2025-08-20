@@ -9,11 +9,8 @@ import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.util.Item;
 import com.cosmic.snakegamecraft.util.ItemType;
 import com.cosmic.snakegamecraft.util.Point;
-import eu.hansolo.tilesfx.Command;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -24,7 +21,6 @@ import javafx.scene.layout.AnchorPane;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 import static com.cosmic.snakegamecraft.util.Constants.*;
@@ -40,17 +36,13 @@ public class FalloutGameModeController extends AbstractGameController {
 
     @FXML
     public ProgressBar radiationBar;
-
-    private GameLoop gameLoop;
-
-    private GameSettings gameSettings;
-
-    private int[] iod_timer = new int[IODINE_MAX_COUNT];
-
-    private IntegerProperty radiationLevel = new SimpleIntegerProperty(RAD_TOL);
-
     int speed = 1;
+    private GameLoop gameLoop;
+    private GameSettings gameSettings;
+    private final int[] iod_timer = new int[IODINE_MAX_COUNT];
+    private final IntegerProperty radiationLevel = new SimpleIntegerProperty(RAD_TOL);
 
+    private int radiationPerTick = 1;
 
     @Override
     @FXML
@@ -83,8 +75,6 @@ public class FalloutGameModeController extends AbstractGameController {
                 return "-fx-accent: #ff0000;"; // Red
             }
         }, radiationLevel));
-
-
 
 
     }
@@ -137,6 +127,7 @@ public class FalloutGameModeController extends AbstractGameController {
                 }
 
                 player.increaseHighscoreOvertime(LIVE_POINTS_PER_TICK);
+                changeRadiationPerTick();
 
 
                 drawFrame(gameCanvas, GameMode.FALLOUT);
@@ -152,7 +143,7 @@ public class FalloutGameModeController extends AbstractGameController {
 
         radiationBar.setProgress((double) player.getRadiationTolerance() / RAD_TOL);
 
-        player.decreaseRadiationTolerance(1);
+        player.decreaseRadiationTolerance(radiationPerTick);
     }
 
 
@@ -167,6 +158,7 @@ public class FalloutGameModeController extends AbstractGameController {
         );
 
         itemManager.spawnItem(ItemType.IODINE, blockedPoints, 1);
+        itemManager.spawnItem(ItemType.IODINE_STACK, blockedPoints, 1);
 
     }
 
@@ -175,15 +167,58 @@ public class FalloutGameModeController extends AbstractGameController {
         scoreLabel.setText("Score: " + player.getCurrentHighscore());
     }
 
-    private void spawnNukes(){
+    private void spawnNukes() {
 
+        int size = 20;
         List<Point> blockedPoints = new ArrayList<>(player.getOccupiedPoints());
+
+        // first 2 rows
         blockedPoints.addAll(
-                IntStream.range(0, 20)
+                IntStream.range(0, size)
                         .mapToObj(x -> new Point(x, 0))
                         .toList()
         );
-        blockedPoints.addAll(itemManager.getOccupiedItemPoints());
+        blockedPoints.addAll(
+                IntStream.range(0, size)
+                        .mapToObj(x -> new Point(x, 1))
+                        .toList()
+        );
+
+        // last 2 rows
+        blockedPoints.addAll(
+                IntStream.range(0, size)
+                        .mapToObj(x -> new Point(x, size - 1))
+                        .toList()
+        );
+        blockedPoints.addAll(
+                IntStream.range(0, size)
+                        .mapToObj(x -> new Point(x, size - 2))
+                        .toList()
+        );
+
+        // first 2 columns
+        blockedPoints.addAll(
+                IntStream.range(0, size)
+                        .mapToObj(y -> new Point(0, y))
+                        .toList()
+        );
+        blockedPoints.addAll(
+                IntStream.range(0, size)
+                        .mapToObj(y -> new Point(1, y))
+                        .toList()
+        );
+
+        // last 2 columns
+        blockedPoints.addAll(
+                IntStream.range(0, size)
+                        .mapToObj(y -> new Point(size - 1, y))
+                        .toList()
+        );
+        blockedPoints.addAll(
+                IntStream.range(0, size)
+                        .mapToObj(y -> new Point(size - 2, y))
+                        .toList()
+        );
 
         nukeManager.dropNuke(blockedPoints, speed);
 
@@ -192,9 +227,10 @@ public class FalloutGameModeController extends AbstractGameController {
     /**
      * Handles all nukes. Ticking them forward into the next possible state and checking if
      * the player collides with a nuke or the radiation field.
+     *
      * @return An array of booleans, where the first element indicates if the player died by a nuke and the second element indicates if the player is in a radiation field.
      */
-    private boolean[] nukeHandler(){
+    private boolean[] nukeHandler() {
         nukeManager.handleNukeTick();
 
         boolean checkNukeDeath = nukeManager.checkNukeCollision(player.getHeadX(), player.getHeadY());
@@ -203,4 +239,15 @@ public class FalloutGameModeController extends AbstractGameController {
         return new boolean[]{checkNukeDeath, checkWasteField};
     }
 
+    private void changeRadiationPerTick() {
+
+        Radiation radiation = nukeManager.getCurrentRadiation();
+
+        switch (radiation) {
+            case LOW -> radiationPerTick = 1;
+            case MEDIUM -> radiationPerTick = 2;
+            case HIGH -> radiationPerTick = 3;
+        }
+
+    }
 }

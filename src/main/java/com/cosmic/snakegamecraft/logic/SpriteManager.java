@@ -5,6 +5,10 @@ import javafx.scene.image.Image;
 
 import java.util.Objects;
 
+/**
+ * Loads and distributes Sprites
+ */
+
 public class SpriteManager {
 
     private static final String SPRITE_PATH = "/images/";
@@ -33,6 +37,10 @@ public class SpriteManager {
     private static Image mushroomCloud;
     private static Image iodine;
     private static Image laser;
+    private static Image lowRadiation;
+    private static Image mediumRadiation;
+    private static Image highRadiation;
+    private static Image iodineStack;
 
 
     public static void loadSprites() {
@@ -50,6 +58,7 @@ public class SpriteManager {
         starItem = load("items/star.png");
         goldApple = load("items/gold_apple.png");
         iodine = load("items/iodine.png");
+        iodineStack = load("items/iodine_stack.png");
 
         // Loading background sprites
         bgTile1 = load("playground/grass-tile.png");
@@ -69,6 +78,10 @@ public class SpriteManager {
         mushroomCloud = load("nuclear_pilz.png");
         laser = load("laser.png");
 
+        // Load radiation plates
+        lowRadiation = load("playground/low_radiation.png");
+        mediumRadiation = load("playground/medium_radiation.png");
+        highRadiation = load("playground/high_radiation.png");
 
 
     }
@@ -183,5 +196,21 @@ public class SpriteManager {
 
     public static Image getLaser() {
         return laser;
+    }
+
+    public static Image getLowRadiation() {
+        return lowRadiation;
+    }
+
+    public static Image getMediumRadiation() {
+        return mediumRadiation;
+    }
+
+    public static Image getHighRadiation() {
+        return highRadiation;
+    }
+
+    public static Image getIodineStack() {
+        return iodineStack;
     }
 }

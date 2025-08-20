@@ -139,12 +139,15 @@ abstract class AbstractGameController {
     private void restartGame() {
         GameSettings settings = SettingsLoader.loadSettings(AppContext.getUsername());
 
-        player = new Snake_Player(5, 5, INITIAL_SNAKE_LENGTH, settings.speedMultiplier());
+
+
+        player = new Snake_Player(5, 5, gameMode == GameMode.FALLOUT ?  FALLOUT_SNAKE_LENGTH : INITIAL_SNAKE_LENGTH, settings.speedMultiplier());
 
         // Reset player highscore
         resetHighscore();
 
         itemManager = new ItemManager(GRID_SIZE);
+        nukeManager = new NukeManager();
 
         // Restart game loop
         gameLoopMethod(settings);
@@ -178,6 +181,9 @@ abstract class AbstractGameController {
                 System.out.println("IODINE");
 
                 player.iodine(currentSpeed);
+            }
+            case IODINE_STACK -> {
+                player.iodineStack(currentSpeed);
             }
         }
 
