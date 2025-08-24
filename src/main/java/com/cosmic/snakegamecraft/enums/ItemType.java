@@ -1,4 +1,4 @@
-package com.cosmic.snakegamecraft.util;
+package com.cosmic.snakegamecraft.enums;
 
 public enum ItemType {
 

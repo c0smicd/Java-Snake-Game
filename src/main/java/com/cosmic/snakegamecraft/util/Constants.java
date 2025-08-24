@@ -7,10 +7,10 @@ public class Constants {
     public static final int STANDARD_SPEED = 3; // Standard Multiplier for game speed
 
 
-    public static final double BAD_APPLE_CHANCE = 5; // Chance of a bad apple appearing
-    public static final double STAR_CHANCE = 1; // Chance of a rainbow star appearing
-    public static final double SPEED_UP_CHANCE = 3; // Chance of a speed up item appearing
-    public static final double GOLDEN_APPLE_CHANCE = 7; // Chance of a golden apple appearing
+    public static final double BAD_APPLE_CHANCE = 10; // Chance of a bad apple appearing
+    public static final double STAR_CHANCE = 5; // Chance of a rainbow star appearing
+    public static final double SPEED_UP_CHANCE = 10; // Chance of a speed up item appearing
+    public static final double GOLDEN_APPLE_CHANCE = 15; // Chance of a golden apple appearing
     public static final double IODINE_STACK_CHANCE = 10;
 
     public static final int BAD_APPLE_DURATION = 50; // Duration of bad apple effect in ticks
@@ -20,7 +20,7 @@ public class Constants {
 
     public static final int SHRINK_POINTS = -5; // Points deducted for collecting a bad apple
     public static final int SPEED_UP_POINTS = 1; // Points awarded for collecting a speed-up item
-    public static final int NORMAL_APPLE_POINTS = 10; // Points awarded for collecting a normal apple
+    public static final int NORMAL_APPLE_POINTS = 15; // Points awarded for collecting a normal apple
     public static final int STAR_POINTS = 2; // Points awarded for collecting a rainbow apple overtime
 
 
@@ -34,15 +34,15 @@ public class Constants {
     public static final int SPEED_UP_DURATION = 5; // Duration of speed-up effect in ticks
     public static final int SPEED_UP_LENGTH = 10; // Length of the speed-up effect in tiles
 
-    public static final int MODERN_MODE_THRESHOLD = 2000; // Score threshold for modern mode in classic mode
-    public static final int FALLOUT_MODE_THRESHOLD = 10000; // Score threshold for crazy mode in classic mode
+    public static final int MODERN_MODE_THRESHOLD = 1500; // Score threshold for modern mode in classic mode
+    public static final int FALLOUT_MODE_THRESHOLD = 8000; // Score threshold for crazy mode in classic mode
 
 
     public static final int RAD_TOL = 100;
     public static final int INCREASE_IOD = 7;
     public static final int INCREASE_IOD_STACK = 20;
     public static final double BOMB_SPAWN_CHANCE = 10;
-    public static final int LIVE_POINTS_PER_TICK = 1;
+    public static final int POINTS_PER_TICK_FALLOUT = 3;
     public static final int NUKE_MAX_COUNT = 5; // Maximum number of nukes on the board
     public static final int WASTE_SPAWN_CHANCE = 50;
 

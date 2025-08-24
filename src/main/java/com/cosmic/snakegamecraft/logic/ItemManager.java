@@ -1,7 +1,7 @@
 package com.cosmic.snakegamecraft.logic;
 
 import com.cosmic.snakegamecraft.util.Item;
-import com.cosmic.snakegamecraft.util.ItemType;
+import com.cosmic.snakegamecraft.enums.ItemType;
 import com.cosmic.snakegamecraft.util.Point;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -38,6 +38,11 @@ public class ItemManager {
         if(type == ItemType.IODINE && !canSpawnIodine()) {
             return;
         }
+
+        if(type == ItemType.IODINE_STACK && !canSpawnIodinePack()){
+            return;
+        }
+
         if(type == ItemType.BAD_APPLE && random > BAD_APPLE_CHANCE / speed) {
             return;
         }else if(type == ItemType.STAR && random > STAR_CHANCE / speed) {
@@ -50,14 +55,14 @@ public class ItemManager {
             return;
         }
 
-
-
         int[] points = getFreePosition(occupied);
 
         Image sprite = getSpriteForType(type);
 
         items.add(new Item(type, points[0], points[1], sprite));
     }
+
+
 
 
     private int[] getFreePosition(List<Point> occupied) {
@@ -132,6 +137,10 @@ public class ItemManager {
 
     private boolean canSpawnIodine() {
         return items.stream().filter(item -> item.getType() == ItemType.IODINE).toList().size() < IODINE_MAX_COUNT;
+    }
+
+    private boolean canSpawnIodinePack() {
+        return items.stream().anyMatch(item -> item.getType() == ItemType.IODINE_STACK);
     }
 
     public List<Point> getOccupiedItemPoints() {

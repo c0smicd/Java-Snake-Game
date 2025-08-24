@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class SpriteManager {
 
-    private static final String SPRITE_PATH = "/images/";
+    public static final String RESOURCE_PATH = "/images/";
 
 
     private static Image snakeHead;
@@ -87,7 +87,7 @@ public class SpriteManager {
     }
 
     private static Image load(String path) {
-        return new Image(Objects.requireNonNull(SpriteManager.class.getResourceAsStream(SPRITE_PATH + path)));
+        return new Image(Objects.requireNonNull(SpriteManager.class.getResourceAsStream(RESOURCE_PATH + path)));
     }
 
     public static Image getSnakeHead(GameMode gameMode) {
@@ -174,8 +174,8 @@ public class SpriteManager {
         return bgGrassBottom;
     }
 
-    public static String getSpritePath() {
-        return SPRITE_PATH;
+    public static String getResourcePath() {
+        return RESOURCE_PATH;
     }
 
     public static Image getBgTileFallout() {

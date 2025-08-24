@@ -15,6 +15,7 @@ module com.cosmic.snakegamecraft {
     requires annotations;
     requires java.compiler;
     requires javafx.media;
+    requires jdk.jfr;
 
     opens com.cosmic.snakegamecraft to javafx.fxml;
     exports com.cosmic.snakegamecraft;

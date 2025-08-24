@@ -1,5 +1,6 @@
 package com.cosmic.snakegamecraft.util;
 
+import com.cosmic.snakegamecraft.enums.ItemType;
 import javafx.scene.image.Image;
 
 public class Item {

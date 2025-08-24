@@ -10,7 +10,7 @@ import com.cosmic.snakegamecraft.logic.SpriteManager;
 import com.cosmic.snakegamecraft.ui.GameMode;
 import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.util.Item;
-import com.cosmic.snakegamecraft.util.ItemType;
+import com.cosmic.snakegamecraft.enums.ItemType;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;

@@ -7,8 +7,9 @@ import com.cosmic.snakegamecraft.logic.*;
 import com.cosmic.snakegamecraft.ui.GameMode;
 import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.util.Item;
-import com.cosmic.snakegamecraft.util.ItemType;
+import com.cosmic.snakegamecraft.enums.ItemType;
 import com.cosmic.snakegamecraft.util.Point;
+import com.cosmic.snakegamecraft.enums.Radiation;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -54,7 +55,7 @@ public class FalloutGameModeController extends AbstractGameController {
 
         SpriteManager.loadSprites();
 
-        PlaySound.loadSounds();
+        //PlaySound.loadSounds();
 
         itemManager = new ItemManager(GRID_SIZE);
         nukeManager = new NukeManager();
@@ -105,8 +106,9 @@ public class FalloutGameModeController extends AbstractGameController {
                 showScoreIncrease(player.getCurrentHighscore() - highscoreBefore, rootPane, scoreLabel);
 
                 speed = (int) (settings.speedMultiplier() * this.getCurrentSpeed());
-                // Render items
 
+
+                // Render items
                 spawnItems();
                 spawnNukes();
 
@@ -126,7 +128,7 @@ public class FalloutGameModeController extends AbstractGameController {
                     return;
                 }
 
-                player.increaseHighscoreOvertime(LIVE_POINTS_PER_TICK);
+                player.increaseHighscoreOvertime(POINTS_PER_TICK_FALLOUT);
                 changeRadiationPerTick();
 
 

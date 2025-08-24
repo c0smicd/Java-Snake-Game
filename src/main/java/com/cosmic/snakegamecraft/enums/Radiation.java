@@ -1,4 +1,4 @@
-package com.cosmic.snakegamecraft.logic;
+package com.cosmic.snakegamecraft.enums;
 
 public enum Radiation {
     LOW,

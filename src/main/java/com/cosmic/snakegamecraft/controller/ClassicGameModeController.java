@@ -7,7 +7,7 @@ import com.cosmic.snakegamecraft.logic.PlaySound;
 import com.cosmic.snakegamecraft.ui.GameMode;
 import com.cosmic.snakegamecraft.util.Item;
 import com.cosmic.snakegamecraft.logic.ItemManager;
-import com.cosmic.snakegamecraft.util.ItemType;
+import com.cosmic.snakegamecraft.enums.ItemType;
 import com.cosmic.snakegamecraft.ui.GameSettings;
 import com.cosmic.snakegamecraft.logic.SettingsLoader;
 import com.cosmic.snakegamecraft.logic.SpriteManager;

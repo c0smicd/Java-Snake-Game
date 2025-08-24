@@ -1,12 +1,11 @@
 package com.cosmic.snakegamecraft.logic;
 
 import com.cosmic.snakegamecraft.util.Point;
-import javafx.scene.canvas.Canvas;
+import com.cosmic.snakegamecraft.enums.Radiation;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -49,22 +48,28 @@ public class NukeManager {
 
             if(handled) return;
 
-            // Spawn waste positions based on nuke's position
-
-            List<Point> wastePositions = List.of(
-                    new Point(nuke.x, nuke.y),
-                    new Point(nuke.x - 1, nuke.y),
-                    new Point(nuke.x + 1, nuke.y),
-                    new Point(nuke.x, nuke.y - 1),
-                    new Point(nuke.x, nuke.y + 1)
-            );
+            // Fallout um das 2x2-Areal
+            List<Point> wastePositions = new ArrayList<>();
+            int nx = nuke.x;
+            int ny = nuke.y;
+            // Alle Felder um das 2x2-Areal
+            for(int dx = -1; dx <= 2; dx++) {
+                for(int dy = -1; dy <= 2; dy++) {
+                    // Nur Felder außerhalb des 2x2-Areals
+                    if (dx < 0 || dx > 1 || dy < 0 || dy > 1) {
+                        wastePositions.add(new Point(nx + dx, ny + dy));
+                    }
+                }
+            }
+            // Filtere ungültige Positionen (z.B. außerhalb des Spielfelds)
+            wastePositions = wastePositions.stream().filter(p -> p.x() >= 0 && p.x() < GRID_SIZE && p.y() >= 0 && p.y() < GRID_SIZE).toList();
 
             wastePositions = wastePositions.stream().filter(_ -> {
                 Random random = new Random();
                 return random.nextInt(100) < WASTE_SPAWN_CHANCE; // Random chance to spawn waste
             }).toList();
 
-            nuke.setWastePositions(wastePositions);
+            nuke.wastePositions = wastePositions;
 
             nuke.setSprite(SpriteManager.getBgTileFalloutWasted());
 
@@ -150,7 +155,6 @@ public class NukeManager {
     }
 
     public void dropNuke(List<Point> occupied, int speed) {
-
         int emptySlot = findEmptyNukeSlot();
 
         if (emptySlot == -1) {
@@ -161,22 +165,20 @@ public class NukeManager {
 
         if(rand.nextDouble(100) > BOMB_SPAWN_CHANCE / speed) return; // Do not spawn nuke based on chance
 
-
         int[] ticksPerState = {rand.nextInt(5 * speed,10 * speed), rand.nextInt(5 * speed,20 * speed), rand.nextInt(20 * speed,50 * speed), 1};
 
+        int x, y;
 
-        int x,y;
-
-        do{
+        // Search a free 2x2 area
+        do {
             x = rand.nextInt(GRID_SIZE);
             y = rand.nextInt(GRID_SIZE);
-        }while(isOccupied(x, y, occupied));
+        } while (isOccupied(x, y, occupied));
 
-        Nuke nuke = new Nuke(x, y, ticksPerState); // Replace with actual coordinates
+        Nuke nuke = new Nuke(x, y, ticksPerState);
 
         if(emptySlot == nukes.size()) nukes.add(nuke);
         else nukes.set(emptySlot, nuke);
-
     }
 
     public void handleNukeTick() {
@@ -202,7 +204,7 @@ public class NukeManager {
             Image sprite = nuke.getSprite();
 
             // Draw nuke
-            gc.drawImage(sprite, nuke.x * TILE_SIZE, nuke.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            gc.drawImage(sprite, nuke.x * TILE_SIZE, nuke.y * TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2);
 
             // If AfterEffektSate draw waste
             if (nuke.getCurrentState() instanceof AfterEffektState) {
@@ -246,7 +248,7 @@ public class NukeManager {
 
     public boolean checkNukeCollision(int x, int y) {
         for (Nuke nuke : nukes) {
-            if (nuke != null && nuke.getX() == x && nuke.getY() == y) {
+            if (nuke != null && !(nuke.getCurrentState() instanceof LaserState) && nuke.getX() == x && nuke.getY() == y) {
                 return true; // Collision with a nuke
             }
         }
