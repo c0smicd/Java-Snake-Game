@@ -25,7 +25,7 @@ public class PlaySound {
 
     private static Media load(String path) {
         return new Media(Objects.requireNonNull(
-                PlaySound.class.getResource(RESOURCE_PATH + path)
+                PlaySound.class.getResource("/sounds/" + path)
         ).toExternalForm());
     }
 

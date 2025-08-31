@@ -1,6 +1,7 @@
 package com.cosmic.snakegamecraft.util;
 
 import java.util.List;
+import java.util.Random;
 
 import static com.cosmic.snakegamecraft.util.Constants.FALLOUT_MODE_THRESHOLD;
 import static com.cosmic.snakegamecraft.util.Constants.MODERN_MODE_THRESHOLD;
@@ -26,7 +27,8 @@ public class Tips {
      * @return Tip as a String.
      */
     public static String getTipRandom() {
-        return TIPS.get((int) (Math.random() * (TIPS.size() - 1)));
+        Random rand = new Random();
+        return TIPS.get(rand.nextInt(TIPS.size() - 1)); // Exclude last tip
     }
 
     /**
