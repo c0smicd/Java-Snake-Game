@@ -6,21 +6,23 @@ import javafx.scene.media.MediaPlayer;
 
 import java.util.Objects;
 
-import static com.cosmic.snakegamecraft.logic.SpriteManager.RESOURCE_PATH;
-
 public class PlaySound {
+    private static MediaPlayer mediaPlayer = null;
 
     public enum Sound {
         APPLE,
-        SPEEDUP
+        SPEEDUP,
+        STAR
     }
 
     private static Media appleSound;
     private static Media speedUpSound;
+    private static Media starSound;
 
     public static void loadSounds() {
         appleSound = load("apple.mp3");
         speedUpSound = load("speedup.mp3");
+        starSound = load("star.mp3");
     }
 
     private static Media load(String path) {
@@ -30,7 +32,7 @@ public class PlaySound {
     }
 
     public static void playSound(Sound sound) {
-        MediaPlayer mediaPlayer;
+
         switch (sound) {
             case APPLE -> {
                 mediaPlayer = new MediaPlayer(appleSound);
@@ -40,6 +42,16 @@ public class PlaySound {
                 mediaPlayer = new MediaPlayer(speedUpSound);
                 mediaPlayer.play();
             }
+            case STAR -> {
+                mediaPlayer = new MediaPlayer(starSound);
+                mediaPlayer.play();
+            }
+        }
+    }
+
+    public static void stopSound() {
+        if (mediaPlayer != null && mediaPlayer.getMedia() == starSound) {
+            mediaPlayer.stop();
         }
     }
 }

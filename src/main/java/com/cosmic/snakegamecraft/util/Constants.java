@@ -11,7 +11,7 @@ public class Constants {
     public static final double STAR_CHANCE = 5; // Chance of a rainbow star appearing
     public static final double SPEED_UP_CHANCE = 10; // Chance of a speed up item appearing
     public static final double GOLDEN_APPLE_CHANCE = 15; // Chance of a golden apple appearing
-    public static final double IODINE_STACK_CHANCE = 10;
+    public static final double IODINE_STACK_CHANCE = 30;
 
     public static final int BAD_APPLE_DURATION = 50; // Duration of bad apple effect in ticks
     public static final int BAD_APPLE_MAX_COUNT = 3; // Maximum number of bad apples on the board

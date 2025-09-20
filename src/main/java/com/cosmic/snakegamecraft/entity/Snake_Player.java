@@ -89,6 +89,8 @@ public class Snake_Player extends Entity {
         // This gets handled here: ModernGameModeController.handleInvulnerability();
         // increaseHighscore((int) (30 * speedMultiplier));
 
+        PlaySound.playSound(PlaySound.Sound.STAR);
+
     }
 
     public void speedUp(double currentSpeed) {
@@ -130,6 +132,7 @@ public class Snake_Player extends Entity {
 
         // Handle invincibility effect
         if (invulnerabilityTicks > 0) invulnerabilityTicks--;
+        else PlaySound.stopSound();
 
         if (speedUpTicks > 0) speedUpTicks--;
 

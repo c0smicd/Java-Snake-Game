@@ -52,6 +52,7 @@ public class ItemManager {
         } else if (type == ItemType.GOLDEN_APPLE && random > GOLDEN_APPLE_CHANCE / speed) {
             return;
         } else if(type == ItemType.IODINE_STACK && random > IODINE_STACK_CHANCE / speed){
+            System.out.println("Iodine Stack not spawned, with chance: " + random + " > " + IODINE_STACK_CHANCE / speed);
             return;
         }
 
@@ -140,9 +141,10 @@ public class ItemManager {
     }
 
     private boolean canSpawnIodinePack() {
-        return items.stream().anyMatch(item -> item.getType() == ItemType.IODINE_STACK);
+        return items.stream().anyMatch(item -> item.getType() != ItemType.IODINE_STACK);
     }
 
+    @Deprecated
     public List<Point> getOccupiedItemPoints() {
         List<Point> occupied = new ArrayList<>();
         for (Item item : items) {

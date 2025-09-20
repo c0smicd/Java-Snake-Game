@@ -122,6 +122,7 @@ public class ModernGameModeController extends AbstractGameController {
                     showGameOverDialog();
 
                     AppContext.setCanFalloutMode(player.getCurrentHighscore());
+                    PlaySound.stopSound(); // stops the star sound if the player died before updating
 
                     return;
                 }
