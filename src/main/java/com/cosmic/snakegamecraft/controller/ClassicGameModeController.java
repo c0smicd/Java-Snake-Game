@@ -79,7 +79,16 @@ public class ClassicGameModeController extends AbstractGameController {
 
                 spawnItems();
 
-                boolean isDead = (player.checkSelfCollision() || player.checkWallCollision());
+                Snake_Player.Self_Hit selfHitStatus = player.checkSelfCollision();
+
+                boolean isDead = (selfHitStatus == Snake_Player.Self_Hit.DEATH || player.checkWallCollision());
+
+                if(selfHitStatus == Snake_Player.Self_Hit.WIN){
+                    gameLoop.stop();
+                    showPlayerWinDialog();
+
+                    AppContext.setCanModernMode(player.getCurrentHighscore());
+                }
 
                 if (isDead) {
                     System.out.println("Player is dead, stopping game loop.");
@@ -95,6 +104,8 @@ public class ClassicGameModeController extends AbstractGameController {
 
                 drawFrame(gameCanvas, GameMode.CLASSIC);
             }
+
+
         };
 
         gameLoop.start();

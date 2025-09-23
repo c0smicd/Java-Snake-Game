@@ -18,6 +18,12 @@ import static com.cosmic.snakegamecraft.util.Constants.*;
 
 public class Snake_Player extends Entity {
 
+    public enum Self_Hit {
+        DEATH,
+        WIN,
+        NONE
+    }
+
     private final LinkedList<Segment> body = new LinkedList<>();
     private final Image headSprite;
     private final Image bodySprite;
@@ -243,17 +249,23 @@ public class Snake_Player extends Entity {
         currentHighscore += amount;
     }
 
-    public boolean checkSelfCollision() {
+    public Self_Hit checkSelfCollision() {
         Segment head = body.getFirst();
 
         for (int i = 1; i < body.size(); i++) {
             Segment segment = body.get(i);
             if (segment.x == head.x && segment.y == head.y) {
-                return true; // Collision with itself
+
+                // If snake collides with tale, and is max length, player wins
+                if(i == body.size() -1 && body.size() >= MAX_SNAKE_LENGTH) {
+                    return Self_Hit.WIN;
+                }else {
+                    return Self_Hit.DEATH;
+                }
             }
         }
 
-        return false;
+        return Self_Hit.NONE;
     }
 
     public boolean checkWallCollision() {

@@ -112,9 +112,19 @@ public class ModernGameModeController extends AbstractGameController {
 
                 showScoreIncrease(player.getCurrentHighscore() - highscoreBefore, rootPane, scoreLabel);
 
-                boolean isDead = (player.checkSelfCollision()
+                Snake_Player.Self_Hit selfHitStatus = player.checkSelfCollision();
+
+                boolean isDead = (selfHitStatus == Snake_Player.Self_Hit.DEATH
                         || player.checkWallCollision()
                         || player.checkShrink()) && !player.isInvulnerable(); // If player got a shrink item, it can die if the size is under 3 tiles
+
+
+                if(selfHitStatus == Snake_Player.Self_Hit.WIN){
+                    gameLoop.stop();
+                    showPlayerWinDialog();
+
+                    AppContext.setCanModernMode(player.getCurrentHighscore());
+                }
 
                 if (isDead) {
 

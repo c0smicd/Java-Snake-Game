@@ -102,6 +102,7 @@ public abstract class Entity {
         return spriteToDraw;
     }
 
+    @Deprecated
     protected Image rotateImage (ImageView rotatedImage, Direction tailDirection) {
         SnapshotParameters params = new SnapshotParameters();
         params.setFill(Color.TRANSPARENT);
@@ -133,6 +134,7 @@ public abstract class Entity {
         return direction;
     }
 
+    @Deprecated
     public boolean checkHit(Entity other) {
         // TODO: Implement hitscan logic for collision detection
 

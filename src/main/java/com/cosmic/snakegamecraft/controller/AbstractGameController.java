@@ -133,6 +133,35 @@ abstract class AbstractGameController {
         });
     }
 
+    protected void showPlayerWinDialog() {
+        Platform.runLater(() -> {
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("You Win!");
+            alert.setHeaderText("Congratulations, you have won the game!");
+            alert.setContentText("Press Restart to play again or go Back to the Menu");
+
+            ButtonType restartButton = new ButtonType("Restart");
+            ButtonType menuButton = new ButtonType("Back to Menu");
+
+            alert.getButtonTypes().setAll(restartButton, menuButton);
+
+            HighscoreManager.saveScore(AppContext.getGameMode(), AppContext.getUsername(), player.getCurrentHighscore() * 2); // Winning doubles the score
+
+            Optional<ButtonType> result = alert.showAndWait();
+            result.ifPresent(button -> {
+                if (button == restartButton) {
+                    restartGame();
+
+                } else if (button == menuButton) {
+                    // Go back to the menu
+                    sceneManager.showMenu();
+                }
+            });
+
+        });
+    }
+
     /**
      * Restarts the game by resetting the player and item manager, and reinitializing the game loop.
      */

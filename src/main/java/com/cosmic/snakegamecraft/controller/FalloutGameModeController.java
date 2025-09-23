@@ -114,7 +114,9 @@ public class FalloutGameModeController extends AbstractGameController {
 
                 boolean[] checkNukeDeath = nukeHandler(); // Also forwards the tick of the nuke
 
-                boolean isDead = (player.checkSelfCollision()
+                Snake_Player.Self_Hit selfHitStatus = player.checkSelfCollision();
+
+                boolean isDead = (selfHitStatus == Snake_Player.Self_Hit.DEATH
                         || player.checkWallCollision()
                         || player.checkRadiationDeath()
                         || checkNukeDeath[0]
