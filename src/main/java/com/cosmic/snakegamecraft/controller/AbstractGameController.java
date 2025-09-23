@@ -105,6 +105,9 @@ abstract class AbstractGameController {
      * Displays a game over dialog with options to restart or go back to the menu.
      */
     protected void showGameOverDialog() {
+
+        PlaySound.playSound(PlaySound.Sound.GAMEOVER);
+
         Platform.runLater(() -> {
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -122,10 +125,12 @@ abstract class AbstractGameController {
             Optional<ButtonType> result = alert.showAndWait();
             result.ifPresent(button -> {
                 if (button == restartButton) {
+                    PlaySound.stopSound();
                     restartGame();
 
                 } else if (button == menuButton) {
-                    // Go back to the menu
+                    // Go back to the
+                    PlaySound.stopSound();
                     sceneManager.showMenu();
                 }
             });

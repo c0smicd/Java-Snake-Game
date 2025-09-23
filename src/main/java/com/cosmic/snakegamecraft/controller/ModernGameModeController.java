@@ -157,7 +157,7 @@ public class ModernGameModeController extends AbstractGameController {
     @Override
     protected void spawnItems() {
         Arrays.stream(ItemType.values()).forEach(type -> {
-            if(type != ItemType.IODINE) itemManager.spawnItem(type, player.getOccupiedPoints(), speed);
+            if(type != ItemType.IODINE && type != ItemType.IODINE_STACK) itemManager.spawnItem(type, player.getOccupiedPoints(), speed);
         });
     }
 

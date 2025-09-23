@@ -95,6 +95,7 @@ public class Snake_Player extends Entity {
         // This gets handled here: ModernGameModeController.handleInvulnerability();
         // increaseHighscore((int) (30 * speedMultiplier));
 
+        PlaySound.stopSound();
         PlaySound.playSound(PlaySound.Sound.STAR);
 
     }

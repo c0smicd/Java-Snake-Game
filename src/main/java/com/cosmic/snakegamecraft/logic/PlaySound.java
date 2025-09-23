@@ -12,17 +12,20 @@ public class PlaySound {
     public enum Sound {
         APPLE,
         SPEEDUP,
-        STAR
+        STAR,
+        GAMEOVER
     }
 
     private static Media appleSound;
     private static Media speedUpSound;
     private static Media starSound;
+    private static Media gameOverSound;
 
     public static void loadSounds() {
         appleSound = load("apple.mp3");
         speedUpSound = load("speedup.mp3");
         starSound = load("star.mp3");
+        gameOverSound = load("gameOver.mp3");
     }
 
     private static Media load(String path) {
@@ -44,6 +47,10 @@ public class PlaySound {
             }
             case STAR -> {
                 mediaPlayer = new MediaPlayer(starSound);
+                mediaPlayer.play();
+            }
+            case GAMEOVER -> {
+                mediaPlayer = new MediaPlayer(gameOverSound);
                 mediaPlayer.play();
             }
         }
