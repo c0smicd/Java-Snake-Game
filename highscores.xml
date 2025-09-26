@@ -2,11 +2,21 @@
 <highscores>
     <CLASSIC>
         <entry name="modernMode" score="2001"/>
+        <entry name="pixelKing" score="4500"/>
+        <entry name="retroGamer" score="3200"/>
+        <entry name="arcadeHero" score="5100"/>
+        <entry name="Lukas" score="540"/>
     </CLASSIC>
     <MODERN>
-        <entry name="modernMode" score="30000"/>
+        <entry name="modernMode" score="8500"/>
+        <entry name="cyberNinja" score="4800"/>
+        <entry name="techMaster" score="3650"/>
+        <entry name="speedRunner" score="4200"/>
     </MODERN>
     <FALLOUT>
         <entry name="modernMode" score="1068"/>
+        <entry name="wastelandKing" score="2300"/>
+        <entry name="vaultDweller" score="1890"/>
+        <entry name="radRanger" score="2750"/>
     </FALLOUT>
 </highscores>

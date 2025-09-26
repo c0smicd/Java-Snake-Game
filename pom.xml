@@ -6,7 +6,7 @@
 
     <groupId>com.cosmic</groupId>
     <artifactId>Snake-Gamecraft</artifactId>
-    <version>2.0-beta</version>
+    <version>2.5</version>
     <name>Snake-Gamecraft</name>
 
     <properties>
